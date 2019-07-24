@@ -14,11 +14,15 @@
                  [ring/ring-core "1.7.1"]
                  [ring/ring-jetty-adapter "1.7.1"]
                  [ring/ring-devel "1.7.1"]
-                 [bidi "2.1.6"]
                  [ring/ring-json "0.4.0"]
+
+                 [bidi "2.1.6"]
+                 [buddy/buddy-auth "2.2.0"]
+                 [buddy/buddy-hashers "1.4.0"]
 
                  [environ "1.1.0"]]
 
-  :ring {:handler villagebook.core/app-handler}
+  :ring {:handler villagebook.server/app-handler}
   :plugins [[lein-ring "0.12.5"]]
+  :main villagebook.core
   :repl-options {:init-ns villagebook.core})
