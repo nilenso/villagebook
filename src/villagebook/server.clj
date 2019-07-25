@@ -7,17 +7,21 @@
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.json :refer [wrap-json-response]]
 
-            [buddy.hashers :as hs]
+            [buddy.hashers :as hasher]
             [buddy.auth :refer [authenticated? throw-unauthorized]]
             [buddy.auth.backends :as backends]
             [buddy.auth.middleware :refer (wrap-authentication)]
             [buddy.sign.jwt :as jwt]
 
+            [villagebook.config :as config]
+            [environ.core :refer [env]]
+
             [clojure.java.jdbc :as jdbc]
-            [environ.core :refer [env]]))
+            [honeysql.core :as sql]
+            [honeysql.helpers :as honey]))
 
 (defn find-user
-  [username password]
+  [email password]
     {:user "Prabhanshu" :id 1})
 
 ;; TODO: change to JWE
@@ -26,21 +30,44 @@
 
 ;; Setup individual controllers
 ;; TODO: refactor
-
 (defn index-handler
   [request]
   (res/response "Home of villagebook"))
 
+(defn get-user-by-email
+  [email]
+  (-> (jdbc/query config/db-spec (-> (honey/select :*)
+                                     (honey/from :users)
+                                     (honey/where [:= :email email])
+                                     sql/format))
+      first))
+
 (defn signup-handler
   [request]
-  (res/response "Signed up"))
+  (let [{nickname :nickname
+         email    :email
+         password :password
+         name     :name
+         :as      userdata} (-> request :params)
+        hashed-pass   (hasher/derive password)]
+
+    ;; Insert in DB
+    (if (nil? (get-user-by-email email))
+      (do
+        (jdbc/execute! config/db-spec (->  (honey/insert-into :users)
+                                           (honey/values [{:nickname nickname
+                                                           :email     email
+                                                           :password hashed-pass
+                                                           :name     name}])
+                                           sql/format))
+         (res/response "Signed up"))
+        (res/response "User already exists."))))
 
 (defn login-handler
   [request]
   (let [data (:params request)
-        printed (prn request)
-        user (find-user (:username data) ;; (implementation ommited)
-                        (:password data))
+        user (find-user (:email data) ;; (implementation ommited)
+                            (:password data))
         token (jwt/sign {:user (:id user)} secret)]
     (res/response {"token" token})))
 
@@ -52,10 +79,16 @@
   [request]
   (res/response "Yay! You have access to the API."))
 
+;; Setup middleware
+;; TODO: refactor
+(defn wrap-authz-middleware [handler]
+  (fn [req]
+    (handler req)))
+
 ;; Setup routes
 (def routes
   ["/" {"" index-handler
-        "api" api-handler
+        "api" (wrap-authz-middleware api-handler)
         "signup" signup-handler
         "login" login-handler
         "logout" logout-handler}])
