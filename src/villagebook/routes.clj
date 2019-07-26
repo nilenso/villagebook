@@ -10,5 +10,4 @@
   ["/" {"" index-handler
         "api" (wrap-authz-middleware api-handler)
         "signup" auth/signup
-        "login" auth/login
-        "logout" auth/logout}])
+        "login" auth/login}])

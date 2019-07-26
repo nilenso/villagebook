@@ -8,11 +8,11 @@
 ;; run migrations via lein run migrate
 (defn -main
   [& args]
-  (if (count args)
+  (if-not (zero? (count args))
     (case (first args)
       "migrate"  (migrations/migrate)
-      "rollback" (migrations/rollback))
-    (run-jetty web/app-handler {:port 3000})))
+      "rollback" (migrations/rollback)))
+  (run-jetty web/app-handler {:port 3000}))
 
 ;; (defonce server (atom nil))
 

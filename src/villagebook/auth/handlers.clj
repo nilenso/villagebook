@@ -7,11 +7,7 @@
 
             [villagebook.auth.db :as db]
             [villagebook.config :as config]
-
-            ;;TODO move this to db.clj
-            [clojure.java.jdbc :as jdbc]
-            [honeysql.core :as sql]
-            [honeysql.helpers :as honey]))
+            [villagebook.auth.spec :as auth-spec]))
 
 (defn signup
   [request]
@@ -19,33 +15,37 @@
          email    :email
          password :password
          name     :name
-         :as      userdata} (-> request :params)
-        hashed-pass   (hasher/derive password)]
+         :as      userdata} (:params request)]
 
-    ;; Insert in DB
-    (if (nil? (db/get-user-by-email email))
-      (do
-        (jdbc/execute! config/db-spec (->  (honey/insert-into :users)
-                                           (honey/values [{:nickname nickname
-                                                           :email     email
-                                                           :password hashed-pass
-                                                           :name     name}])
-                                           sql/format))
-         (res/response "Signed up"))
-        (res/response "User already exists."))))
+    (if (auth-spec/valid-signup-details? userdata)
+      (if (nil? (db/get-user-by-email email))
+        (do
+          (db/create-user userdata)
+          (-> (res/response userdata)
+              (res/status 201)))
+        (res/response "User already exists."))
+      (res/bad-request "Invalid request."))))
 
 (defn login
   [request]
-  (let [data (:params request)
-        user (db/find-user (:email data) ;; (implementation ommited)
-                        (:password data))
+  (let [{email    :email
+         password :password
+         :as      userdata} (:params request)
+        user  (db/get-user-by-email email)
+        hash  (:password user)
         token (jwt/sign {:user (:id user)} config/jwt-secret)]
-    (res/response {"token" token})))
 
-(defn logout
-  [request]
-  (res/response "Logged out"))
+    (if (auth-spec/valid-login-details? userdata)
+      (if (nil? user)
+        (->  (res/response "Email not found.")
+             (res/status 401))
+        (if (hasher/check password hash)
+            (res/response {"token" token})
+            (-> (res/response "Invalid password.")
+                (res/status 401))))
+      (res/bad-request "Invalid request."))))
 
-(defn api
-  [request]
-  (res/response "Yay! You have access to the API."))
+;; TODO: Support token revocation
+;; (defn logout
+;;   [request]
+;;   (res/response "Logged out"))
