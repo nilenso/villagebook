@@ -22,7 +22,7 @@
 
                  [environ "1.1.0"]]
 
-  :ring {:handler villagebook.server/app-handler}
+  :ring {:handler villagebook.web/app-handler}
   :plugins [[lein-ring "0.12.5"]]
   :main villagebook.core
   :repl-options {:init-ns villagebook.core})

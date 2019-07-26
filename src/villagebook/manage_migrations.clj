@@ -1,4 +1,4 @@
-(ns villagebook.migrations
+(ns villagebook.manage_migrations
   (:require [ragtime.jdbc :as jdbc]
             [ragtime.repl :as repl]
             [villagebook.config :refer [db-spec]]))

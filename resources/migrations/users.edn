@@ -5,4 +5,4 @@
               name text,
               password text NOT NULL,
               created_at timestamp DEFAULT now());"]
- :down ["DROP TABLE foo;"]}
+ :down ["DROP TABLE users;"]}
