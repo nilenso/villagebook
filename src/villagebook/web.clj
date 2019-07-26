@@ -2,9 +2,8 @@
   (:require [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.json :refer [wrap-json-response]]
-            
-            [buddy.auth.middleware :refer [wrap-authentication]]
-            [buddy.auth.backends :as backends]
+
+            [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]
 
             [bidi.ring :refer [make-handler]]
 
@@ -15,13 +14,11 @@
 (def handler
   (make-handler routes))
 
-;; Setup auth middleware
-(def auth-backend (backends/jws {:secret config/jwt-secret}))
-
 ;; Setup all middleware on the handler
 (def app-handler
   (-> handler
-      (wrap-authentication auth-backend)
+      (wrap-authentication config/auth-backend)
+      (wrap-authorization config/auth-backend)
       wrap-keyword-params
       wrap-params
       wrap-json-response))
