@@ -1,7 +1,6 @@
 (ns villagebook.auth.handlers
-	(:require [ring.util.response :as res]
-
-						[buddy.hashers :as hasher]
+  (:require [ring.util.response :as res]
+            [buddy.hashers :as hasher]
             [buddy.auth :refer [authenticated? throw-unauthorized]]
             [buddy.sign.jwt :as jwt]
 
@@ -33,7 +32,7 @@
          :as      userdata} (:params request)
         user  (db/get-user-by-email email)
         hash  (:password user)
-        token (jwt/sign {:user (:id user)} config/jwt-secret)]
+        token (jwt/sign {:user (:email user)} config/jwt-secret)]
 
     (if (auth-spec/valid-login-details? userdata)
       (if (nil? user)
