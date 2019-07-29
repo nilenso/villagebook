@@ -1,0 +1,6 @@
+;; resources/migrations/001-organisations.edn
+{:up   ["CREATE TABLE organisations(oid serial primary key,
+              name text NOT NULL,
+              color text,
+              created_at timestamp DEFAULT now());"]
+ :down ["DROP TABLE organisations;"]}
