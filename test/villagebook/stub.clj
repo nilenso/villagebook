@@ -6,3 +6,5 @@
 
 (def user1 (apply create-user-map ["geek@gorilla.com" "testpassword" "ronaldo" "Zeus"]))
 (def user2 (apply create-user-map ["oneplus@two.com" "testpassword" "nick" nil]))
+
+(def organisation {:name "Nilenso" :color "pink"})

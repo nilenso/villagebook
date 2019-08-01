@@ -1,11 +1,10 @@
 (ns villagebook.organisation.db-test
   (:require [villagebook.organisation.db :as sut]
+            [villagebook.stub :as stub]
             [clojure.test :refer :all]))
 
 (deftest create-organisation
   (testing "Should create an organisation"
     (let [{:keys [id]} (sut/create {:name "Nilenso" :color "pink"})]
-      (is (= {:id id
-              :name "Nilenso"
-              :color "pink"} (-> (sut/get-by-id id)
-                                 (dissoc :created_at)))))))
+      (is (= stub/organisation (-> (sut/get-by-id id)
+                                   (apply dissoc [:id :created_at])))))))
