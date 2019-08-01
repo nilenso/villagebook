@@ -6,7 +6,7 @@
 
             [villagebook.config :as config]))
 
-(defn get-user-by-email
+(defn get-by-email
   "Fetches user by email. Returns nil if not found."
   [email]
   (-> (jdbc/query config/db-spec (-> (honey/select :*)
@@ -15,13 +15,11 @@
                                      sql/format))
       first))
 
-(defn create-user
+(defn create
   "Creates a user with given fields."
   [userdata]
   (let [hashed-pass (hasher/derive (:password userdata))]
-    (jdbc/execute! config/db-spec (->  (honey/insert-into :users)
-                                       (honey/values [{:nickname (:nickname userdata)
-                                                       :email    (:email userdata)
-                                                       :password hashed-pass
-                                                       :name     (:name userdata)}])
-                                       sql/format))))
+    (jdbc/insert! config/db-spec :users {:nickname (:nickname userdata)
+                                         :email    (:email userdata)
+                                         :password hashed-pass
+                                         :name     (:name userdata)})))

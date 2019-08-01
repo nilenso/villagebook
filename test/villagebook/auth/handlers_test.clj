@@ -4,7 +4,7 @@
             [villagebook.stub :refer [user1 user2]]
             [clojure.test :refer :all]))
 
-(deftest signup-tests
+(deftest signup-login-tests
   (testing "Signing up as user 1"
     (let [request {:params user1}
           response (auth-handlers/signup request)]
@@ -22,10 +22,8 @@
   (testing "Signing up with invalid request")
     (let [request {}
           response (auth-handlers/login request)]
-      (is (= 400 (:status response)))))
+      (is (= 400 (:status response))))
 
-
-(deftest login-tests
   (testing "Logging in as user 1"
     (let [request  {:params user1}
           response (auth-handlers/login request)]
@@ -40,7 +38,7 @@
   (testing "Logging in as user 1 invalid request - missing password"
     (let [request {:params (dissoc user1 :password)}
           response (auth-handlers/login request)]
-       (is (= 400 (:status response)))))
+      (is (= 400 (:status response)))))
 
   (testing "Logging in as user 1 with incorrect password"
     (let [request {:params (assoc user1 :password "newpassword")}
