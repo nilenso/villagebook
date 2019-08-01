@@ -19,7 +19,8 @@
   "Creates a user with given fields."
   [userdata]
   (let [hashed-pass (hasher/derive (:password userdata))]
-    (jdbc/insert! config/db-spec :users {:nickname (:nickname userdata)
-                                         :email    (:email userdata)
-                                         :password hashed-pass
-                                         :name     (:name userdata)})))
+    (-> (jdbc/insert! config/db-spec :users {:nickname (:nickname userdata)
+                                             :email    (:email userdata)
+                                             :password hashed-pass
+                                             :name     (:name userdata)})
+        first)))
