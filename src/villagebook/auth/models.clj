@@ -7,21 +7,20 @@
             [villagebook.config :as config]))
 
 (defn create-user
-  [userdata]
-  (let [email (:email userdata)]
-    (if (nil? (db/get-by-email email))
-      (let [user (db/create userdata)]
-        {:success user})
-      {:error "User with this email already exists."})))
+  [{:keys [email] :as userdata}]
+  (if-not (db/get-by-email email)
+    (let [user (db/create userdata)]
+      {:success user})
+    {:error "User with this email already exists."}))
 
 (defn get-token
   [email password]
   (let [user  (db/get-by-email email)
-        hash  (:password user)
-        token (jwt/sign {:user (:email user)} config/jwt-secret)]
+        {hashed-password :password db-email :email} user
+        token (jwt/sign {:user db-email} config/jwt-secret)]
 
     (if user
-      (if (hasher/check password hash)
+      (if (hasher/check password hashed-password)
         {:success {:token token}}
         {:error "Invalid password"})
       {:error "Email not found"})))
