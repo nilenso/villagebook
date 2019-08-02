@@ -1,6 +1,5 @@
 (ns villagebook.auth.spec
-  (:require [villagebook.utils :refer [email-pattern
-                                       required]]
+  (:require [villagebook.utils :refer [email-pattern required]]
             [villagebook.auth.db :as db]
             [clojure.spec.alpha :as s]))
 

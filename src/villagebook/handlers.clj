@@ -1,5 +1,5 @@
 (ns villagebook.handlers
-	(:require [ring.util.response :as res]
+  (:require [ring.util.response :as res]
             [buddy.auth :refer [authenticated? throw-unauthorized]]))
 
 ;;TODO move to different handler dirs

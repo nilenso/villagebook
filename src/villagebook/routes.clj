@@ -1,9 +1,9 @@
 (ns villagebook.routes
-	(:require [bidi.ring :refer [make-handler]]
+  (:require [bidi.ring :refer [make-handler]]
             [buddy.auth.middleware :refer [wrap-authorization]]
 
             [villagebook.auth.handlers :as auth]
-						[villagebook.handlers :refer [api-handler index-handler]]
+            [villagebook.handlers :refer [api-handler index-handler]]
             [villagebook.config :as config]))
 
 ;; Setup routes

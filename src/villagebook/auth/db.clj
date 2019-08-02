@@ -1,5 +1,5 @@
 (ns villagebook.auth.db
-	(:require	[clojure.java.jdbc :as jdbc]
+  (:require [clojure.java.jdbc :as jdbc]
             [honeysql.core :as sql]
             [honeysql.helpers :as honey]
             [buddy.hashers :as hasher]
