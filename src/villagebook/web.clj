@@ -22,8 +22,3 @@
       wrap-keyword-params
       wrap-params
       wrap-json-response))
-
-;; For lein run (heroku)
-;; (defn -main [& [port]]
-;;   (let [port (Integer. (or port (env :port) 5000))]
-;;     (jetty/run-jetty app-handler {:port port :join? false})))
