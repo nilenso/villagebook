@@ -10,38 +10,29 @@
             [villagebook.auth.spec :as auth-spec]))
 
 (defn signup
-  [request]
-  (let [{nickname :nickname
-         email    :email
-         password :password
-         name     :name
-         :as      userdata} (:params request)]
-
-    (if (auth-spec/valid-signup-details? userdata)
-      (let [user    (models/create-user userdata)
-            success (:success user)
-            error   (:error user)]
-        (if success
-          (-> (res/response userdata)
-              (res/status 201))
-          (res/response error)))
-      (res/bad-request "Invalid request."))))
+  [{userdata :params :as request}]
+  (if (auth-spec/valid-signup-details? userdata)
+    (let [message (models/create-user userdata)
+          email   (get-in message [:success :email])
+          error   (:error message)]
+      (if email
+        (-> (res/response {:email email})
+            (res/status 201))
+        (res/response error)))
+    (res/bad-request "Invalid request.")))
 
 (defn login
-  [request]
-  (let [{email    :email
-         password :password
-         :as      userdata} (:params request)]
-
-    (if (auth-spec/valid-login-details? userdata)
-      (let [get-token (models/get-token email password)
-            token     (get-in get-token [:success :token])
-            error     (:error token)]
-        (if token
-          (res/response {"token" token})
-          (-> (res/response error)
-              (res/status 401))))
-      (res/bad-request "Invalid request."))))
+  [{userdata :params :as request}]
+  (if (auth-spec/valid-login-details? userdata)
+    (let [{:keys [email password]} userdata
+          message (models/get-token email password)
+          token   (get-in message [:success :token])
+          error   (:error message)]
+      (if token
+        (res/response {:token token})
+        (-> (res/response error)
+            (res/status 401))))
+    (res/bad-request "Invalid request.")))
 
 ;; TODO: Support token revocation
 ;; (defn logout
