@@ -5,6 +5,6 @@
 
 (deftest create-organisation
   (testing "Should create an organisation"
-    (let [{:keys [id]} (sut/create {:name "Nilenso" :color "pink"})]
+    (let [{:keys [id]} (sut/create stub/organisation)]
       (is (= stub/organisation (-> (sut/get-by-id id)
                                    (apply dissoc [:id :created_at])))))))
