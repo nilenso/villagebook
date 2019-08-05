@@ -1,4 +1,5 @@
-(ns villagebook.middleware)
+(ns villagebook.middleware
+  (:require [buddy.auth :refer [authenticated? throw-unauthorized]]))
 
 (defn ignore-trailing-slash
   "Modifies the request uri before calling the handler.
@@ -10,3 +11,10 @@
                                             (.endsWith uri "/"))
                                      (subs uri 0 (dec (count uri)))
                                      uri))))))
+(defn with-auth
+  "Checks if request is authenticated, denies if it is not."
+  [handler]
+  (fn [request]
+    (if (authenticated? request)
+      (handler request)
+      (throw-unauthorized))))

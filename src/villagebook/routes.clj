@@ -2,9 +2,10 @@
   (:require [bidi.ring :refer [make-handler]]
             [buddy.auth.middleware :refer [wrap-authorization]]
 
+            [villagebook.middleware :refer [with-auth]]
             [villagebook.auth.handlers :as auth]
             [villagebook.organisation.handlers :as org]
-						[villagebook.handlers :refer [api-handler index-handler]]
+            [villagebook.handlers :refer [api-handler index-handler]]
 
             [villagebook.config :as config]))
 
