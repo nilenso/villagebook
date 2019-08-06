@@ -10,8 +10,8 @@
             [villagebook.config :as config]))
 
 (def apiroutes
-  {"organisation" {["/" :id] {:get (with-auth org/get-by-id)}
-                   :post (with-auth org/create-organisation)}})
+  {"organisations" {["/" :id] {:get (with-auth org/get-by-id)}
+                    :post     (with-auth org/create-organisation)}})
 
 ;; Setup routes
 (def routes
