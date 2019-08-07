@@ -6,5 +6,5 @@
 (deftest create-organisation
   (testing "Should create an organisation"
     (let [{:keys [id]} (sut/create factory/organisation)]
-      (is (= factory/organisation (as-> (sut/get-by-id id) $
-                                   (apply dissoc $ [:id :created_at])))))))
+      (is (= factory/organisation (-> (sut/get-by-id id)
+                                    (dissoc :id :created_at)))))))
