@@ -1,0 +1,87 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  vars:
+    create_user: deploy
+    copy_local_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+    sys_packages: [ 'curl', 'vim', 'git', 'ufw']
+
+  tasks:
+    - name: Make sure we have a 'deploy' group
+      group:
+        name: deploy
+        state: present
+
+    - name: Allow 'deploy' group to have passwordless sudo
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%deploy'
+        line: '%deploy ALL=(ALL) NOPASSWD: ALL'
+        validate: '/usr/sbin/visudo -cf %s'
+
+    - name: Create a new regular user with sudo privileges
+      user:
+        name: "{{ create_user }}"
+        state: present
+        groups: deploy
+        append: true
+        create_home: true
+        shell: /bin/bash
+
+    - name: Set authorized key for remote user
+      authorized_key:
+        user: "{{ create_user }}"
+        state: present
+        key: "{{ copy_local_key }}"
+
+    - name: Disable password authentication for root
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^#?PermitRootLogin'
+        line: 'PermitRootLogin prohibit-password'
+
+    - name: Update apt
+      apt: update_cache=yes
+
+    - name: Install required system packages
+      apt: name={{ sys_packages }} state=latest
+
+    - name: UFW - Allow SSH connections
+      ufw:
+        rule: allow
+        name: OpenSSH
+
+    - name: UFW - Deny all other incoming traffic by default
+      ufw:
+        state: enabled
+        policy: deny
+        direction: incoming
+
+    - name: Install java
+      apt:
+        name: openjdk-8-jre-headless
+
+    - name: Install postgresql.
+      apt:
+        name: postgresql-10
+
+    - name: Install libpq-dev.
+      apt:
+        name: libpq-dev
+
+    - name: Install pip
+      apt:
+        name: python3-pip
+
+    - name: Install python-psycopg2
+      pip:
+        name: psycopg2
+
+    - name: Create villagebook database
+      become: true
+      become_user: postgres
+      postgresql_db:
+        name: village_book_db
