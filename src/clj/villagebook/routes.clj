@@ -1,5 +1,5 @@
 (ns villagebook.routes
-  (:require [bidi.ring :refer [make-handler]]
+  (:require [bidi.ring :refer [make-handler resources]]
             [buddy.auth.middleware :refer [wrap-authorization]]
 
             [villagebook.middleware :refer [with-auth]]
@@ -15,7 +15,8 @@
 
 ;; Setup routes
 (def routes
-  ["/" {""       index-handler
-        "api/"   apiroutes
-        "signup" auth/signup
-        "login"  auth/login}])
+  ["/" {""          index-handler
+        ["public/"] (resources {:prefix "public/"})
+        "api/"       apiroutes
+        "signup"    auth/signup
+        "login"     auth/login}])
