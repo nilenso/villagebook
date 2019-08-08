@@ -3,6 +3,8 @@
             [villagebook.factory :as factory]
             [clojure.test :refer :all]))
 
+(use-fixtures :each wrap-setup)
+
 (deftest create-organisation
   (testing "Should create an organisation"
     (let [{:keys [id]} (sut/create factory/organisation)]
