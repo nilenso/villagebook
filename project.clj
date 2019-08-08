@@ -20,7 +20,8 @@
                  [buddy/buddy-auth "2.2.0"]
                  [buddy/buddy-hashers "1.4.0"]
 
-                 [environ "1.1.0"]]
+                 [environ "1.1.0"]
+                 [clj-factory "0.2.1"]]
 
   :ring {:handler villagebook.web/app-handler}
   :plugins [[lein-ring "0.12.5"]]

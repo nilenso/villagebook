@@ -7,6 +7,7 @@
 
             [bidi.ring :refer [make-handler]]
 
+            [villagebook.middleware :refer [ignore-trailing-slash]]
             [villagebook.routes :refer [routes]]
             [villagebook.config :as config]))
 
@@ -19,6 +20,7 @@
   (-> handler
       (wrap-authentication config/auth-backend)
       (wrap-authorization config/auth-backend)
+      ignore-trailing-slash
       wrap-keyword-params
       wrap-params
       wrap-json-response))
