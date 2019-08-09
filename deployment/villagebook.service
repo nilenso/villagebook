@@ -1,0 +1,10 @@
+[Unit]
+Description=villagebook
+
+[Service]
+ExecStart=/usr/bin/java -jar /home/deploy/villagebook-0.1.0-SNAPSHOT-standalone.jar
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

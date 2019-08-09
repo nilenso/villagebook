@@ -1,4 +1,5 @@
 (ns villagebook.core
+  (:gen-class)
   (:use     [ring.adapter.jetty])
   (:require [villagebook.manage_migrations :as migrations]
             [villagebook.web :as web]

@@ -25,4 +25,5 @@
   :ring {:handler villagebook.web/app-handler}
   :plugins [[lein-ring "0.12.5"]]
   :main villagebook.core
+  :aot [villagebook.core]
   :repl-options {:init-ns villagebook.core})
