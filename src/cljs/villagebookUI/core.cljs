@@ -1,0 +1,39 @@
+(ns villagebookUI.core
+  (:require [reagent.core :as r]
+            [reagent.session :as session]
+            [accountant.core :as accountant]
+            [bidi.bidi :as bidi]))
+
+(defn index []
+  [:div "HELLO"
+   [:a {:href "/foo"} "FOO"]])
+
+(defn foo []
+  [:div "FOO"])
+
+(def routes
+  ["" {"/"    index
+       "/foo" foo}])
+
+(accountant/configure-navigation!
+ {:nav-handler (fn [path]
+                 (let [matched-route (bidi/match-route routes path)
+                       current-page  (:handler matched-route)
+                       route-params  (:route-params matched-route)]
+                   (session/put! :route {:current-page current-page
+                                         :route-params route-params})))
+  :path-exists? (fn [path]
+                  (boolean (bidi/match-route routes path)))})
+
+(defn root []
+  "Root component holding all other components"
+  (let [component (:current-page (session/get :route))]
+    (component)))
+
+(defn main! []
+  (accountant/dispatch-current!)
+  (r/render [root]
+            (.getElementById js/document "villagebook-app")))
+
+(defn reload! []
+	(prn "Reloading"))
