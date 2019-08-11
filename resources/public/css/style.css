@@ -1,0 +1,61 @@
+@font-face {
+    font-family: sztylet;
+    src: url("../fonts/SztyletBd.otf") format("opentype");
+}
+
+@font-face {
+  font-family:"Muli";
+  src: url("../fonts/Muli-Regular.ttf") format("truetype");
+}
+
+body {
+  font-family: Muli;
+}
+/* Misc utilities */
+/* Overrides */
+a:hover {
+  text-decoration: none;
+}
+/* End Overrides */
+.small {
+  font-size: 13px;
+  margin:0;
+}
+
+.break {
+  display: block;
+  height: 1rem;
+}
+/* END Misc utilities */
+
+/* Index */
+.center-box {
+  padding: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  text-align: center;
+  width: 320px;
+  height: 400px;
+  border-top: 2px solid pink;
+}
+
+.brand {
+  color: #136bca;
+  font-family: sztylet;
+  font-size: 25px;
+}
+
+.brand:hover {
+  text-decoration: none;
+}
+
+.login-btn {
+  width: 80%;
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+/* END Index */

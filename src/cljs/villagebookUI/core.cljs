@@ -2,18 +2,9 @@
   (:require [reagent.core :as r]
             [reagent.session :as session]
             [accountant.core :as accountant]
-            [bidi.bidi :as bidi]))
+            [bidi.bidi :as bidi]
 
-(defn index []
-  [:div "HELLO"
-   [:a {:href "/foo"} "FOO"]])
-
-(defn foo []
-  [:div "FOO"])
-
-(def routes
-  ["" {"/"    index
-       "/foo" foo}])
+            [villagebookUI.routes :refer [routes]]))
 
 (accountant/configure-navigation!
  {:nav-handler (fn [path]
@@ -36,4 +27,5 @@
             (.getElementById js/document "villagebook-app")))
 
 (defn reload! []
-	(prn "Reloading"))
+  (main!)
+  (prn "Reloaded"))
