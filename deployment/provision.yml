@@ -54,6 +54,12 @@
         rule: allow
         name: OpenSSH
 
+    - name: UFW - Allow HTTP on 80
+      ufw:
+        rule: allow
+        port: 80
+        proto: tcp
+
     - name: UFW - Deny all other incoming traffic by default
       ufw:
         state: enabled
@@ -85,3 +91,7 @@
       become_user: postgres
       postgresql_db:
         name: village_book_db
+
+    - name: Install nginx
+      apt:
+        name: nginx

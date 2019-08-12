@@ -25,3 +25,22 @@
         state: restarted
         name: villagebook
         enabled: yes
+
+    - name: Copy the nginx config file
+      become: true
+      copy:
+        src: nginx.cfg
+        dest: /etc/nginx/sites-available/villagebook.cfg
+
+    - name: Create symlink
+      become: true
+      file:
+        src: /etc/nginx/sites-available/villagebook.cfg
+        dest: /etc/nginx/sites-enabled/default
+        state: link
+
+    - name: Restart nginx
+      become: true
+      service:
+        name: nginx
+        state: restarted
