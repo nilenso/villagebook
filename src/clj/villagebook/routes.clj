@@ -5,8 +5,7 @@
             [villagebook.middleware :refer [with-auth]]
             [villagebook.auth.handlers :as auth]
             [villagebook.organisation.handlers :as org]
-            [villagebook.handlers :refer [api-handler index-handler]]
-
+            [villagebook.handlers :refer [api-handler frontend-handler]]
             [villagebook.config :as config]))
 
 (def apiroutes
@@ -15,8 +14,8 @@
 
 ;; Setup routes
 (def routes
-  ["/" {""          index-handler
-        ["public/"] (resources {:prefix "public/"})
-        "api/"       apiroutes
-        "signup"    auth/signup
-        "login"     auth/login}])
+  ["/" {"assets" (resources {:prefix "public/assets/"})
+        "api/"   apiroutes
+        "signup" {:post auth/signup}
+        "login"  {:post auth/login}
+        true     frontend-handler}])

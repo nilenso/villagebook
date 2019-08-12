@@ -17,7 +17,7 @@ pom.xml.asc
 *#*
 *.save
 *.local*
-resources/public/build/
+resources/public/assets/build/
 node_modules/
 package-lock.json
 .shadow-cljs

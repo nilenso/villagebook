@@ -4,8 +4,8 @@
                 [bidi "2.1.6"]
                 [venantius/accountant "0.2.4"]]
  :dev-http     {8080 "resources/public"}
- :builds       {:villagebookUI {:output-dir "resources/public/build/"
-                                :asset-path "/build"
+ :builds       {:villagebookUI {:output-dir "resources/public/assets/build/"
+                                :asset-path "/assets/build"
                                 :target     :browser
                                 :modules    {:main {:init-fn villagebookUI.core/main!}}
                                 :devtools   {:after-load villagebookUI.core/reload!
