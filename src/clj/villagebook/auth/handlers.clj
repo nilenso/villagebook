@@ -12,11 +12,14 @@
 (defn signup
   [{userdata :params :as request}]
   (if (auth-spec/valid-signup-details? userdata)
-    (let [message (models/create-user userdata)
-          email   (get-in message [:success :email])
-          error   (:error message)]
+    (let [message       (models/create-user userdata)
+          email         (get-in message [:success :email])
+          error         (:error message)
+          password      (:password userdata)
+          token-message (models/get-token email password)
+          token         (get-in token-message [:success :token])]
       (if email
-        (-> (res/response {:email email})
+        (-> (res/response {:email email :token token})
             (res/status 201))
         (res/response error)))
     (res/bad-request "Invalid request.")))
