@@ -2,6 +2,7 @@
   (:require [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.json :refer [wrap-json-response]]
+            [ring.middleware.cookies :refer [wrap-cookies]]
 
             [ring.util.response :as res]
             [ring.util.request :as req]
@@ -23,6 +24,7 @@
   (-> handler
       (wrap-authentication config/auth-backend)
       (wrap-authorization config/auth-backend)
+      wrap-cookies
       ignore-trailing-slash
       wrap-keyword-params
       wrap-params

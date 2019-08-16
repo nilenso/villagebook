@@ -20,6 +20,7 @@
           token         (get-in token-message [:success :token])]
       (if email
         (-> (res/response {:email email :token token})
+            (res/set-cookie "token" token {:http-only true})
             (res/status 201))
         (res/response error)))
     (res/bad-request "Invalid request.")))
@@ -32,7 +33,8 @@
           token   (get-in message [:success :token])
           error   (:error message)]
       (if token
-        (res/response {:token token})
+        (-> (res/response {:token token})
+            (res/set-cookie "token" token {:http-only true}))
         (-> (res/response error)
             (res/status 401))))
     (res/bad-request "Invalid request.")))
