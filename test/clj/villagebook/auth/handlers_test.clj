@@ -1,6 +1,6 @@
 (ns villagebook.auth.handlers-test
   (:require [villagebook.fixtures :refer [wrap-setup]]
-            [villagebook.stub :refer [user1 user2]]
+            [villagebook.factory :refer [user1 user2]]
             [villagebook.auth.db :as auth-db]
             [villagebook.auth.handlers :as auth-handlers]
             [clojure.test :refer :all]))
