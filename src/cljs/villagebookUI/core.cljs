@@ -19,7 +19,7 @@
 (defn root []
   "Root component holding all other components"
   (let [component (:current-page (session/get :route))]
-    (component)))
+    [component]))
 
 (defn main! []
   (accountant/dispatch-current!)
