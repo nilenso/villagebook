@@ -22,7 +22,8 @@
         (-> (res/response {:email email :token token})
             (res/set-cookie "token" token {:http-only true})
             (res/status 201))
-        (res/response error)))
+        (-> (res/response error)
+            (res/status 403))))
     (res/bad-request "Invalid request.")))
 
 (defn login
