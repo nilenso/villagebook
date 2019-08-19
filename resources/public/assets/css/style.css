@@ -58,4 +58,20 @@ a:hover {
   margin-top: 35px;
   margin-bottom: 0px;
 }
+
+.check-invalid:invalid {
+  border: 1px solid #ce8383;
+}
+
+
+.form-control:valid {
+  border: 1px solid #7dc37d;
+}
+
+.auth-error {
+  color: #d43232;
+  min-height: 1.5rem;
+  margin-top: 5px;
+  padding: 0;
+}
 /* END Index */
