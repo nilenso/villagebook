@@ -3,6 +3,5 @@
 (defn notfound []
   [:div.center-box
    [:a.brand {:href "/"} "villagebook"]
-   [:br]
-   [:br]
-   [:div "The page you requested doesn't exist."]])
+   [:div.mt-4 "The page you requested doesn't exist."]
+   [:a {:href "/"} "Back to home"]])

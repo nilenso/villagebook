@@ -46,9 +46,9 @@
                         (fn [res]
                           (swap! error assoc :message "")
                           (swap! store/state assoc :user res)
-                          #_(accountant/navigate! "/"))
+                          (accountant/navigate! "/dashboard"))
                         (fn [res]
                           (swap! error assoc :message (:response res)))))}
          "Signup"]]
        [:span.small "Already have an account? "]
-       [:a {:href "/login"} "Login"]])))
+       [:a {:href "/"} "Login"]])))
