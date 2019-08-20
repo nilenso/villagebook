@@ -3,6 +3,7 @@
             [villagebook.factory :refer [user1 user2]]
             [villagebook.auth.db :as auth-db]
             [villagebook.auth.handlers :as auth-handlers]
+            [villagebook.auth.models :as auth-models]
             [clojure.test :refer :all]))
 
 (use-fixtures :each wrap-setup)
@@ -62,3 +63,13 @@
     (let [request  {:params (assoc user1 :email "random@example.org")}
           response (auth-handlers/login request)]
         (is (= 401 (:status response)))))))
+
+(deftest retrieve-tests
+  (testing "Retrieving a user."
+    (let [user     (auth-db/create user1)
+          email    (:email user1)
+          password (:password user1)
+          message  (auth-models/get-token email password)
+          request  {:identity {:user email}}
+          response (auth-handlers/retrieve request)]
+      (is (= 200 (:status response))))))

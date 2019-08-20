@@ -10,7 +10,8 @@
 
 (def apiroutes
   {"organisations" {["/" :id] {:get (with-auth org/get-by-id)}
-                    :post     (with-auth org/create-organisation)}})
+                    :post     (with-auth org/create-organisation)}
+   "user"          {:get (with-auth auth/retrieve)}})
 
 ;; Setup routes
 (def routes

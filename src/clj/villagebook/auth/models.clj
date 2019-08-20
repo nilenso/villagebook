@@ -13,6 +13,7 @@
       {:success user})
     {:error "User with this email already exists."}))
 
+
 (defn get-token
   [email password]
   (let [user  (db/get-by-email email)
@@ -24,3 +25,7 @@
         {:success {:token token}}
         {:error "Invalid password"})
       {:error "Email not found"})))
+
+(defn get-by-email
+  [email]
+  (dissoc (db/get-by-email email) :password :created_at :id))

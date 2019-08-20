@@ -42,3 +42,11 @@
     (let [message (auth-models/get-token email bad-password)
           error   (:error message)]
       (is (= error "Invalid password"))))))
+
+(deftest retrieve-user-tests
+  (testing "Retrieving user by email"
+    (let [user (auth-db/create user1)
+          email (:email user1)
+          userdata (auth-models/get-by-email email)]
+      (is (:email userdata))
+      (is (= nil (:password userdata))))))

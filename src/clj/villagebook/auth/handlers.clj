@@ -40,6 +40,15 @@
             (res/status 401))))
     (res/bad-request "Invalid request.")))
 
+(defn retrieve
+  [{identity :identity :as request}]
+  (if-let [user (:user identity)]
+    (if-let [userdata (models/get-by-email user)]
+      (res/response userdata)
+      (-> (res/response "Something went wrong.")
+          (res/status 500)))
+    (res/bad-request "Invalid request.")))
+
 ;; TODO: Support token revocation
 ;; (defn logout
 ;;   [request]
