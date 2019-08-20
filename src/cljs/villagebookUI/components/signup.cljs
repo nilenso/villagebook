@@ -28,7 +28,7 @@
   (let [formdata (r/atom {})
         error    (r/atom {})]
     (fn []
-      [:div.center-box
+      [:div.l-page-center.formbox
        [:a.brand {:href "/"} "villagebook"]
        [:form#signup-form.mt-5.form-group
         [input formdata :name "Name" "text" :required]
@@ -36,7 +36,7 @@
         [input formdata :password "Password" "password" :required]
         [input formdata :nickname "Nickname" "text" :required]
         [:div.auth-error (:message @error)]
-        [:button.btn.btn-outline-primary.login-btn.mt-4
+        [:button.btn.btn-outline-primary.login-btn.mt-2
          {:type     "submit"
           :on-click #(do
                        (.preventDefault %)

@@ -11,67 +11,71 @@
 body {
   font-family: Muli;
 }
-/* Misc utilities */
-/* Overrides */
+
+/* Bootstrap global overrides */
 a:hover {
   text-decoration: none;
 }
-/* End Overrides */
+/* End Bootstrap global overrides */
+
+/* Misc utilities */
 .small {
   font-size: 13px;
   margin:0;
 }
 
-.break {
-  display: block;
-  height: 1rem;
+.notfound {
+  color: #ccc;
+  font-size: 3.5rem;
 }
-/* END Misc utilities */
+/* End Misc utilities */
 
-/* Index */
-.center-box {
-  padding: 20px;
+/* Login/Signup */
+.l-page-center {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   margin: auto;
+}
+
+.formbox {
+  padding: 20px;
   text-align: center;
   width: 320px;
   height: 400px;
   border-top: 2px solid pink;
 }
 
-.brand {
+.formbox .brand {
   color: #136bca;
   font-family: sztylet;
   font-size: 25px;
 }
 
-.brand:hover {
+.formbox .brand:hover {
   text-decoration: none;
 }
 
-.login-btn {
+.formbox .login-btn {
   width: 80%;
   margin-top: 35px;
   margin-bottom: 0px;
 }
 
-.check-invalid:invalid {
+.formbox .form-control.check-invalid:invalid {
   border: 1px solid #ce8383;
 }
 
-
-.form-control:valid {
+.formbox .form-control:valid {
   border: 1px solid #7dc37d;
 }
 
-.auth-error {
+.formbox .auth-error {
   color: #d43232;
   min-height: 1.5rem;
   margin-top: 5px;
   padding: 0;
 }
-/* END Index */
+/* End Login/Signup */

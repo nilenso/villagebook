@@ -27,7 +27,7 @@
   (let [formdata (r/atom {})
         error    (r/atom {})]
     (fn []
-      [:div.center-box
+      [:div.l-page-center.formbox
        [:a.brand {:href "/"} "villagebook"]
        [:form#login-form.mt-5.form-group
         [input formdata :email "Email" "email" :required]
