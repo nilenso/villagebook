@@ -5,7 +5,9 @@
 
 (defn loading
   []
-  [:div "Loading..."])
+  [:div.loading-mask
+   [:div.loading-mask-center
+    [:span.large-blue-spinner]]])
 
 (defn protected
   [component]

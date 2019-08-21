@@ -28,6 +28,27 @@ a:hover {
   color: #ccc;
   font-size: 3.5rem;
 }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.large-blue-spinner {
+  display: inline-block;
+  border: 4px solid transparent;
+  border-left-color: rgb(65, 91, 206);
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  animation: spin 1.2s linear infinite;
+  margin-left: 5px;
+}
+
 /* End Misc utilities */
 
 /* Login/Signup */
@@ -79,3 +100,22 @@ a:hover {
   padding: 0;
 }
 /* End Login/Signup */
+
+/* Loading mask */
+.loading-mask {
+  height: 100vh;
+  width: 100vw;
+  background: #efefef;
+  z-index: 10000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: #2e3344;
+}
+
+.loading-mask-center {
+  margin: auto;
+  margin-top: 35vh;
+  text-align: center;
+}
+/* End Loading mask*/
