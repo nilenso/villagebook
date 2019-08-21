@@ -42,7 +42,6 @@
                         (:user @formdata)
                         (fn [res]
                           (swap! error assoc :message "")
-                          (swap! store/state assoc :user res)
                           (accountant/navigate! "/dashboard"))
                         (fn [res]
                           (swap! error assoc :message (:response res)))))}
