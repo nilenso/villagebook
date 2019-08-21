@@ -19,6 +19,10 @@
         owner: deploy
         mode: '0644'
 
+    - name: Run villagebook migrations
+      become_user: deploy
+      shell: cd /home/deploy/ && java -jar villagebook-0.1.0-SNAPSHOT-standalone.jar migrate
+
     - name: Start villagebook service
       become: true
       systemd:
