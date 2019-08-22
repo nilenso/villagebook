@@ -1,5 +1,6 @@
 (ns villagebook.organisation.db-test
-  (:require [villagebook.organisation.db :as sut]
+  (:require [villagebook.fixtures :refer [wrap-setup]]
+            [villagebook.organisation.db :as sut]
             [villagebook.factory :as factory]
             [clojure.test :refer :all]))
 

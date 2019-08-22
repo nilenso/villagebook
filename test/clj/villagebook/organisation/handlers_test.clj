@@ -1,5 +1,6 @@
 (ns villagebook.organisation.handlers-test
-  (:require [villagebook.organisation.handlers :as sut]
+  (:require [villagebook.fixtures :refer [wrap-setup]]
+            [villagebook.organisation.handlers :as sut]
             [villagebook.factory :as factory]
             [clojure.test :refer :all]))
 
