@@ -1,7 +1,7 @@
 (ns villagebook.config
   (:require [villagebook.auth.backend :as backend]))
 
-(def db-spec "jdbc:postgresql://localhost:5432/villagebook?user=postgres")
+(def ^:dynamic db-spec "jdbc:postgresql://localhost:5432/villagebook")
 
 ;; TODO: change jwt to jwe
 (def jwt-secret "mysecret")

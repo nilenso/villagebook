@@ -1,5 +1,5 @@
 (ns villagebook.auth.models-test
-  (:require [villagebook.fixtures :refer [wrap-setup]]
+  (:require [villagebook.fixtures :refer [setup-once wrap-transaction]]
             [villagebook.factory :refer [user1 user2]]
             [villagebook.auth.db :as auth-db]
             [villagebook.auth.models :as auth-models]
@@ -7,7 +7,8 @@
             [buddy.auth :refer [authenticated?]]
             [villagebook.auth.handlers :as auth]))
 
-(use-fixtures :each wrap-setup)
+(use-fixtures :once setup-once)
+(use-fixtures :each wrap-transaction)
 
 (deftest create-user-test
   (testing "Creating a user."

@@ -3,9 +3,13 @@
             [buddy.auth :refer [authenticated?]]
             [buddy.auth.middleware :refer [wrap-authentication]]
 
+            [villagebook.fixtures :refer [setup-once wrap-transaction]]
             [villagebook.auth.backend :as backend]
             [villagebook.config :as config]
             [clojure.test :refer :all]))
+
+(use-fixtures :once setup-once)
+(use-fixtures :each wrap-transaction)
 
 (def jwt-data {:userid 1})
 (def jwt-secret config/jwt-secret)
