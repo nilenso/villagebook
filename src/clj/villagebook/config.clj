@@ -1,10 +1,31 @@
 (ns villagebook.config
-  (:require [villagebook.auth.backend :as backend]))
+  (:require [villagebook.auth.backend :as backend]
+            [aero.core :refer (read-config)]
+            [clojure.java.io :as io]))
 
-(def ^:dynamic db-spec "jdbc:postgresql://localhost:5432/villagebook")
+(def config (atom nil))
 
-;; TODO: change jwt to jwe
-(def jwt-secret "mysecret")
+(defn get-config-profile
+  []
+  (keyword (System/getenv "CONFIG_PROFILE")))
+
+(defn init
+  [& profile]
+  (reset! config (read-config (io/resource "config.edn") {:profile (or (get-config-profile) (first profile))})))
+
+(defn db-spec
+  []
+  (:db-spec @config))
+
+(defn jwt-secret
+  []
+  (:jwt-secret @config))
+
+(defn auth-backend-config
+  []
+  {:secret (jwt-secret)})
 
 ;; Setup auth middleware
-(def auth-backend (backend/custom-backend {:secret jwt-secret}))
+(defn auth-backend
+  []
+  (backend/custom-backend auth-backend-config))

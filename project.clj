@@ -20,7 +20,7 @@
                  [buddy/buddy-auth "2.2.0"]
                  [buddy/buddy-hashers "1.4.0"]
 
-                 [environ "1.1.0"]
+                 [aero "1.1.3"]
                  [clj-factory "0.2.1"]]
 
   :ring {:handler villagebook.web/app-handler}
