@@ -1,9 +1,10 @@
 (ns villagebook.handlers
   (:require [ring.util.response :as res]
-            [buddy.auth :refer [authenticated? throw-unauthorized]]))
+            [buddy.auth :refer [authenticated? throw-unauthorized]]
+            [clojure.java.io :as io]))
 
 (defn frontend-handler [request]
-  (res/file-response "index.html" {:root "resources/public"}))
+  (res/response (io/input-stream (io/resource "public/index.html"))))
 
 (defn api-handler
   [request]
