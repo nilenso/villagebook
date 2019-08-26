@@ -26,6 +26,7 @@
     - name: Start villagebook service
       become: true
       systemd:
+        daemon_reload: yes
         state: restarted
         name: villagebook
         enabled: yes
