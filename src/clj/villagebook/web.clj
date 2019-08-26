@@ -30,3 +30,5 @@
       wrap-keyword-params
       wrap-params
       wrap-json-response))
+
+(def dev-handler (app-handler))

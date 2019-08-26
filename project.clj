@@ -23,7 +23,8 @@
                  [aero "1.1.3"]
                  [clj-factory "0.2.1"]]
 
-  :ring {:handler villagebook.web/app-handler}
+  :ring {:handler villagebook.web/dev-handler
+         :init    villagebook.config/init}
   :plugins [[lein-ring "0.12.5"]]
   :main villagebook.core
   :aot [villagebook.core]
