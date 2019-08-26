@@ -27,24 +27,28 @@
   (let [formdata (r/atom {})
         error    (r/atom {})]
     (fn []
-      [:div.l-page-center.formbox
-       [:a.brand {:href "/"} "villagebook"]
-       [:form#login-form.mt-5.form-group
-        [input formdata :email "Email" "email" :required]
-        [input formdata :password "Password" "password" :required]
-        [:div.auth-error (:message @error)]
-        [:button.btn.btn-outline-primary.login-btn.mt-2
-         {:type    "submit"
-          :on-click #(do
-                       (.preventDefault %)
-                       (validate! "login-form" formdata)
-                       (auth/login
-                        (:user @formdata)
-                        (fn [res]
-                          (swap! error assoc :message "")
-                          (accountant/navigate! "/dashboard"))
-                        (fn [res]
-                          (swap! error assoc :message (:response res)))))}
-         "Login"]]
-       [:span.small "Don't have an account? "]
-       [:a {:href "/signup"} "Signup"]])))
+      (if @store/user
+        (do
+          (accountant/navigate! "/dashboard")
+          [:div])
+        [:div.l-page-center.formbox
+         [:a.brand {:href "/"} "villagebook"]
+         [:form#login-form.mt-5.form-group
+          [input formdata :email "Email" "email" :required]
+          [input formdata :password "Password" "password" :required]
+          [:div.auth-error (:message @error)]
+          [:button.btn.btn-outline-primary.login-btn.mt-2
+           {:type    "submit"
+            :on-click #(do
+                         (.preventDefault %)
+                         (validate! "login-form" formdata)
+                         (auth/login
+                          (:user @formdata)
+                          (fn [res]
+                            (swap! error assoc :message "")
+                            (accountant/navigate! "/dashboard"))
+                          (fn [res]
+                            (swap! error assoc :message (:response res)))))}
+           "Login"]]
+         [:span.small "Don't have an account? "]
+         [:a {:href "/signup"} "Signup"]]))))

@@ -28,26 +28,30 @@
   (let [formdata (r/atom {})
         error    (r/atom {})]
     (fn []
-      [:div.l-page-center.formbox
-       [:a.brand {:href "/"} "villagebook"]
-       [:form#signup-form.mt-5.form-group
-        [input formdata :name "Name" "text" :required]
-        [input formdata :email "Email" "email" :required]
-        [input formdata :password "Password" "password" :required]
-        [input formdata :nickname "Nickname" "text" :required]
-        [:div.auth-error (:message @error)]
-        [:button.btn.btn-outline-primary.login-btn.mt-2
-         {:type     "submit"
-          :on-click #(do
-                       (.preventDefault %)
-                       (validate! "signup-form" formdata)
-                       (auth/signup
-                        (:user @formdata)
-                        (fn [res]
-                          (swap! error assoc :message "")
-                          (accountant/navigate! "/dashboard"))
-                        (fn [res]
-                          (swap! error assoc :message (:response res)))))}
-         "Signup"]]
-       [:span.small "Already have an account? "]
-       [:a {:href "/"} "Login"]])))
+      (if @store/user
+        (do
+          (accountant/navigate! "/dashboard")
+          [:div])
+        [:div.l-page-center.formbox
+         [:a.brand {:href "/"} "villagebook"]
+         [:form#signup-form.mt-5.form-group
+          [input formdata :name "Name" "text" :required]
+          [input formdata :email "Email" "email" :required]
+          [input formdata :password "Password" "password" :required]
+          [input formdata :nickname "Nickname" "text" :required]
+          [:div.auth-error (:message @error)]
+          [:button.btn.btn-outline-primary.login-btn.mt-2
+           {:type     "submit"
+            :on-click #(do
+                         (.preventDefault %)
+                         (validate! "signup-form" formdata)
+                         (auth/signup
+                          (:user @formdata)
+                          (fn [res]
+                            (swap! error assoc :message "")
+                            (accountant/navigate! "/dashboard"))
+                          (fn [res]
+                            (swap! error assoc :message (:response res)))))}
+           "Signup"]]
+         [:span.small "Already have an account? "]
+         [:a {:href "/"} "Login"]]))))
