@@ -1,9 +1,9 @@
-(ns villagebook.auth.models
+(ns villagebook.user.models
   (:require [buddy.hashers :as hasher]
             [buddy.auth :refer [authenticated? throw-unauthorized]]
             [buddy.sign.jwt :as jwt]
 
-            [villagebook.auth.db :as db]
+            [villagebook.user.db :as db]
             [villagebook.config :as config]))
 
 (defn create-user
@@ -12,7 +12,6 @@
     (let [user (db/create userdata)]
       {:success user})
     {:error "User with this email already exists."}))
-
 
 (defn get-token
   [email password]

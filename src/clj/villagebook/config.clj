@@ -1,6 +1,5 @@
 (ns villagebook.config
-  (:require [villagebook.auth.backend :as backend]
-            [aero.core :refer (read-config)]
+  (:require [aero.core :refer (read-config)]
             [clojure.java.io :as io]))
 
 (def config (atom nil))
@@ -21,11 +20,6 @@
   []
   (:jwt-secret @config))
 
-(defn auth-backend-config
+(defn auth-config
   []
   {:secret (jwt-secret)})
-
-;; Setup auth middleware
-(defn auth-backend
-  []
-  (backend/custom-backend auth-backend-config))

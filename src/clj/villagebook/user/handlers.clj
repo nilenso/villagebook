@@ -1,17 +1,17 @@
-(ns villagebook.auth.handlers
+(ns villagebook.user.handlers
   (:require [ring.util.response :as res]
             [buddy.hashers :as hasher]
             [buddy.auth :refer [authenticated? throw-unauthorized]]
             [buddy.sign.jwt :as jwt]
 
-            [villagebook.auth.db :as db]
-            [villagebook.auth.models :as models]
+            [villagebook.user.db :as db]
+            [villagebook.user.models :as models]
             [villagebook.config :as config]
-            [villagebook.auth.spec :as auth-spec]))
+            [villagebook.user.spec :as user-spec]))
 
 (defn signup
   [{userdata :params :as request}]
-  (if (auth-spec/valid-signup-details? userdata)
+  (if (user-spec/valid-signup-details? userdata)
     (let [message       (models/create-user userdata)
           email         (get-in message [:success :email])
           error         (:error message)
@@ -28,7 +28,7 @@
 
 (defn login
   [{userdata :params :as request}]
-  (if (auth-spec/valid-login-details? userdata)
+  (if (user-spec/valid-login-details? userdata)
     (let [{:keys [email password]} userdata
           message (models/get-token email password)
           token   (get-in message [:success :token])
