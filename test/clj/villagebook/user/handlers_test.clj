@@ -71,6 +71,6 @@
           email    (:email user1)
           password (:password user1)
           message  (models/get-token email password)
-          request  {:identity {:user email}}
+          request  {:identity {:email email}}
           response (handlers/retrieve request)]
       (is (= 200 (:status response))))))

@@ -42,7 +42,7 @@
 
 (defn retrieve
   [{identity :identity :as request}]
-  (if-let [user (:user identity)]
+  (if-let [user (:email identity)]
     (if-let [userdata (models/get-by-email user)]
       (res/response userdata)
       (-> (res/response "Something went wrong.")

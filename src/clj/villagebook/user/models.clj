@@ -16,8 +16,8 @@
 (defn get-token
   [email password]
   (let [user  (db/get-by-email email)
-        {hashed-password :password db-email :email} user
-        token (jwt/sign {:user db-email} (config/jwt-secret))]
+        {hashed-password :password db-email :email id :id} user
+        token (jwt/sign {:email db-email :id id} (config/jwt-secret))]
 
     (if user
       (if (hasher/check password hashed-password)
