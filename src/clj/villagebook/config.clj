@@ -1,5 +1,5 @@
 (ns villagebook.config
-  (:require [buddy.auth.backends :as backends]))
+  (:require [villagebook.auth.backend :as backend]))
 
 (def db-spec "jdbc:postgresql://localhost:5432/villagebook?user=postgres")
 
@@ -7,4 +7,4 @@
 (def jwt-secret "mysecret")
 
 ;; Setup auth middleware
-(def auth-backend (backends/jws {:secret jwt-secret}))
+(def auth-backend (backend/custom-backend {:secret jwt-secret}))

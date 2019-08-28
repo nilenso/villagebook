@@ -1,8 +1,9 @@
 (ns villagebook.auth.handlers-test
   (:require [villagebook.fixtures :refer [wrap-setup]]
-            [villagebook.stub :refer [user1 user2]]
+            [villagebook.factory :refer [user1 user2]]
             [villagebook.auth.db :as auth-db]
             [villagebook.auth.handlers :as auth-handlers]
+            [villagebook.auth.models :as auth-models]
             [clojure.test :refer :all]))
 
 (use-fixtures :each wrap-setup)
@@ -13,6 +14,8 @@
           response (auth-handlers/signup request)]
       (is (= 201 (:status response)))
       (is (= (:email user1) (get-in response [:body :email])))
+      (is (get-in response [:body :token]))
+      (is (get-in response [:cookies "token" :value]))
       (is (not (empty? (auth-db/get-by-email (get-in response [:body :email])))))))
 
   (testing "Signing up as user 2 (with optional details)"
@@ -20,6 +23,8 @@
           response (auth-handlers/signup request)]
       (is (= 201 (:status response)))
       (is (= (:email user2) (get-in response [:body :email])))
+      (is (get-in response [:body :token]))
+      (is (get-in response [:cookies "token" :value]))
       (is (not (empty? (auth-db/get-by-email (get-in response [:body :email]))))))))
 
 (deftest invalid-signup-tests
@@ -34,7 +39,8 @@
           request  {:params user1}
           response (auth-handlers/login request)]
       (is (= 200 (:status response)))
-      (is (not (nil? (get-in response [:body :token])))))))
+      (is (not (nil? (get-in response [:body :token]))))
+      (is (get-in response [:cookies "token" :value])))))
 
 (deftest invalid-login-tests
   (let [user (auth-db/create user1)]
@@ -57,3 +63,13 @@
     (let [request  {:params (assoc user1 :email "random@example.org")}
           response (auth-handlers/login request)]
         (is (= 401 (:status response)))))))
+
+(deftest retrieve-tests
+  (testing "Retrieving a user."
+    (let [user     (auth-db/create user1)
+          email    (:email user1)
+          password (:password user1)
+          message  (auth-models/get-token email password)
+          request  {:identity {:user email}}
+          response (auth-handlers/retrieve request)]
+      (is (= 200 (:status response))))))

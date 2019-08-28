@@ -11,7 +11,7 @@
 
 (s/def ::email email?)
 
-(s/def ::signup-details (s/keys :req-un [::email ::name ::password]))
+(s/def ::signup-details (s/keys :req-un [::email ::name ::password ::nickname]))
 
 (defn valid-signup-details?
   [{:keys [email] :as user}]

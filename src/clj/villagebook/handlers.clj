@@ -2,10 +2,8 @@
   (:require [ring.util.response :as res]
             [buddy.auth :refer [authenticated? throw-unauthorized]]))
 
-;;TODO move to different handler dirs
-(defn index-handler
-  [request]
-  (res/response "Home of villagebook"))
+(defn frontend-handler [request]
+  (res/file-response "index.html" {:root "resources/public"}))
 
 (defn api-handler
   [request]

@@ -1,6 +1,6 @@
 (ns villagebook.auth.models-test
   (:require [villagebook.fixtures :refer [wrap-setup]]
-            [villagebook.stub :refer [user1 user2]]
+            [villagebook.factory :refer [user1 user2]]
             [villagebook.auth.db :as auth-db]
             [villagebook.auth.models :as auth-models]
             [clojure.test :refer :all]
@@ -42,3 +42,11 @@
     (let [message (auth-models/get-token email bad-password)
           error   (:error message)]
       (is (= error "Invalid password"))))))
+
+(deftest retrieve-user-tests
+  (testing "Retrieving user by email"
+    (let [user (auth-db/create user1)
+          email (:email user1)
+          userdata (auth-models/get-by-email email)]
+      (is (:email userdata))
+      (is (= nil (:password userdata))))))

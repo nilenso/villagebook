@@ -27,4 +27,7 @@
   :plugins [[lein-ring "0.12.5"]]
   :main villagebook.core
   :aot [villagebook.core]
-  :repl-options {:init-ns villagebook.core})
+  :repl-options {:init-ns villagebook.core}
+
+  :source-paths ["src/clj" "src/cljs"]
+  :test-paths ["test/clj" "src/cljc" "test/cljs"])

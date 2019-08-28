@@ -1,0 +1,31 @@
+{
+  "name": "villagebook",
+  "version": "1.0.0",
+  "description": "villagebook helps people keep track of their livestock.",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nilenso/villagebook.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nilenso/villagebook/issues"
+  },
+  "homepage": "https://github.com/nilenso/villagebook#readme",
+  "devDependencies": {
+    "shadow-cljs": "^2.8.42"
+  },
+  "dependencies": {
+    "create-react-class": "^15.6.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}

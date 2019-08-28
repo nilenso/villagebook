@@ -1,0 +1,14 @@
+{:source-paths ["src/cljs/"]
+ :dependencies [[reagent "0.8.1"]
+                [reagent-utils "0.3.1"]
+                [bidi "2.1.6"]
+                [venantius/accountant "0.2.4"]
+                [cljs-ajax "0.8.0"]]
+ :dev-http     {8080 "resources/public"}
+ :builds       {:villagebookUI {:output-dir "resources/public/assets/build/"
+                                :asset-path "/assets/build"
+                                :target     :browser
+                                :modules    {:main {:init-fn villagebookUI.core/main!}}
+                                :devtools   {:after-load villagebookUI.core/reload!
+                                             :http-root  "resources/public"
+                                             :http-port  8080}}}}
