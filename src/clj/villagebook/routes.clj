@@ -3,7 +3,7 @@
             [buddy.auth.middleware :refer [wrap-authorization]]
 
             [villagebook.middleware :refer [with-auth]]
-            [villagebook.auth.handlers :as auth]
+            [villagebook.user.handlers :as user]
             [villagebook.organisation.handlers :as org]
             [villagebook.handlers :refer [api-handler frontend-handler]]
             [villagebook.config :as config]))
@@ -11,12 +11,12 @@
 (def apiroutes
   {"organisations" {["/" :id] {:get (with-auth org/get-by-id)}
                     :post     (with-auth org/create-organisation)}
-   "user"          {:get (with-auth auth/retrieve)}})
+   "user"          {:get (with-auth user/retrieve)}})
 
 ;; Setup routes
 (def routes
   ["/" {"assets" (resources {:prefix "public/assets/"})
         "api/"   apiroutes
-        "signup" {:post auth/signup}
-        "login"  {:post auth/login}
+        "signup" {:post user/signup}
+        "login"  {:post user/login}
         true     frontend-handler}])

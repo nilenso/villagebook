@@ -1,8 +1,7 @@
-(ns villagebook.auth.spec
+(ns villagebook.user.spec
   (:require [villagebook.utils :refer [email-pattern required]]
-            [villagebook.auth.db :as db]
+            [villagebook.user.db :as db]
             [clojure.spec.alpha :as s]))
-
 
 (defn email?
   [value]
