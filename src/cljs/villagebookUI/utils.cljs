@@ -22,5 +22,6 @@
            (store/add-user! res)
            (store/fetched!))
          (fn [res]
+           (store/add-user! nil)
            (store/fetched!)))
         [loading]))))
