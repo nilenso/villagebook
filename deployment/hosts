@@ -1,0 +1,5 @@
+[deployment]
+server1 ansible_host=206.189.139.112
+
+[deployment:vars]
+ansible_python_interpreter=/usr/bin/python3

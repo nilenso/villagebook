@@ -1,0 +1,51 @@
+---
+- hosts: all
+  remote_user: deploy
+  gather_facts: false
+  tasks:
+    - name: Copy service file
+      become: true
+      copy:
+        src: "villagebook.service"
+        dest: /etc/systemd/system
+
+    - name: Generate Uberjar on local machine
+      local_action: shell lein uberjar
+
+    - name: Copy uberjar to server
+      copy:
+        src: ../target/villagebook-0.1.0-SNAPSHOT-standalone.jar
+        dest: /home/deploy/
+        owner: deploy
+        mode: '0644'
+
+    - name: Run villagebook migrations
+      become_user: deploy
+      shell: cd /home/deploy/ && java -jar villagebook-0.1.0-SNAPSHOT-standalone.jar migrate
+
+    - name: Start villagebook service
+      become: true
+      systemd:
+        daemon_reload: yes
+        state: restarted
+        name: villagebook
+        enabled: yes
+
+    - name: Copy the nginx config file
+      become: true
+      copy:
+        src: nginx.cfg
+        dest: /etc/nginx/sites-available/villagebook.cfg
+
+    - name: Create symlink
+      become: true
+      file:
+        src: /etc/nginx/sites-available/villagebook.cfg
+        dest: /etc/nginx/sites-enabled/default
+        state: link
+
+    - name: Restart nginx
+      become: true
+      service:
+        name: nginx
+        state: restarted
