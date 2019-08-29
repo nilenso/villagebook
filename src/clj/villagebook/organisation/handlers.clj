@@ -5,13 +5,13 @@
             [villagebook.organisation.spec :as organisation-spec]
             [clojure.spec.alpha :as s]))
 
-(defn create-organisation
+(defn create!
   [request]
-  (let [{name :name
+  (let [{name  :name
          color :color
-         :as orgdata} (:params request)]
+         :as   orgdata} (:params request)]
     (if (organisation-spec/valid-organisation-details? orgdata)
-      (let [neworg (db/create orgdata)]
+      (let [neworg (db/create! orgdata)]
         (-> (res/response neworg)
             (res/status 201)))
       (res/bad-request "Invalid request."))))
