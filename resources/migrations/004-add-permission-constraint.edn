@@ -1,0 +1,6 @@
+;; resources/migrations/004-add-permission-constraint.edn
+{:up   ["ALTER TABLE organisation_permissions
+         ADD CONSTRAINT user_org_unique
+         UNIQUE (user_id, org_id);"]
+ :down ["ALTER TABLE organisation_permissions
+         DROP CONSTRAINT user_org_unique;"]}
