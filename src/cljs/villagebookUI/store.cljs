@@ -15,6 +15,9 @@
 (defn fetched! []
   (swap! state assoc :fetched true))
 
+(defn fetching! []
+  (swap! state assoc :fetched false))
+
 (defn init []
   (reset! state {:user    {}
                  :fetched false}))
