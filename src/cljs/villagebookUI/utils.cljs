@@ -1,6 +1,6 @@
 (ns villagebookUI.utils
-  (:require [villagebookUI.api.user :as user]
-            [villagebookUI.store :as store]
+  (:require [villagebookUI.api.user :as user-api]
+            [villagebookUI.store.user :as user-store]
             [villagebookUI.components.login :refer [login]]))
 
 (defn loading
@@ -12,16 +12,16 @@
 (defn protected
   [component]
   (fn []
-    (if (store/fetched?)
-      (if @store/user
+    (if (user-store/fetched?)
+      (if (user-store/get)
         [component]
         [login])
       (do
-        (user/get-user-data
+        (user-api/get-data
          (fn [res]
-           (store/add-user! res)
-           (store/fetched!))
+           (user-store/add! res)
+           (user-store/fetched!))
          (fn [res]
-           (store/add-user! nil)
-           (store/fetched!)))
+           (user-store/add! nil)
+           (user-store/fetched!)))
         [loading]))))
