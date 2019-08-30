@@ -9,9 +9,9 @@
 
 (deftest create-and-get-user-test
   (testing "Creating and getting a user in DB."
-    (let [user (db/create user1)
+    (let [user (db/create! user1)
           email (:email user)
           user-details (dissoc user1 :password)
-          created-user (db/get-by-email email)
+          created-user (db/retrieve-by-email email)
           created-user-details (apply dissoc created-user [:password :created_at :id])]
       (is (= user-details created-user-details)))))

@@ -12,7 +12,7 @@
 (defn signup
   [{userdata :params :as request}]
   (if (user-spec/valid-signup-details? userdata)
-    (let [message       (models/create-user userdata)
+    (let [message       (models/create! userdata)
           email         (get-in message [:success :email])
           error         (:error message)
           password      (:password userdata)
@@ -42,8 +42,8 @@
 
 (defn retrieve
   [{identity :identity :as request}]
-  (if-let [user (:email identity)]
-    (if-let [userdata (models/get-by-email user)]
+  (if-let [user-id (:id identity)]
+    (if-let [userdata (models/retrieve user-id)]
       (res/response userdata)
       (-> (res/response "Something went wrong.")
           (res/status 500)))
