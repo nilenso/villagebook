@@ -9,7 +9,7 @@
             [villagebook.config :as config]))
 
 (def apiroutes
-  {"organisations" {["/" :id] {:get (with-auth org/get-by-id)}
+  {"organisations" {["/" :id] {:get (with-auth org/retrieve)}
                     :post     (with-auth org/create!)}
    "user"          {:get (with-auth user/retrieve)}})
 

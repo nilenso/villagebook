@@ -13,4 +13,4 @@
           response (handlers/create! request)]
       (is (= 201 (:status response)))
       (is (= (:name factory/organisation) (get-in response [:body :name])))
-      (is (not (empty? (handlers/get-by-id (get-in response [:body :id]))))))))
+      (is (not (empty? (handlers/retrieve (get-in response [:body :id]))))))))

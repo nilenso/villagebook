@@ -16,10 +16,10 @@
             (res/status 201)))
       (res/bad-request "Invalid request."))))
 
-(defn get-by-id
+(defn retrieve
   [request]
   (let [id (edn/read-string (get-in request [:params :id]))
-        org (db/get-by-id id)]
+        org (db/retrieve id)]
     (if id
       (if org
         (res/response org)

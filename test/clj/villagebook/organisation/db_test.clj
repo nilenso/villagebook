@@ -11,32 +11,49 @@
 (deftest create-tests
   (testing "Should create an organisation"
     (let [{:keys [id]} (db/create! factory/organisation)]
-      (is (= factory/organisation (-> (db/get-by-id id)
+      (is (= factory/organisation (-> (db/retrieve id)
                                       (dissoc :id :created_at)))))))
 
 (deftest add-user-as-owner-tests
   (testing "Should make the user owner of the organisation"
-    (let [{user-id :user-id} (user-db/create factory/user1)
-          {org-id :org-id}   (db/create! factory/organisation)
-          permission         (db/add-user-as! org-id user-id "owner")]
-        (is (= (:permission permission) "owner")))))
+    (let [{user-id :user-id}       (user-db/create factory/user1)
+          {org-id :org-id}         (db/create! factory/organisation)
+          {permission :permission} (db/add-user-as! org-id user-id "owner")]
+        (is (= permission "owner")))))
 
 (deftest add-user-as-member-tests
   (testing "Should make the user member of the organisation"
-    (let [{user-id :user-id} (user-db/create factory/user1)
-          {org-id :org-id}   (db/create! factory/organisation)
-          permission         (db/add-user-as! org-id user-id "member")]
-      (is (= (:permission permission) "member")))))
+    (let [{user-id :user-id}       (user-db/create factory/user1)
+          {org-id :org-id}         (db/create! factory/organisation)
+          {permission :permission} (db/add-user-as! org-id user-id "member")]
+      (is (= permission "member")))))
 
 (deftest add-user-as-none-tests
   (testing "Should set permission to none"
-    (let [{user-id :user-id} (user-db/create factory/user1)
-          {org-id :org-id}   (db/create! factory/organisation)
-          permission         (db/add-user-as! org-id user-id "none")]
-        (is (= (:permission permission) "none")))))
+    (let [{user-id :user-id}       (user-db/create factory/user1)
+          {org-id :org-id}         (db/create! factory/organisation)
+          {permission :permission} (db/add-user-as! org-id user-id "none")]
+        (is (= permission "none")))))
 
 (deftest add-user-as-invalid-tests
   (testing "Should fail on roles other than in the enum"
     (let [{user-id :user-id} (user-db/create factory/user1)
           {org-id :org-id}   (db/create! factory/organisation)]
       (is (thrown? Exception (db/add-user-as! org-id user-id "make-me-owner!"))))))
+
+(deftest retrieve-tests
+  (testing "Should retrieve list of all organisations"
+    (let [{id :id} (db/create! factory/organisation)]
+      (is (= (factory/organisation (-> (db/retrieve id)
+                                       (dissoc :id :created_at)
+                                       first)))))))
+
+(deftest retrieve-by-user-tests
+  (testing "Should retrieve list of user's organisations with permissions"
+    (let [{user-id :user-id}       (user-db/create factory/user1)
+          {org-id :org-id}         (db/create! factory/organisation)
+          {permission :permission} (db/add-user-as! org-id user-id "member")]
+      (is (= (factory/organisation (-> (db/retrieve-by-user user-id)
+                                       (first)
+                                       (dissoc :id :created_at)
+                                       (assoc :permission "member"))))))))
