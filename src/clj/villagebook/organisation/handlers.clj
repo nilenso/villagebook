@@ -2,6 +2,7 @@
   (:require [ring.util.response :as res]
             [clojure.edn :as edn]
             [villagebook.organisation.db :as db]
+            [villagebook.organisation.models :as models]
             [villagebook.organisation.spec :as organisation-spec]
             [clojure.spec.alpha :as s]))
 
@@ -9,9 +10,10 @@
   [request]
   (let [{name  :name
          color :color
-         :as   orgdata} (:params request)]
+         :as   orgdata} (:params request)
+        {user-id :id}   (:identity request)]
     (if (organisation-spec/valid-organisation-details? orgdata)
-      (let [neworg (db/create! orgdata)]
+      (let [{neworg :success} (models/create! orgdata user-id)]
         (-> (res/response neworg)
             (res/status 201)))
       (res/bad-request "Invalid request."))))
