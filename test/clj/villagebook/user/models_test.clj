@@ -11,13 +11,13 @@
 
 (deftest create-user-test
   (testing "Creating a user."
-    (let [message (models/create-user user1)
+    (let [message (models/create! user1)
           email (get-in message [:success :email])]
       (is email)
-      (is (not (empty? (db/get-by-email email)))))))
+      (is (not (empty? (db/retrieve-by-email email)))))))
 
 (deftest getting-token-test
-  (let [user (db/create user1)
+  (let [user (db/create! user1)
         {:keys [email password]} user1]
   (testing "Getting a token for user."
     (let [message (models/get-token email password)
@@ -28,7 +28,7 @@
         (is (authenticated? request))))))
 
 (deftest invalid-getting-token-tests
-  (let [user         (db/create user1)
+  (let [user         (db/create! user1)
         bad-email    "random@example.com"
         bad-password "wrongpassword"
         {:keys [email password]} user1]
@@ -45,8 +45,8 @@
 
 (deftest retrieve-user-tests
   (testing "Retrieving user by email"
-    (let [user (db/create user1)
+    (let [user (db/create! user1)
           email (:email user1)
-          userdata (models/get-by-email email)]
+          userdata (models/retrieve-by-email email)]
       (is (:email userdata))
       (is (= nil (:password userdata))))))
