@@ -6,13 +6,6 @@
             [honeysql-postgres.format :refer :all]
             [honeysql-postgres.helpers :as psqlh]))
 
-(defn get-by-id [id]
-  (-> (jdbc/query (config/db-spec) (-> (h/select :*)
-                                     (h/from :organisations)
-                                     (h/where [:= :id id])
-                                     (sql/format)))
-      first))
-
 (defn create! [{:keys [name color]}]
   (-> (jdbc/insert! (config/db-spec) :organisations {:name name :color color})
       first))
@@ -28,3 +21,23 @@
                                                                 (str "'"permission"'::permission"))}])
                                      (psqlh/returning :*)
                                      (sql/format))))
+
+(defn retrieve
+  ([]
+   "Returns a list of all organisations"
+    (jdbc/query (config/db-spec) (-> (h/select :*)
+                                     (h/from :organisations)
+                                     (sql/format))))
+  ([id]
+   "Returns an organisation by id"
+   (jdbc/get-by-id (config/db-spec) :organisations id)))
+
+(defn retrieve-by-user
+  ([user-id]
+   "Returns a list of organisations belonging to a user with permission on each."
+   (jdbc/query (config/db-spec) (-> (h/select :*)
+                                    (h/from :organisations)
+                                    (h/join :organisation_permissions
+                                            [:= :organisations.id :organisation_permissions.org_id])
+                                    (h/where [:= :user-id user-id])
+                                    (sql/format)))))
