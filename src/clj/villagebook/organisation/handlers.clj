@@ -18,6 +18,11 @@
             (res/status 201)))
       (res/bad-request "Invalid request."))))
 
+(defn retrieve-all
+  [request]
+  (let [{user-id :id} (:identity request)]
+    (res/response (db/retrieve-by-user user-id))))
+
 (defn retrieve
   [request]
   (let [id (edn/read-string (get-in request [:params :id]))

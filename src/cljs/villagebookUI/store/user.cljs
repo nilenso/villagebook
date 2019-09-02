@@ -1,12 +1,13 @@
 (ns villagebookUI.store.user
-  (:require [reagent.core :as r]
+  (:require [clojure.walk :refer [keywordize-keys]]
+            [reagent.core :as r]
             [villagebookUI.store.core :as store]))
 
 (def user
   (r/cursor store/state [:user]))
 
 (defn add! [userdata]
-  (swap! user assoc :data userdata))
+  (swap! user assoc :data (keywordize-keys userdata)))
 
 (defn fetched! []
   (swap! user assoc :fetched true))

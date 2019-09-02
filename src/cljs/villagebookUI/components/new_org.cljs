@@ -1,5 +1,6 @@
 (ns villagebookUI.components.new-org
   (:require [reagent.core :as r]
+            [villagebookUI.store.organisations :as org-store]
             [villagebookUI.utils.label :refer [label]]
             [villagebookUI.api.organisation :as org]))
 
@@ -9,7 +10,9 @@
     (org/create-org (:org @formdata)
                     (fn [res]
                       (reset! error false)
-                      (reset! creating-org false))
+                      (reset! creating-org false)
+                      (org-store/add-one! res)
+                      (org-store/set-current! res))
                     (fn [res] (reset! error true)))))
 
 (defn new-org [creating-org]
