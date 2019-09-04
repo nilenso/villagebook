@@ -16,7 +16,7 @@
   @current-organisation)
 
 (defn add-all! [orgs]
-  (reset! organisations (map #(keywordize-keys %) orgs)))
+  (reset! organisations (into [] (map #(keywordize-keys %) orgs))))
 
 (defn add-one! [org]
   (swap! organisations conj (keywordize-keys org)))

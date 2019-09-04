@@ -164,15 +164,10 @@ a:hover {
   margin-bottom: 4px;
 }
 
-.sidebar-section {
-  padding-left: 10px;
-}
-
 .sidebar-section-head {
   color: white;
   font-weight: bolder;
-  margin-bottom: 5px;
-  margin-top: 25px;
+  margin: 25px 0 5px 8px;
 }
 
 .sidebar-section-list {
@@ -183,9 +178,15 @@ a:hover {
 .sidebar-section-list > .item {
   display: block;
   line-height: 35px;
-  padding: 0 15px 0 15px;
+  padding: 0 15px 0 20px;
   width: 100%;
   text-decoration: none;
+  border: 2px solid transparent;
+}
+
+.sidebar .item.active {
+  border-left: 2px solid aliceblue;
+  background: #404040;
 }
 
 .sidebar-section-list .item-color {
@@ -209,6 +210,7 @@ a:hover {
 .sidebar-link {
   color: #d5e2f1 !important;
   cursor: pointer;
+  display: block;
 }
 
 .sidebar-link:hover {
@@ -256,7 +258,7 @@ a:hover {
 .navbar {
   min-height: 50px;
   margin-bottom: 20px;
-  padding: 0;
+  padding: 10px 10px 0 10px;
   margin-bottom: 0;
   background-color: #fff;
   box-shadow: 0px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);

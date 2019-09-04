@@ -5,6 +5,5 @@
   (let []
     (fn []
       [:div.main-content
-       [:div.navbar]
-       [:div
-        [:h3 (:name (org-store/get-current))]]])))
+       [:div.navbar
+        [:h5 (:name (org-store/get-current))]]])))

@@ -6,7 +6,7 @@
             [villagebookUI.components.new-org :refer [new-org]]
             [villagebookUI.api.organisation :as org]))
 
-(defn sidebar-render []
+(defn sidebar []
   (let [creating-org (r/atom false)]
     (fn []
       [:div
@@ -17,27 +17,14 @@
         [:div.sidebar-section
          [:p.sidebar-section-head "Organisations"]
          [:ul.sidebar-section-list
-          (for [org (org-store/get-all)]
-            [:li.item {:key (:id org)}
-             [:a.sidebar-link
-              {:on-click (fn [e]
-                           (.preventDefault e)
-                           (org-store/set-current! org))}
-              [label (:color org)]
-              (:name org)]])
+          (doall
+           (for [org (org-store/get-all)]
+             [:li.item {:key   (:id org)
+                        :class (when (= (:id org)(:id (org-store/get-current))) "active")}
+              [:a.sidebar-link {:href (str "/orgs/" (:id org))}
+               [label (:color org)]
+               (:name org)]]))
           [:li.item
            (if @creating-org
              [new-org creating-org]
              [:a.sidebar-link {:on-click (fn [] (swap! creating-org not))} "+ Create new"])]]]]])))
-
-
-(defn sidebar-did-mount []
-  (org/get-all
-   (fn [res]
-     (org-store/add-all! res)
-     (org-store/set-current! (first res)))
-   identity))
-
-(defn sidebar []
-  (r/create-class {:reagent-render      sidebar-render
-                   :component-did-mount sidebar-did-mount}))

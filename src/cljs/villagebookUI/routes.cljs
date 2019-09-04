@@ -7,7 +7,8 @@
             [villagebookUI.components.notfound :refer [notfound]]))
 
 (def routes
-  ["" {"/"          login
-       "/signup"    signup
-       "/dashboard" (protected dashboard)
-       true         notfound}])
+  ["" {"/"                login
+       "/signup"          signup
+       "/dashboard"       (protected dashboard)
+       ["/orgs/" :org-id] (protected dashboard)
+       true               notfound}])

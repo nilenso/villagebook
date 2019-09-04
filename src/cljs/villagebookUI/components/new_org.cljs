@@ -1,5 +1,6 @@
 (ns villagebookUI.components.new-org
   (:require [reagent.core :as r]
+            [accountant.core :as accountant]
             [villagebookUI.store.organisations :as org-store]
             [villagebookUI.utils.label :refer [label]]
             [villagebookUI.api.organisation :as org]))
@@ -12,7 +13,8 @@
                       (reset! error false)
                       (reset! creating-org false)
                       (org-store/add-one! res)
-                      (org-store/set-current! res))
+                      (org-store/set-current! res)
+                      (accountant/navigate! (str "/orgs/" (:id (org-store/get-current)))))
                     (fn [res] (reset! error true)))))
 
 (defn new-org [creating-org]
