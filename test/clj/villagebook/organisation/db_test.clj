@@ -44,16 +44,14 @@
 (deftest retrieve-tests
   (testing "Should retrieve list of all organisations"
     (let [{id :id} (db/create! factory/organisation)]
-      (is (= (factory/organisation (-> (db/retrieve id)
-                                       (dissoc :id :created_at)
-                                       first)))))))
+      (is (clojure.set/subset? (set factory/organisation) (-> (db/retrieve id)
+                                                              set))))))
 
 (deftest retrieve-by-user-tests
   (testing "Should retrieve list of user's organisations with permissions"
-    (let [{user-id :user-id}       (user-db/create! factory/user1)
-          {org-id :org-id}         (db/create! factory/organisation)
+    (let [{user-id :id}            (user-db/create! factory/user1)
+          {org-id :id}             (db/create! factory/organisation)
           {permission :permission} (db/add-user-as! org-id user-id "member")]
-      (is (= (factory/organisation (-> (db/retrieve-by-user user-id)
-                                       (first)
-                                       (dissoc :id :created_at)
-                                       (assoc :permission "member"))))))))
+      (is (clojure.set/subset? (set factory/organisation) (-> (db/retrieve-by-user user-id)
+                                                              first
+                                                              set))))))
