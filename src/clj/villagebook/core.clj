@@ -9,7 +9,7 @@
 (defn -main
   [& args]
   (config/init)
-  (if-not (zero? (count args))
+  (if-not (empty? args)
     (case (first args)
       "migrate"  (migrations/migrate)
       "rollback" (migrations/rollback))
