@@ -12,8 +12,6 @@
 (use-fixtures :each wrap-transaction)
 
 (def jwt-data {:userid 1})
-(def jwt-secret config/jwt-secret)
-(def auth-backend (backend/custom-backend {:secret jwt-secret}))
 
 (defn make-header-request
   ([data secret]
@@ -32,15 +30,15 @@
 
 (deftest custom-backend-tests
   (testing "Token backend authentication - in header"
-    (let [request (make-header-request jwt-data jwt-secret)
-          handler (wrap-authentication identity auth-backend)
+    (let [request (make-header-request jwt-data (config/jwt-secret))
+          handler (wrap-authentication identity (config/auth-backend))
           request' (handler request)]
       (is (authenticated? request'))
       (is (= (:identity request') jwt-data))))
 
   (testing "Token backend authentication - in cookie"
-    (let [request (make-cookie-request jwt-data jwt-secret)
-          handler (wrap-authentication identity auth-backend)
+    (let [request (make-cookie-request jwt-data (config/jwt-secret))
+          handler (wrap-authentication identity (config/auth-backend))
           request' (handler request)]
       (is (authenticated? request'))
       (is (= (:identity request') jwt-data)))))

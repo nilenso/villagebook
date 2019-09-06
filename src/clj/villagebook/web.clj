@@ -20,12 +20,15 @@
   (make-handler routes))
 
 ;; Setup all middleware on the handler
-(def app-handler
+(defn app-handler
+  []
   (-> handler
-      (wrap-authentication config/auth-backend)
-      (wrap-authorization config/auth-backend)
+      (wrap-authentication (config/auth-backend))
+      (wrap-authorization (config/auth-backend))
       wrap-cookies
       ignore-trailing-slash
       wrap-keyword-params
       wrap-params
       wrap-json-response))
+
+(def dev-handler (app-handler))

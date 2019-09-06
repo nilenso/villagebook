@@ -9,7 +9,7 @@
 (defn get-by-email
   "Fetches user by email. Returns nil if not found."
   [email]
-  (-> (jdbc/query config/db-spec (-> (honey/select :*)
+  (-> (jdbc/query (config/db-spec) (-> (honey/select :*)
                                      (honey/from :users)
                                      (honey/where [:= :email email])
                                      sql/format))
@@ -19,7 +19,7 @@
   "Creates a user with given fields."
   [userdata]
   (let [hashed-pass (hasher/derive (:password userdata))]
-    (-> (jdbc/insert! config/db-spec :users {:nickname (:nickname userdata)
+    (-> (jdbc/insert! (config/db-spec) :users {:nickname (:nickname userdata)
                                              :email    (:email userdata)
                                              :password hashed-pass
                                              :name     (:name userdata)})

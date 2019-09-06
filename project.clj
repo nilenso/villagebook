@@ -20,10 +20,11 @@
                  [buddy/buddy-auth "2.2.0"]
                  [buddy/buddy-hashers "1.4.0"]
 
-                 [environ "1.1.0"]
+                 [aero "1.1.3"]
                  [clj-factory "0.2.1"]]
 
-  :ring {:handler villagebook.web/app-handler}
+  :ring {:handler villagebook.web/dev-handler
+         :init    villagebook.config/init}
   :plugins [[lein-ring "0.12.5"]]
   :main villagebook.core
   :aot [villagebook.core]

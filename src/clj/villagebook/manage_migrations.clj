@@ -5,7 +5,7 @@
 
 (defn migration-config
   []
-  {:datastore  (jdbc/sql-database db-spec)
+  {:datastore  (jdbc/sql-database (db-spec))
    :migrations (jdbc/load-resources "migrations")})
 
 (defn migrate

@@ -3,17 +3,17 @@
   (:use     [ring.adapter.jetty])
   (:require [villagebook.manage_migrations :as migrations]
             [villagebook.web :as web]
-            [environ.core :refer [env]]
             [villagebook.config :as config]))
 
 ;; run migrations via lein run migrate
 (defn -main
   [& args]
-  (if-not (zero? (count args))
+  (config/init)
+  (if-not (empty? args)
     (case (first args)
       "migrate"  (migrations/migrate)
       "rollback" (migrations/rollback))
-  (run-jetty web/app-handler {:port 3000})))
+    (run-jetty (web/app-handler) {:port 3000})))
 
 ;; (defonce server (atom nil))
 
