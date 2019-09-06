@@ -1,7 +1,6 @@
 (ns villagebook.auth.core
   (:require [buddy.auth.backends.token :as backend]
-            [buddy.auth.protocols :as proto]
-            [villagebook.config :as config]))
+            [buddy.auth.protocols :as proto]))
 
 (defn custom-backend
   "Reads token from cookies (if present) and passes it to buddy-auth's jws-backend."
