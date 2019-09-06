@@ -1,12 +1,13 @@
 (ns villagebook.auth.handlers-test
-  (:require [villagebook.fixtures :refer [wrap-setup]]
+  (:require [villagebook.fixtures :refer [setup-once wrap-transaction]]
             [villagebook.factory :refer [user1 user2]]
             [villagebook.auth.db :as auth-db]
             [villagebook.auth.handlers :as auth-handlers]
             [villagebook.auth.models :as auth-models]
             [clojure.test :refer :all]))
 
-(use-fixtures :each wrap-setup)
+(use-fixtures :once setup-once)
+(use-fixtures :each wrap-transaction)
 
 (deftest signup-tests
   (testing "Signing up"

@@ -1,16 +1,20 @@
 (ns villagebook.fixtures
-  (:require [villagebook.manage_migrations :as migrations]))
+  (:require [clojure.java.jdbc :as sql]
+            [villagebook.config :as config]
+            [villagebook.manage_migrations :as migrations]))
 
-(defn setup-test
+(defn setup-db
   []
   (migrations/migrate))
 
-(defn teardown-test
-  []
-  (migrations/rollback))
+(defn setup-once
+  [test]
+  (setup-db)
+  (test))
 
-(defn wrap-setup
-  [fun]
-  (setup-test)
-  (fun)
-  (teardown-test))
+(defn wrap-transaction
+  [test]
+  (sql/with-db-transaction [trn config/db-spec]
+    (sql/db-set-rollback-only! trn)
+    (binding [config/db-spec trn]
+      (test))))

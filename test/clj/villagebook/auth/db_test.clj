@@ -1,10 +1,11 @@
 (ns villagebook.auth.db-test
-  (:require [villagebook.fixtures :refer [wrap-setup]]
+  (:require [villagebook.fixtures :refer [setup-once wrap-transaction]]
             [villagebook.factory :refer [user1 user2]]
             [villagebook.auth.db :as auth-db]
             [clojure.test :refer :all]))
 
-(use-fixtures :each wrap-setup)
+(use-fixtures :once setup-once)
+(use-fixtures :each wrap-transaction)
 
 (deftest create-and-get-user-test
   (testing "Creating and getting a user in DB."

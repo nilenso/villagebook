@@ -5,6 +5,8 @@
 (defseq :password [n] (str "password" n))
 (defseq :nickname [n] (str "nickname" n))
 (defseq :name [n] (str "name" n))
+(defseq :orgname [n] (str "organisation" n))
+(defseq :orgcolor [n] (str "color" n))
 
 (deffactory :user
   {:email    (fseq :email)
@@ -12,5 +14,10 @@
    :nickname (fseq :password)
    :name     (fseq :name)})
 
+(deffactory :organisation
+  {:name  (fseq :orgname)
+   :color (fseq :orgcolor)})
+
 (def user1 (factory :user))
 (def user2 (assoc (factory :user) :name nil))
+(def organisation (factory :organisation))

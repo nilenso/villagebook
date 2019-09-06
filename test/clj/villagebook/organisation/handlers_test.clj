@@ -1,9 +1,11 @@
 (ns villagebook.organisation.handlers-test
-  (:require [villagebook.organisation.handlers :as sut]
+  (:require [villagebook.fixtures :refer [setup-once wrap-transaction]]
+            [villagebook.organisation.handlers :as sut]
             [villagebook.factory :as factory]
             [clojure.test :refer :all]))
 
-(use-fixtures :each wrap-setup)
+(use-fixtures :once setup-once)
+(use-fixtures :each wrap-transaction)
 
 (deftest create-organisation
   (testing "Creating an organisation and checking if it was created."
