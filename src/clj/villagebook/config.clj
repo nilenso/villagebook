@@ -10,8 +10,10 @@
   (keyword (System/getenv "CONFIG_PROFILE")))
 
 (defn init
-  [& profile]
-  (reset! config (read-config (io/resource "config.edn") {:profile (or (get-config-profile) (first profile))})))
+  ([]
+   (reset! config (read-config (io/resource "config.edn") {:profile (get-config-profile)})))
+  ([profile]
+   (reset! config (read-config (io/resource "config.edn") {:profile profile}))))
 
 (defn db-spec
   []
