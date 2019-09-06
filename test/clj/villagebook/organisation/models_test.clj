@@ -14,3 +14,12 @@
     (let [{user-id :id}      (user-db/create factory/user1)
           {orgdata :success} (models/create! factory/organisation user-id)]
       (is (= factory/organisation (dissoc orgdata :created_at :id))))))
+
+(deftest retrieve-test
+  (testing "Should retrieve an organisation given it's id"
+    (let [{org-id :id}       (db/create! factory/organisation)
+          {orgdata :success} (models/retrieve org-id)]
+      (is (= factory/organisation (dissoc orgdata :created_at :id)))))
+  (testing "Should return an error map if organisation does not exist"
+    (let [{error :error} (models/retrieve 0)]
+      (is error))))

@@ -9,3 +9,10 @@
   (let [{org-id :id :as org} (db/create! orgdata)
         permission           (db/add-user-as! org-id user-id DEFAULT_PERMISSION)]
     {:success org}))
+
+(defn retrieve
+  [id]
+  (let [org (db/retrieve id)]
+    (if org
+      {:success org}
+      {:error "Organisation not found"})))

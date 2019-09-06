@@ -20,10 +20,12 @@
 
 (defn retrieve
   [request]
-  (let [id (edn/read-string (get-in request [:params :id]))
-        org (db/retrieve id)]
+  (let [id             (edn/read-string (get-in request [:params :id]))
+        message        (models/retrieve id)
+        {org :success} message
+        {error :error} message]
     (if id
       (if org
         (res/response org)
-        (res/not-found "Organisation not found."))
+        (res/not-found error))
       (res/bad-request "Invalid request."))))
