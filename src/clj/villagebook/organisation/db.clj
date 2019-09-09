@@ -7,7 +7,7 @@
             [honeysql-postgres.helpers :as psqlh]
             [villagebook.organisation.spec :as spec]))
 
-(defn make-postgres-enum
+(defn- make-postgres-enum
   [string]
   (str "'" (name string) "'::permission"))
 
