@@ -4,7 +4,12 @@
             [honeysql.core :as sql]
             [honeysql.helpers :as h]
             [honeysql-postgres.format :refer :all]
-            [honeysql-postgres.helpers :as psqlh]))
+            [honeysql-postgres.helpers :as psqlh]
+            [villagebook.organisation.spec :as spec]))
+
+(defn make-postgres-enum
+  [string]
+  (str "'" (name string) "'::permission"))
 
 (defn create! [{:keys [name color]}]
   (-> (jdbc/insert! (config/db-spec) :organisations {:name name :color color})
@@ -17,8 +22,10 @@
                                    (-> (h/insert-into :organisation_permissions)
                                        (h/values [{:org_id     org-id
                                                    :user_id    user-id
-                                                   :permission (sql/inline
-                                                                (str "'"permission"'::permission"))}])
+                                                   :permission (-> permission
+                                                                   spec/valid-permission?
+                                                                   make-postgres-enum
+                                                                   sql/inline)}])
                                      (psqlh/returning :*)
                                      (sql/format))))
 

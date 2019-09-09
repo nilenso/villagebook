@@ -2,7 +2,7 @@
   (:require [villagebook.organisation.db :as db]
             [villagebook.factory :as factory]))
 
-(defonce DEFAULT_PERMISSION "owner")
+(defonce DEFAULT_PERMISSION :owner)
 
 (defn create!
   [orgdata user-id]

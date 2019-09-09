@@ -18,28 +18,29 @@
   (testing "Should make the user owner of the organisation"
     (let [{user-id :user-id}       (user-db/create factory/user1)
           {org-id :org-id}         (db/create! factory/organisation)
-          {permission :permission} (db/add-user-as! org-id user-id "owner")]
+          {permission :permission} (db/add-user-as! org-id user-id :owner)]
         (is (= permission "owner")))))
 
 (deftest add-user-as-member-tests
   (testing "Should make the user member of the organisation"
     (let [{user-id :user-id}       (user-db/create factory/user1)
           {org-id :org-id}         (db/create! factory/organisation)
-          {permission :permission} (db/add-user-as! org-id user-id "member")]
+          {permission :permission} (db/add-user-as! org-id user-id :member)]
       (is (= permission "member")))))
 
 (deftest add-user-as-none-tests
   (testing "Should set permission to none"
     (let [{user-id :user-id}       (user-db/create factory/user1)
           {org-id :org-id}         (db/create! factory/organisation)
-          {permission :permission} (db/add-user-as! org-id user-id "none")]
+          {permission :permission} (db/add-user-as! org-id user-id :none)]
         (is (= permission "none")))))
 
 (deftest add-user-as-invalid-tests
   (testing "Should fail on roles other than in the enum"
-    (let [{user-id :user-id} (user-db/create factory/user1)
-          {org-id :org-id}   (db/create! factory/organisation)]
-      (is (thrown? Exception (db/add-user-as! org-id user-id "make-me-owner!"))))))
+    (let [{user-id :user-id}       (user-db/create factory/user1)
+          {org-id :org-id}         (db/create! factory/organisation)
+          {permission :permission} (db/add-user-as! org-id user-id "make-me-owner!")]
+      (is (= permission "none")))))
 
 (deftest retrieve-tests
   (testing "Should retrieve list of all organisations"
