@@ -5,23 +5,21 @@
             [villagebookUI.api.organisation :as org]))
 
 (defn sidebar []
-  [:div
-   [:div.sidebar
-    [:div.text-center.sidebar-logo-box
-     [:p.sidebar-logo "villagebook"]
-     [:div.divider]]
-    [:div.sidebar-section
-     [:p.sidebar-section-head "Organisations"]
-     [:ul.sidebar-section-list
-      [:li.item
-       [:a.sidebar-link [utils/label "#5fcc5f"] "Org 1"]]
-      [:li.item
-       [:a.sidebar-link [utils/label "#ff8383"] "Org 2"]]
-      [:li.item
-       [:form.inline-block
-        [:div.inline-block
-         [utils/label "#ccc"]]
-        [:input.new-item-input {:type "text"
-                                :placeholder "New Organisations"}]
-        [:span.new-item-close "×"]
-        [:button {:type "submit" :style {:display "none"}}]]]]]]])
+  (let [creating-org (r/atom false)]
+    (fn []
+      [:div
+       [:div.sidebar
+        [:div.text-center.sidebar-logo-box
+         [:p.sidebar-logo "villagebook"]
+         [:div.divider]]
+        [:div.sidebar-section
+         [:p.sidebar-section-head "Organisations"]
+         [:ul.sidebar-section-list
+          [:li.item
+           [:a.sidebar-link [utils/label "#5fcc5f"] "Org 1"]]
+          [:li.item
+           [:a.sidebar-link [utils/label "#ff8383"] "Org 2"]]
+          [:li.item
+           (if @creating-org
+             [new-org #(reset! creating-org false)]
+             [:a.sidebar-link {:on-click #(reset! creating-org true)} "+ Create new"])]]]]])))
