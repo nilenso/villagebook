@@ -1,6 +1,6 @@
 (ns villagebookUI.routes
   (:require [reagent.session :as session]
-            [villagebookUI.utils :refer [protected]]
+            [villagebookUI.middleware :refer [protected]]
             [villagebookUI.components.login :refer [login]]
             [villagebookUI.components.signup :refer [signup]]
             [villagebookUI.components.dashboard :refer [dashboard]]
