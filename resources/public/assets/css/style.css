@@ -1,16 +1,20 @@
+/* Resets and declarations */
 @font-face {
     font-family: sztylet;
     src: url("../fonts/SztyletBd.otf") format("opentype");
 }
 
 @font-face {
-  font-family:"Muli";
+  font-family: "Muli";
   src: url("../fonts/Muli-Regular.ttf") format("truetype");
 }
 
-body {
+html, body {
   font-family: Muli;
+  font-size: 14.5px;
+  text-rendering: optimizeLegibility;
 }
+/* End Resets and declarations */
 
 /* Bootstrap global overrides */
 a:hover {
@@ -49,6 +53,9 @@ a:hover {
   margin-left: 5px;
 }
 
+.inline-block {
+  display:inline-block;
+}
 /* End Misc utilities */
 
 /* Login/Signup */
@@ -119,3 +126,136 @@ a:hover {
   text-align: center;
 }
 /* End Loading mask*/
+
+/* Dashboard */
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 220px;
+  height: 100vh;
+  z-index: 1000;
+  background: #2e3344;
+  transition: left 0.1s;
+  color: white;
+}
+
+.sidebar-logo-box {
+  padding: 20px;
+  padding-bottom: 0px;
+  margin-bottom: 10px;
+}
+
+.sidebar-logo {
+  color: white;
+  font-family: sztylet;
+  font-size: 20px;
+  margin-bottom: 0px;
+}
+
+.sidebar .divider {
+  border-bottom: 2px solid #26ab92;
+  margin-bottom: 4px;
+}
+
+.sidebar-section {
+  padding-left: 10px;
+}
+
+.sidebar-section-head {
+  color: white;
+  font-weight: bolder;
+  margin-bottom: 5px;
+  margin-top: 25px;
+}
+
+.sidebar-section-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.sidebar-section-list > .item {
+  display: block;
+  line-height: 35px;
+  padding: 0 15px 0 15px;
+  width: 100%;
+  text-decoration: none;
+}
+
+.sidebar-section-list .item-label {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.sidebar .new-item-label {
+  vertical-align: middle;
+  margin-top: 4px;
+}
+
+.sidebar-section-list .item-label:focus {
+  outline: none;
+}
+
+.sidebar-link {
+  color: #d5e2f1 !important;
+  cursor: pointer;
+}
+
+.sidebar-link:hover {
+  color: white !important;
+}
+
+.sidebar .new-item-input {
+  padding: 0;
+  background: transparent;
+  color: white;
+  display: inline-block;
+  border: 1px solid transparent;
+  max-width: 140px;
+  padding-right: 3px;
+  border-bottom: 1px solid #999;
+  line-height: 25px;
+}
+
+.sidebar .new-item-input:focus {
+  outline: none;
+}
+
+.sidebar .new-item-input:hover {
+  cursor: text;
+}
+
+.sidebar .new-item-input .error{
+  border-bottom: 2px solid ##dc3545;
+}
+
+.sidebar .new-item-close {
+  margin: 0 5px 0 10px;
+  cursor: pointer;
+}
+
+.sidebar .new-item-error {
+  border-bottom: 1px solid red !important;
+}
+/* End Sidebar*/
+
+.main-content {
+  padding-left: 220px;
+}
+
+.navbar {
+  min-height: 50px;
+  margin-bottom: 20px;
+  padding: 0;
+  margin-bottom: 0;
+  background-color: #fff;
+  box-shadow: 0px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* End Dashboard*/
