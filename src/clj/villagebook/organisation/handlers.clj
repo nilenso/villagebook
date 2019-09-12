@@ -18,14 +18,18 @@
             (res/status 201)))
       (res/bad-request "Invalid request."))))
 
+(defn- retrieve-from-model
+  [id]
+  (let [message        (models/retrieve 55)
+        {org :success}  message
+        {error :error} message]
+    (if org
+      (res/response org)
+      (res/not-found error))))
+
 (defn retrieve
   [request]
   (let [id (edn/read-string (get-in request [:params :id]))]
     (if (s/valid? ::organisation-spec/id id)
-      (let [message        (models/retrieve id)
-            {org :success} message
-            {error :error} message]
-        (if org
-          (res/response org)
-          (res/not-found error)))
+      (retrieve-from-model id)
       (res/bad-request "Invalid request."))))
