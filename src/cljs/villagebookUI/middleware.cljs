@@ -3,7 +3,7 @@
             [villagebookUI.components.utils :as utils]
             [villagebookUI.components.login :refer [login]]))
 
-(defn protected
+(defn require-login
   [component]
   (fn []
     (if (store/fetched?)
