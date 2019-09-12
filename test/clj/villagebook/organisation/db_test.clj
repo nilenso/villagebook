@@ -43,11 +43,16 @@
       (is (= permission "none")))))
 
 (deftest retrieve-tests
-  (testing "Should retrieve list of all organisations"
-    (let [{id :id}      (db/create! factory/organisation)
-          required-keys (keys factory/organisation)]
-      (is (= factory/organisation (-> (db/retrieve id)
-                                      (select-keys required-keys)))))))
+ (let [{id :id}      (db/create! factory/organisation)
+       required-keys (keys factory/organisation)]
+   (testing "Should retrieve organisation by id"
+     (is (= factory/organisation (-> (db/retrieve id)
+                                     (select-keys required-keys)))))
+
+   (testing "Should retrieve list of all organisations"
+     (is (= factory/organisation (-> (db/retrieve)
+                                     first
+                                     (select-keys required-keys)))))))
 
 (deftest retrieve-by-user-tests
   (testing "Should retrieve list of user's organisations with permissions"
