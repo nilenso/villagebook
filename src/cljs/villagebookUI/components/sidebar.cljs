@@ -1,7 +1,7 @@
 (ns villagebookUI.components.sidebar
   (:require [reagent.core :as r]
             [villagebookUI.components.utils :as utils]
-            [villagebookUI.components.new-org :refer [new-org]]
+            [villagebookUI.components.create-org :refer [org-creation-form]]
             [villagebookUI.api.organisation :as org]))
 
 (defn sidebar []
@@ -21,5 +21,5 @@
            [:a.sidebar-link [utils/label "#ff8383"] "Org 2"]]
           [:li.item
            (if @creating-org
-             [new-org #(reset! creating-org false)]
+             [org-creation-form #(reset! creating-org false)]
              [:a.sidebar-link {:on-click #(reset! creating-org true)} "+ Create new"])]]]]])))

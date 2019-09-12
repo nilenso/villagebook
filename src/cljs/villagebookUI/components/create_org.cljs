@@ -1,16 +1,16 @@
-(ns villagebookUI.components.new-org
+(ns villagebookUI.components.create-org
   (:require [reagent.core :as r]
             [villagebookUI.helpers :refer [random-color handle-esc]]
             [villagebookUI.components.utils :as utils]
             [villagebookUI.api.organisation :as org]))
 
-(defn create-org [form success-handler error-handler]
+(defn- create-org [form success-handler error-handler]
   (when (:name form)
     (org/create-org form
                     success-handler
                     error-handler)))
 
-(defn new-org [on-close-handler]
+(defn org-creation-form [on-close-handler]
   (let [form  (r/atom {:name  nil
                        :color (random-color)})
         color (r/cursor form [:color])
