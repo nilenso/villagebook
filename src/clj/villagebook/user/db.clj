@@ -1,4 +1,4 @@
-(ns villagebook.auth.db
+(ns villagebook.user.db
   (:require [clojure.java.jdbc :as jdbc]
             [honeysql.core :as sql]
             [honeysql.helpers :as honey]

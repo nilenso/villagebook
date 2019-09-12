@@ -1,0 +1,9 @@
+;; resources/migrations/001-create-users.edn
+{:up   ["CREATE TABLE users (
+           id         SERIAL PRIMARY KEY,
+           email      TEXT NOT NULL UNIQUE,
+           nickname   TEXT NOT NULL,
+           name       TEXT,
+           password   TEXT NOT NULL,
+           created_at TIMESTAMP DEFAULT now());"]
+ :down ["DROP TABLE users;"]}

@@ -1,11 +1,11 @@
-(ns villagebook.auth.backend-tests
+(ns villagebook.auth.core-test
   (:require [buddy.sign.jwt :as jwt]
             [buddy.auth :refer [authenticated?]]
             [buddy.auth.middleware :refer [wrap-authentication]]
 
             [villagebook.fixtures :refer [setup-once wrap-transaction]]
-            [villagebook.auth.backend :as backend]
             [villagebook.config :as config]
+            [villagebook.web :as web]
             [clojure.test :refer :all]))
 
 (use-fixtures :once setup-once)
@@ -31,14 +31,14 @@
 (deftest custom-backend-tests
   (testing "Token backend authentication - in header"
     (let [request (make-header-request jwt-data (config/jwt-secret))
-          handler (wrap-authentication identity (config/auth-backend))
+          handler (wrap-authentication identity (web/auth-backend))
           request' (handler request)]
       (is (authenticated? request'))
       (is (= (:identity request') jwt-data))))
 
   (testing "Token backend authentication - in cookie"
     (let [request (make-cookie-request jwt-data (config/jwt-secret))
-          handler (wrap-authentication identity (config/auth-backend))
+          handler (wrap-authentication identity (web/auth-backend))
           request' (handler request)]
       (is (authenticated? request'))
       (is (= (:identity request') jwt-data)))))

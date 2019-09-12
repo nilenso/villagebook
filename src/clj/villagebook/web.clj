@@ -13,18 +13,24 @@
 
             [villagebook.middleware :refer [ignore-trailing-slash]]
             [villagebook.routes :refer [routes]]
-            [villagebook.config :as config]))
+            [villagebook.config :as config]
+            [villagebook.auth.core :as auth]))
 
 ;; Setup handler with the routes
 (def handler
   (make-handler routes))
 
+;; Setup auth backend
+(defn auth-backend
+  []
+  (auth/custom-backend config/auth-config))
+
 ;; Setup all middleware on the handler
 (defn app-handler
   []
   (-> handler
-      (wrap-authentication (config/auth-backend))
-      (wrap-authorization (config/auth-backend))
+      (wrap-authentication (auth-backend))
+      (wrap-authorization (auth-backend))
       wrap-cookies
       ignore-trailing-slash
       wrap-keyword-params

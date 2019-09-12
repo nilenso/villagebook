@@ -1,0 +1,9 @@
+;; resources/migrations/003-create-organisation-permissions.edn
+{:up ["CREATE TYPE permission AS ENUM ('none', 'owner', 'member')";
+      "CREATE TABLE organisation_permissions (
+       id         SERIAL PRIMARY KEY,
+       org_id     INTEGER REFERENCES organisations ON DELETE CASCADE,
+       user_id    INTEGER REFERENCES users ON DELETE CASCADE,
+       permission permission DEFAULT 'none');"]
+ :down ["DROP TABLE organisation_permissions;"
+        "DROP TYPE permission;"]}
