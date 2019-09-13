@@ -4,14 +4,17 @@
             [buddy.sign.jwt :as jwt]
 
             [villagebook.user.db :as db]
-            [villagebook.config :as config]))
+            [villagebook.config :as config]
+            [clojure.java.jdbc :as jdbc]))
 
 (defn create!
-  [{:keys [id] :as userdata}]
-  (if-not (db/retrieve id)
-    (let [user (db/create! userdata)]
-      {:success user})
-    {:error "User with this email already exists."}))
+  "Creates a new user if a user with same email doesn't exist already."
+  [{:keys [email] :as userdata}]
+  (jdbc/with-db-transaction [trn (config/db-spec)]
+    (if (db/retrieve-by-email trn email)
+      {:error "User with this email already exists."}
+      (let [user (db/create! trn userdata)]
+        {:success user}))))
 
 (defn get-token
   [email password]
