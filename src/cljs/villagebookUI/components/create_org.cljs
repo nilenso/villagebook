@@ -11,9 +11,9 @@
                     error-handler)))
 
 (defn org-creation-form [on-close-handler]
-  (let [form  (r/atom {:name  nil
-                       :color (random-color)})
-        color (r/cursor form [:color])
+  (let [color (random-color)
+        form  (r/atom {:name  nil
+                       :color color})
         error (r/atom false)]
     (fn []
       [:form.inline-block {:on-submit (fn [e]
@@ -22,7 +22,9 @@
                                                     on-close-handler
                                                     #(reset! error true)))}
        [:div.inline-block
-        [utils/label @color #(swap! form assoc :color %)]]
+        [utils/color-picker
+         {:init-color color
+          :on-change  #(swap! form assoc :color %)}]]
        [utils/input {:type        "text"
                      :placeholder "New organisation"
                      :class       [:new-item-input

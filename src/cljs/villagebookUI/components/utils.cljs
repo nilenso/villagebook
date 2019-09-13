@@ -1,4 +1,5 @@
-(ns villagebookUI.components.utils)
+(ns villagebookUI.components.utils
+  (:require [reagent.core :as r]))
 
 (defn loading
   []
@@ -16,15 +17,21 @@
   [attributes]
   [:input (assoc-target-value attributes :on-change)])
 
-(defn label
-  ([color]
-   [:div.item-label {:style {"backgroundColor" color}}])
-  ([color on-change-handler]
-   [:span
-    [input {:type      "color"
-            :id        "new-item-label"
-            :style     {:display "none"}
-            :value     color
-            :on-change #(on-change-handler %)}]
-    [:label.item-label.new-item-label  {:for   "new-item-label"
-                                        :style {"backgroundColor" color}}]]))
+(defn org-label
+  [color]
+  [:div.item-label {:style {"backgroundColor" color}}])
+
+(defn color-picker
+  [{:keys [init-color on-change]}]
+  (let [color (r/atom init-color)]
+    (fn []
+      [:span
+       [input {:type      "color"
+               :id        "new-item-label"
+               :style     {:display "none"}
+               :on-change #(do
+                             (if on-change
+                               (on-change %))
+                             (reset! color %))}]
+       [:label.item-label.new-item-label  {:for   "new-item-label"
+                                           :style {"backgroundColor" @color}}]])))

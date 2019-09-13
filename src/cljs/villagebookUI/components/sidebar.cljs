@@ -16,9 +16,9 @@
          [:p.sidebar-section-head "Organisations"]
          [:ul.sidebar-section-list
           [:li.item
-           [:a.sidebar-link [utils/label "#5fcc5f"] "Org 1"]]
+           [:a.sidebar-link [utils/org-label "#5fcc5f"] "Org 1"]]
           [:li.item
-           [:a.sidebar-link [utils/label "#ff8383"] "Org 2"]]
+           [:a.sidebar-link [utils/org-label "#ff8383"] "Org 2"]]
           [:li.item
            (if @creating-org
              [org-creation-form #(reset! creating-org false)]
