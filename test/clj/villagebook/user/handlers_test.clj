@@ -17,7 +17,7 @@
       (is (= (:email user1) (get-in response [:body :email])))
       (is (get-in response [:body :token]))
       (is (get-in response [:cookies "token" :value]))
-      (is (not (empty? (db/get-by-email (get-in response [:body :email])))))))
+      (is (not (empty? (db/retrieve-by-email (get-in response [:body :email])))))))
 
   (testing "Signing up as user 2 (with optional details)"
     (let [request  {:params user2}
@@ -26,7 +26,7 @@
       (is (= (:email user2) (get-in response [:body :email])))
       (is (get-in response [:body :token]))
       (is (get-in response [:cookies "token" :value]))
-      (is (not (empty? (db/get-by-email (get-in response [:body :email]))))))))
+      (is (not (empty? (db/retrieve-by-email (get-in response [:body :email]))))))))
 
 (deftest invalid-signup-tests
   (testing "Signing up with invalid request"
@@ -36,7 +36,7 @@
 
 (deftest login-tests
   (testing "Logging in as user 1"
-    (let [user (db/create user1)
+    (let [user (db/create! user1)
           request  {:params user1}
           response (handlers/login request)]
       (is (= 200 (:status response)))
@@ -44,7 +44,7 @@
       (is (get-in response [:cookies "token" :value])))))
 
 (deftest invalid-login-tests
-  (let [user (db/create user1)]
+  (let [user (db/create! user1)]
   (testing "Logging in with invalid request"
     (let [request  {}
           response (handlers/login request)]
@@ -67,10 +67,10 @@
 
 (deftest retrieve-tests
   (testing "Retrieving a user."
-    (let [user     (db/create user1)
+    (let [user     (db/create! user1)
           email    (:email user1)
           password (:password user1)
           message  (models/get-token email password)
-          request  {:identity {:email email}}
+          request  {:identity {:id (:id user)}}
           response (handlers/retrieve request)]
       (is (= 200 (:status response))))))

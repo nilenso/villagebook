@@ -11,7 +11,7 @@
 
 (deftest create-test
   (testing "Should create an organisation and add a user as owner"
-    (let [{user-id :id}      (user-db/create factory/user1)
+    (let [{user-id :id}      (user-db/create! factory/user1)
           {orgdata :success} (models/create! factory/organisation user-id)
           test-org           (-> factory/organisation
                                  (assoc :user_id user-id)
