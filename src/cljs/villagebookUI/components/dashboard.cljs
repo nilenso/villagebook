@@ -1,6 +1,10 @@
-(ns villagebookUI.components.dashboard)
+(ns villagebookUI.components.dashboard
+  (:require [villagebookUI.components.sidebar :refer [sidebar]]
+            [villagebookUI.components.main-content :refer [main-content]]))
 
 (defn dashboard []
   (let []
     (fn []
-      [:div "This is the dashboard."])))
+      [:div
+       [sidebar]
+       [main-content]])))
