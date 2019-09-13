@@ -20,8 +20,8 @@
 
 (defn- retrieve-from-model
   [id]
-  (let [message        (models/retrieve 55)
-        {org :success}  message
+  (let [message        (models/retrieve id)
+        {org :success} message
         {error :error} message]
     (if org
       (res/response org)
