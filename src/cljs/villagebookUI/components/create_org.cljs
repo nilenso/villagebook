@@ -22,7 +22,7 @@
                                                     on-close-handler
                                                     #(reset! error true)))}
        [:div.inline-block
-        [utils/color-picker
+        [utils/color-picker-patch
          {:init-color color
           :on-change  #(swap! form assoc :color %)}]]
        [utils/input {:type        "text"

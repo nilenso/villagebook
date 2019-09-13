@@ -17,11 +17,11 @@
   [attributes]
   [:input (assoc-target-value attributes :on-change)])
 
-(defn org-label
+(defn patch
   [color]
   [:div.item-label {:style {"backgroundColor" color}}])
 
-(defn color-picker
+(defn color-picker-patch
   [{:keys [init-color on-change]}]
   (let [color (r/atom init-color)]
     (fn []
