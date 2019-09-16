@@ -1,6 +1,6 @@
 (ns villagebookUI.store
   (:require [reagent.core :as r]
-            [villagebookUI.api.user :as api]))
+            [villagebookUI.api.user :as user-api]))
 
 (defonce state (r/atom nil))
 
@@ -18,13 +18,12 @@
 
 (defn fetch-user!
   []
-  (api/get-user-data
+  (user-api/get-user-data
    (fn [res]
-     (add-user! res)
-     (fetched!))
+     (add-user! res))
    (fn [res]
-     (add-user! nil)
-     (fetched!))))
+     (add-user! nil))
+   #(fetched!)))
 
 (defn init []
   (reset! state {:user    {}
