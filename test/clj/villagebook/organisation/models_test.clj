@@ -9,7 +9,7 @@
 (use-fixtures :once setup-once)
 (use-fixtures :each wrap-transaction)
 
-(deftest create-test
+(deftest create-tests
   (testing "Should create an organisation and add a user as owner"
     (let [{user-id :id}      (user-db/create! factory/user1)
           {orgdata :success} (models/create! factory/organisation user-id)
@@ -22,12 +22,29 @@
                                  (select-keys required-keys))]
       (is (= test-org new-org)))))
 
-(deftest retrieve-test
+(deftest retrieve-tests
   (testing "Should retrieve an organisation given it's id"
     (let [{org-id :id}       (db/create! factory/organisation)
           {orgdata :success} (models/retrieve org-id)]
-      (is (= factory/organisation (dissoc orgdata :created_at :id)))))
+      (is (= factory/organisation (dissoc orgdata :created_at :id))))))
 
+(deftest invalid-retrieve-tests
   (testing "Should return an error map if organisation does not exist"
     (let [{error :error} (models/retrieve 0)]
       (is error))))
+
+(deftest retrieve-by-user-tests
+  (testing "Should retrieve a user's orgs given a user id"
+    (let [{user-id :id}      (user-db/create! factory/user1)
+          {orgdata :success} (models/create! factory/organisation user-id)
+          required-keys      (keys orgdata)]
+      (is (= orgdata (-> (models/retrieve-by-user user-id)
+                         :success
+                         first
+                         (select-keys required-keys)))))))
+
+(deftest invalid-retrieve-by-user-tests
+  (testing "Should return an empty vector if no organisations exist for the user"
+    (let [{orgs :success} (models/retrieve-by-user 0)]
+      (is (vector? orgs))
+      (is (empty? orgs)))))

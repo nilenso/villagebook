@@ -33,3 +33,8 @@
     (if (s/valid? ::organisation-spec/id id)
       (retrieve-from-model id)
       (res/bad-request "Invalid request."))))
+
+(defn retrieve-by-user
+  [request]
+  (let [{user-id :id} (:identity request)]
+    (res/response (:success (models/retrieve-by-user user-id)))))
