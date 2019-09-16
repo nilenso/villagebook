@@ -5,7 +5,7 @@
             [bidi.bidi :as bidi]
 
             [villagebookUI.routes :refer [routes]]
-            [villagebookUI.store :as store]))
+            [villagebookUI.store.core :as store]))
 
 (accountant/configure-navigation!
  {:nav-handler (fn [path]
@@ -24,7 +24,7 @@
 
 (defn main! []
   (accountant/dispatch-current!)
-  (store/init)
+  (store/init!)
   (r/render [root]
             (.getElementById js/document "villagebook-app")))
 

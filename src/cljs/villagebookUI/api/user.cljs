@@ -1,11 +1,14 @@
 (ns villagebookUI.api.user
-  [:require [ajax.core :refer [GET]]])
+  (:require [ajax.core :refer [GET]]
+            [villagebookUI.store.user :as store]))
 
 (def ^:private get-user-data-api "/api/user")
 
-(defn get-user-data
-  [handler-fn error-handler-fn finally-fn]
+(defn get-data!
+  []
   (GET get-user-data-api
-       {:handler       handler-fn
-        :error-handler error-handler-fn
-        :finally       finally-fn}))
+       {:handler          (fn [res]
+                            (store/add! res))
+        :error-handler    (fn [res]
+                            (store/add! nil))
+        :finally          #(store/fetched!)}))

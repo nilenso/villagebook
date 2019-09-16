@@ -3,8 +3,7 @@
             [villagebookUI.components.main-content :refer [main-content]]))
 
 (defn dashboard []
-  (let []
-    (fn []
-      [:div
-       [sidebar]
-       [main-content]])))
+  (fn []
+    [:div
+     [sidebar]
+     [main-content]]))

@@ -1,13 +1,13 @@
 (ns villagebookUI.middleware
-  (:require [villagebookUI.store :as store]
+  (:require [villagebookUI.store.user :as user-store]
             [villagebookUI.components.utils :as utils]
             [villagebookUI.components.login :refer [login]]))
 
 (defn require-login
   [component]
   (fn []
-    (if (store/fetched?)
-      (if @store/user
+    (if (user-store/fetched?)
+      (if (user-store/read)
         [component]
         [login])
       [utils/loading])))

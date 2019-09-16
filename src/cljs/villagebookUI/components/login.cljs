@@ -3,7 +3,8 @@
             [accountant.core :as accountant]
 
             [villagebookUI.api.auth :as auth]
-            [villagebookUI.store :as store]))
+            [villagebookUI.api.user :as user-api]
+            [villagebookUI.store.user :as user-store]))
 
 (defn validate!
   [elementID formdata]
@@ -27,7 +28,7 @@
   (let [formdata (r/atom {})
         error    (r/atom {})]
     (fn []
-      (if @store/user
+      (if (user-store/read)
         (do
           (accountant/navigate! "/dashboard")
           [:div])
@@ -46,7 +47,7 @@
                           (:user @formdata)
                           (fn [res]
                             (swap! error assoc :message "")
-                            (store/fetch-user!)
+                            (user-api/get-data!)
                             (accountant/navigate! "/dashboard"))
                           (fn [res]
                             (swap! error assoc :message (:response res)))))}
