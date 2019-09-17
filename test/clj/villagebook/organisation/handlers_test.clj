@@ -40,9 +40,8 @@
                          (select-keys required-keys)))))))
 
 (deftest invalid-retrieve-by-user-tests
-  (testing "Response should be valid json (vector, not a clj seq) if no organisations exist for the user"
+  (testing "Response should be empty sequence if no organisations exist for the user"
     (let [request  {:identity {:id 0}}
           response (handlers/retrieve-by-user request)]
       (is (= 200 (:status response)))
-      (is (vector? (:body response)))
       (is (empty? (:body response))))))

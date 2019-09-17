@@ -46,5 +46,4 @@
 (deftest invalid-retrieve-by-user-tests
   (testing "Should return an empty vector if no organisations exist for the user"
     (let [{orgs :success} (models/retrieve-by-user 0)]
-      (is (vector? orgs))
       (is (empty? orgs)))))

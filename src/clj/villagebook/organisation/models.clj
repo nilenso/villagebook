@@ -19,4 +19,4 @@
 
 (defn retrieve-by-user
   [user-id]
-  {:success (vec (db/retrieve-by-user user-id))})
+  {:success (db/retrieve-by-user user-id)})
