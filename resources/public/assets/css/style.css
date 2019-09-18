@@ -140,6 +140,12 @@ a:hover {
   background: #2e3344;
   transition: left 0.1s;
   color: white;
+  overflow-y: scroll;
+  overflow: -moz-scrollbars-none;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 0 !important
 }
 
 .sidebar-logo-box {
