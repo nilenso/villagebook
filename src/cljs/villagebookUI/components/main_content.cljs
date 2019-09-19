@@ -1,5 +1,7 @@
-(ns villagebookUI.components.main-content)
+(ns villagebookUI.components.main-content
+  (:require [villagebookUI.store.organisations :as org-store]))
 
 (defn main-content []
   [:div.main-content
-   [:div.navbar]])
+   [:div.navbar
+    [:h5 (:name (org-store/get-selected))]]])

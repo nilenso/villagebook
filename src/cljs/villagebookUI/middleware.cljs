@@ -4,10 +4,10 @@
             [villagebookUI.components.login :refer [login]]))
 
 (defn require-login
-  [component]
+  [component & props]
   (fn []
     (if (user-store/fetched?)
       (if (user-store/read)
-        [component]
+        [(apply component props)]
         [login])
       [utils/loading])))

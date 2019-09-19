@@ -1,4 +1,5 @@
-(ns villagebookUI.helpers)
+(ns villagebookUI.helpers
+  (:require [villagebookUI.store.session :as session]))
 
 (defn random-color []
   (str "hsl(" (->> (.random js/Math)
@@ -9,3 +10,8 @@
   [el handler]
   (if (= (.-key el) "Escape")
     (handler)))
+
+(defn org-id-from-url []
+  (-> (session/route-params)
+      :org-id
+      js/parseInt))

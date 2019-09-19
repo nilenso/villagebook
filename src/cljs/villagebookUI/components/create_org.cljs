@@ -23,7 +23,7 @@
                                                     (do
                                                       (on-close-handler)
                                                       (fn [res]
-                                                        (fetchers/fetch-orgs!)))
+                                                        (fetchers/fetch-orgs! last)))
                                                     #(reset! error true)))}
        [:div.inline-block
         [utils/color-picker-patch

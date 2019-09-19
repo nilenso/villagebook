@@ -13,13 +13,17 @@
          [:p.sidebar-logo "villagebook"]
          [:div.divider]]
         [:div.sidebar-section
-         [:p.sidebar-section-head "Organisations"]
+         [:p.sidebar-section-head "Your organisations"]
          [:ul.sidebar-section-list
-          (for [org (org-store/get-all)]
-            [:li.item {:key (:id org)}
-             [:a.sidebar-link {:href "#"}
-              [utils/patch (:color org)]
-              (:name org)]])
+          (doall
+           (for [org  (org-store/get-all)
+                 :let [id (:id org)]]
+             [:li.item {:key   (:id org)
+                        :class (if (= id (:id (org-store/get-selected)))
+                                 [:active])}
+              [:a.sidebar-link {:href (str "/orgs/" id)}
+               [utils/patch (:color org)]
+               (:name org)]]))
           [:li.item
            (if @creating-org
              [org-creation-form #(reset! creating-org false)]
