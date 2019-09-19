@@ -3,6 +3,7 @@
             [accountant.core :as accountant]
             [bidi.bidi :as bidi]
 
+            [villagebookUI.fetchers :as fetchers]
             [villagebookUI.routes :refer [routes]]
             [villagebookUI.store.core :as store]
             [villagebookUI.store.session :as session]))
@@ -24,6 +25,7 @@
 
 (defn main! []
   (store/init!)
+  (fetchers/fetch-user!)
   (accountant/dispatch-current!)
   (r/render [root]
             (.getElementById js/document "villagebook-app")))

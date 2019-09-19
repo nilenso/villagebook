@@ -2,8 +2,8 @@
   (:require [reagent.core :as r]
             [accountant.core :as accountant]
 
+            [villagebookUI.fetchers :as fetchers]
             [villagebookUI.api.auth :as auth]
-            [villagebookUI.api.user :as user-api]
             [villagebookUI.store.user :as user-store]))
 
 (defn validate!
@@ -47,7 +47,7 @@
                           (:user @formdata)
                           (fn [res]
                             (swap! error assoc :message "")
-                            (user-api/get-data!)
+                            (fetchers/fetch-user!)
                             (accountant/navigate! "/dashboard"))
                           (fn [res]
                             (swap! error assoc :message (:response res)))))}

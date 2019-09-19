@@ -1,8 +1,8 @@
 (ns villagebookUI.components.signup
   (:require [reagent.core :as r]
-            [reagent.session :as session]
             [accountant.core :as accountant]
 
+            [villagebookUI.fetchers :as fetchers]
             [villagebookUI.api.auth :as auth]
             [villagebookUI.api.user :as user-api]
             [villagebookUI.store.user :as user-store]))
@@ -50,7 +50,7 @@
                           (:user @formdata)
                           (fn [res]
                             (swap! error assoc :message "")
-                            (user-api/get-data!)
+                            (fetchers/fetch-user!)
                             (accountant/navigate! "/dashboard"))
                           (fn [res]
                             (swap! error assoc :message (:response res)))))}
