@@ -8,7 +8,7 @@
             [villagebook.handlers :refer [api-handler frontend-handler]]
             [villagebook.config :as config]))
 
-(def apiroutes
+(def api-routes
   {"organisations" {:get      (with-auth org/retrieve-by-user)
                     :post     (with-auth org/create!)
                     ["/" :id] {:get (with-auth org/retrieve)}}
@@ -18,7 +18,7 @@
 ;; Setup routes
 (def routes
   ["/" {"assets" (resources {:prefix "public/assets/"})
-        "api/"   apiroutes
+        "api/"   api-routes
         "signup" {:post user/signup}
         "login"  {:post user/login}
         true     frontend-handler}])
