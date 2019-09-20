@@ -4,8 +4,8 @@
 
 (def ^:private get-user-data-api "/api/user")
 
-(defn get-data [handler-fn error-handler-fn finally-fn]
+(defn get-data [handler error-handler finally-fn]
   (GET get-user-data-api
-       {:handler         handler-fn
-        :error-handler   error-handler-fn
-        :finally finally-fn}))
+       {:handler       handler
+        :error-handler error-handler
+        :finally       finally-fn}))

@@ -4,16 +4,16 @@
 (def ^:private signup-api "/signup")
 (def ^:private login-api "/login")
 
-(defn signup [userdata handler-fn error-handler-fn]
+(defn signup [userdata handler error-handler]
   (POST signup-api
-        {:params userdata
-         :format :raw
-         :handler handler-fn
-         :error-handler error-handler-fn}))
+        {:params        userdata
+         :format        :raw
+         :handler       handler
+         :error-handler error-handler}))
 
-(defn login [userdata handler-fn error-handler-fn]
+(defn login [userdata handler error-handler]
   (POST login-api
-        {:params userdata
-         :format :raw
-         :handler handler-fn
-         :error-handler error-handler-fn}))
+        {:params        userdata
+         :format        :raw
+         :handler       handler
+         :error-handler error-handler}))
