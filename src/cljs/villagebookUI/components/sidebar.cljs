@@ -18,7 +18,7 @@
           (doall
            (for [org  (org-store/get-all)
                  :let [id (:id org)]]
-             [:li.item {:key   (:id org)
+             [:li.item {:key   id
                         :class (if (= id (:id (org-store/get-selected)))
                                  [:active])}
               [:a.sidebar-link {:href (str "/orgs/" id)}
