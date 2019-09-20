@@ -4,7 +4,7 @@
 (def ^:private create-org-api "/api/organisations")
 (def ^:private get-all-orgs-api "/api/organisations")
 
-(defn create! [org-data handler error-handler]
+(defn create [org-data handler error-handler]
   (POST create-org-api
         {:params        org-data
          :format        :raw
