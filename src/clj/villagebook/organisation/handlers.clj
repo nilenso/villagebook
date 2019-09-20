@@ -11,7 +11,7 @@
   (let [{name  :name
          color :color
          :as   orgdata} (:params request)
-        {user-id :id}   (:identity request)]
+        user-id         (get-in request [:identity :id])]
     (if (organisation-spec/valid-organisation-details? orgdata)
       (let [{neworg :success} (models/create! orgdata user-id)]
         (-> (res/response neworg)
@@ -20,9 +20,9 @@
 
 (defn- retrieve-from-model
   [id]
-  (let [message        (models/retrieve id)
-        {org :success} message
-        {error :error} message]
+  (let [message (models/retrieve id)
+        org     (:success message)
+        error   (:error message)]
     (if org
       (res/response org)
       (res/not-found error))))
@@ -36,5 +36,5 @@
 
 (defn retrieve-by-user
   [request]
-  (let [{user-id :id} (:identity request)]
+  (let [user-id (get-in request [:identity :id])]
     (res/response (:success (models/retrieve-by-user user-id)))))
