@@ -11,7 +11,8 @@
 (def api-routes
   {"organisations" {:get      (with-auth org/retrieve-by-user)
                     :post     (with-auth org/create!)
-                    ["/" :id] {:get (with-auth org/retrieve)}}
+                    ["/" :id] {:get    (with-auth org/retrieve)
+                               :delete (with-auth org/delete!)}}
    "user"          {:get (with-auth user/retrieve)}})
 
 
