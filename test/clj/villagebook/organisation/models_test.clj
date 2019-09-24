@@ -47,3 +47,11 @@
   (testing "Should return an empty vector if no organisations exist for the user"
     (let [{orgs :success} (models/retrieve-by-user 0)]
       (is (empty? orgs)))))
+
+(deftest delete-tests
+  (testing "Should delete an organisation if user is owner"
+    (let [{user-id :id}      (user-db/create! factory/user1)
+          {orgdata :success} (models/create! factory/organisation user-id)
+          org-id             (:id orgdata)
+          {message :success} (models/delete! user-id org-id)]
+      (is (= nil (db/retrieve org-id))))))
