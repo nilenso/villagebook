@@ -38,3 +38,20 @@
   [request]
   (let [user-id (get-in request [:identity :id])]
     (res/response (:success (models/retrieve-by-user user-id)))))
+
+(defn- delete-send-response
+  [user-id org-id]
+  (let [message (models/delete! user-id org-id)
+        success (:success message)]
+    (if success
+      (res/response success)
+      (-> (res/response (:error message))
+          (res/status 403)))))
+
+(defn delete!
+  [request]
+  (let [user-id (get-in request [:identity :id])
+        id      (edn/read-string (get-in request [:params :id]))]
+    (if (s/valid? ::organisation-spec/id id)
+      (delete-send-response user-id id)
+      (res/bad-request "Invalid request."))))
