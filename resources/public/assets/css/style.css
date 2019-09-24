@@ -92,11 +92,11 @@ a:hover {
   margin-bottom: 0px;
 }
 
-.formbox .form-control.check-invalid:invalid {
+.formbox .form-control.invalid {
   border: 1px solid #ce8383;
 }
 
-.formbox .form-control:valid {
+.formbox .form-control.valid {
   border: 1px solid #7dc37d;
 }
 
