@@ -59,8 +59,29 @@
   (testing "Should retrieve list of user's organisations with permissions"
     (let [{user-id :id}            (user-db/create! factory/user1)
           {org-id :id}             (db/create! factory/organisation)
-          {permission :permission} (db/add-user-as! org-id user-id "member")
+          {permission :permission} (db/add-user-as! org-id user-id :member)
           required-keys            (keys factory/organisation)]
       (is (= factory/organisation (-> (db/retrieve-by-user user-id)
                                       first
                                       (select-keys required-keys)))))))
+
+(deftest delete-tests
+  (let [{user-id :id} (user-db/create! factory/user1)
+        {org-id :id}  (db/create! factory/organisation)
+        permission    (db/add-user-as! org-id user-id :owner)
+        deleted-row   (db/delete! org-id)]
+
+    (testing "Should delete an organisation by it's id"
+      (is (= '(1) deleted-row))
+      (is (= nil (db/retrieve org-id))))
+
+    (testing "All permissions on the organisation should be deleted on cascade"
+      (is (empty? (db/retrieve-by-user user-id))))))
+
+(deftest get-permission-tests
+  (testing "Should retrieve user's permission on an organisation"
+    (let [{user-id :id}                 (user-db/create! factory/user1)
+          {org-id :id}                  (db/create! factory/organisation)
+          {reqd-permission :permission} (db/add-user-as! org-id user-id :owner)
+          permission                    (db/get-permission user-id org-id)]
+      (is (= permission reqd-permission)))))
