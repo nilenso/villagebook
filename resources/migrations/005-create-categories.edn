@@ -1,0 +1,7 @@
+;; resources/migrations/005-create-categories.edn
+{:up   ["CREATE TABLE categories (
+           id         SERIAL PRIMARY KEY,
+           org_id     INTEGER REFERENCES organisations ON DELETE CASCADE,
+           name       TEXT NOT NULL,
+           created_at TIMESTAMP DEFAULT now());"]
+ :down ["DROP TABLE categories;"]}
