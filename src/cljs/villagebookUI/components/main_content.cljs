@@ -1,7 +1,10 @@
 (ns villagebookUI.components.main-content
   (:require [villagebookUI.store.organisations :as org-store]
             [villagebookUI.api.organisation :as org-api]
-            [villagebookUI.fetchers :as fetchers]))
+            [villagebookUI.fetchers :as fetchers]
+            [villagebookUI.components.utils :as utils]
+            [villagebookUI.store.ui :as ui-store]
+            [villagebookUI.helpers :as helpers]))
 
 (declare navbar content-box delete-org-btn delete-org)
 
@@ -11,7 +14,8 @@
      [navbar org]
      (if org
        [content-box]
-       [:h5 "Oops, page not found"])]))
+       [:h5 "Oops, page not found"])
+     [utils/alert-bottom (ui-store/get-el-state :alert-bottom)]]))
 
 (defn- navbar
   [org]
@@ -34,5 +38,8 @@
   [org]
   (if (js/confirm (str "Are you sure you want to delete " (:name org) "?"))
     (org-api/delete (:id org)
-                    #(fetchers/fetch-orgs! first)
-                    identity)))
+                    (fn [res]
+                      (helpers/show-alert-bottom :success res)
+                      (fetchers/fetch-orgs! first))
+                    (fn [res]
+                      helpers/show-alert-bottom :error res))))
