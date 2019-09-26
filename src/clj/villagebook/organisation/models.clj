@@ -24,14 +24,16 @@
   {:success (db/retrieve-by-user user-id)})
 
 (defn is-owner?
-  [org-id user-id]
-  (= (db/get-permission user-id org-id) (name OWNER_PERMISSION)))
+  ([org-id user-id]
+   (is-owner? (config/db-spec) org-id user-id))
+  ([conn org-id user-id]
+   (= (db/get-permission conn user-id org-id) (name OWNER_PERMISSION))))
 
 (defn delete!
   [user-id id]
   "Check if user is owner of the organisation and delete it"
   (jdbc/with-db-transaction [trn (config/db-spec)]
-    (if (is-owner? id user-id)
-      (if-not (empty? (db/delete! id))
+    (if (is-owner? trn id user-id)
+      (if-not (empty? (db/delete! trn id))
         {:success "Organisation deleted"})
       {:error "Invalid permission"})))

@@ -51,16 +51,20 @@
 
 (defn get-permission
   "Returns the permission a user has on an organisation"
-  [user-id org-id]
-  (-> (jdbc/query (config/db-spec) (-> (h/select :permission)
-                                       (h/from :organisation_permissions)
-                                       (h/where [:= :user-id user-id]
-                                                [:= :org-id org-id])
-                                       (sql/format)))
-      first
-      :permission))
+  ([user-id org-id]
+   (get-permission (config/db-spec) user-id org-id))
+  ([conn user-id org-id]
+   (-> (jdbc/query conn (-> (h/select :permission)
+                            (h/from :organisation_permissions)
+                            (h/where [:= :user-id user-id]
+                                     [:= :org-id org-id])
+                            (sql/format)))
+       first
+       :permission)))
 
 (defn delete!
   "Deletes an organisation by id."
-  [id]
-  (jdbc/delete! (config/db-spec) :organisations ["id = ?" id]))
+  ([id]
+   (delete! (config/db-spec) id))
+  ([conn id]
+   (jdbc/delete! conn :organisations ["id = ?" id])))
