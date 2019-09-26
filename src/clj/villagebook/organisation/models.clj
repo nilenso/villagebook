@@ -5,9 +5,11 @@
             [villagebook.config :as config]))
 
 (defonce OWNER_PERMISSION :owner)
+(defonce MEMBER_PERMISSION :member)
 
 (defn create!
   [orgdata user-id]
+  ;; ADD CHECK: IF USER EXISTS
   (let [{org-id :id :as org} (db/create! orgdata)
         permission           (db/add-user-as! org-id user-id OWNER_PERMISSION)]
     {:success org}))
@@ -28,6 +30,14 @@
    (is-owner? (config/db-spec) org-id user-id))
   ([conn org-id user-id]
    (= (db/get-permission conn user-id org-id) (name OWNER_PERMISSION))))
+
+(defn is-owner-or-member?
+  ([org-id user-id]
+   (is-owner-or-member? (config/db-spec) org-id user-id))
+  ([conn org-id user-id]
+   (let [permission (db/get-permission conn user-id org-id)]
+     (or (= permission (name OWNER_PERMISSION))
+         (= permission (name MEMBER_PERMISSION))))))
 
 (defn delete!
   [user-id id]
