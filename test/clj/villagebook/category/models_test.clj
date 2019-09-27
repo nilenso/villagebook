@@ -10,9 +10,12 @@
 (use-fixtures :each wrap-transaction)
 
 (deftest create-tests
-  (testing "Should create a category"
+  (testing "Should create a category with given list of fields"
     (let [{user-id :id}  (user-db/create! factory/user1)
           {org :success} (org-models/create! factory/organisation user-id)
-          message        (models/create! factory/category1 (:id org) user-id)
+          message        (models/create! factory/category1
+                                         [factory/field1 factory/field2]
+                                         (:id org)
+                                         user-id)
           category       (:success message)]
       (is (= factory/category1 (:name category))))))

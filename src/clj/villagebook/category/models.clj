@@ -1,12 +1,16 @@
 (ns villagebook.category.models
   (:require [villagebook.category.db :as db]
+            [villagebook.field.db :as field-db]
             [villagebook.organisation.models :as org-models]
             [clojure.java.jdbc :as jdbc]
+            [villagebook.category.spec :as spec]
             [villagebook.config :as config]))
 
 (defn create!
-  [name org-id user-id]
+  [name fields org-id user-id]
   (jdbc/with-db-transaction [trn (config/db-spec)]
     (if (org-models/is-owner-or-member? trn org-id user-id)
-      {:success (db/create! trn name org-id)}
+      (let [category (db/create! trn name org-id)]
+         (field-db/create-fields! trn (:id category) fields)
+         {:success category})
       {:error "Permission denied"})))

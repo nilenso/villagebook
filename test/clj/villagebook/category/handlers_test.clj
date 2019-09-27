@@ -16,6 +16,7 @@
     (let [{user-id :id}  (user-db/create! factory/user1)
           {org :success} (org-models/create! factory/organisation user-id)
           request        {:params   {:name   factory/category1
+                                     :fields [factory/field1 factory/field2]
                                      :org-id (str (:id org))}
                           :identity {:id user-id}}
           response       (handlers/create! request)]
