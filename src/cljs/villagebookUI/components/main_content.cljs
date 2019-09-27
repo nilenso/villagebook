@@ -42,4 +42,4 @@
                       (helpers/show-alert-bottom :success res)
                       (fetchers/fetch-orgs! first))
                     (fn [res]
-                      helpers/show-alert-bottom :error res))))
+                      (helpers/show-alert-bottom :error res)))))
