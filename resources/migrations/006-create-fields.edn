@@ -1,0 +1,8 @@
+;; resources/migrations/006-create-fields.edn
+{:up   ["CREATE TABLE fields (
+           id          SERIAL PRIMARY KEY,
+           category_id INTEGER NOT NULL REFERENCES categories ON DELETE CASCADE,
+           name        TEXT NOT NULL,
+           type        TEXT NOT NULL DEFAULT 'text',
+           created_at  TIMESTAMP DEFAULT now());"]
+ :down ["DROP TABLE fields;"]}
