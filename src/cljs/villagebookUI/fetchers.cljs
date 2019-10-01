@@ -1,5 +1,6 @@
 (ns villagebookUI.fetchers
-  (:require [villagebookUI.store.user :as user-store]
+  (:require [accountant.core :as accountant]
+            [villagebookUI.store.user :as user-store]
             [villagebookUI.api.user :as user-api]
             [villagebookUI.store.organisations :as org-store]
             [villagebookUI.api.organisation :as org-api]))
@@ -19,6 +20,9 @@
    (fn [res]
      (org-store/add-all! res)
      (when selector-fn
-       (org-store/set-selected!
-        (selector-fn (org-store/get-all)))))
+       (accountant/navigate!
+        (->> (org-store/get-all)
+             selector-fn
+             :id
+             (str "/orgs/")))))
    identity))

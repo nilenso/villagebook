@@ -13,6 +13,7 @@ html, body {
   font-family: Muli;
   font-size: 14.5px;
   text-rendering: optimizeLegibility;
+  color: #58666e;
 }
 /* End Resets and declarations */
 
@@ -280,6 +281,8 @@ a:hover {
 
 .main-content {
   padding-left: 220px;
+  min-height: 100vh;
+  background: #f0f3f4;
 }
 
 .navbar {
@@ -292,4 +295,66 @@ a:hover {
   padding: 10px 10px 0 10px;
 }
 
+.content-box {
+  padding: 15px;
+}
+
+.simple-card {
+  background-color: #fff;
+  border: 1px solid #e2e8ea;
+  padding: 10px;
+}
+
+.category-tabs {
+  background-color: #f1f3f4;
+}
+
+.category-tabs .category-tab:first-child {
+  border-top-left-radius: 5px;
+}
+
+.category-tabs .category-tab:last-child {
+  border-top-right-radius: 5px;
+}
+
+.category-tab {
+  padding: 10px;
+  color: #80868b;
+  display: inline-block;
+  font-weight: 900;
+}
+
+.category-tab:hover {
+  background-color: #e0e0e0;
+  color: inherit;
+}
+
+.category-tab.active {
+  background-color: #fff;
+  box-shadow: 1px 0px 0px 0px rgba(60,64,67,.15);
+  border-radius: 5px 5px 0px 0px;
+  color: #166361;
+}
+
+.create-category-name {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background: white no-repeat;
+  background-image: linear-gradient(to bottom, #1abc9c, #1abc9c), linear-gradient(to bottom, white, white);
+	background-size: 0 2px, 100% 1px;
+	background-position: 0% 100%, 50% 0%;
+  transition: 0.1s all;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.create-category-name.error {
+  border-bottom: 1px solid red;
+}
+
+.create-category-name:focus {
+  outline: none;
+  border-bottom: 1px solid transparent;
+  background-size: 100% 2px, 100% 1px;
+}
 /* End Dashboard*/
