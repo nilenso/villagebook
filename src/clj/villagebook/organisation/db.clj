@@ -54,11 +54,8 @@
   ([user-id org-id]
    (get-permission (config/db-spec) user-id org-id))
   ([conn user-id org-id]
-   (-> (jdbc/query conn (-> (h/select :permission)
-                            (h/from :organisation_permissions)
-                            (h/where [:= :user-id user-id]
-                                     [:= :org-id org-id])
-                            (sql/format)))
+   (-> (jdbc/find-by-keys conn :organisation_permissions {:user_id user-id
+                                                          :org_id  org-id})
        first
        :permission)))
 
