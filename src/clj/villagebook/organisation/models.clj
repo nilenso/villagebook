@@ -16,3 +16,7 @@
     (if org
       {:success org}
       {:error "Organisation not found"})))
+
+(defn retrieve-by-user
+  [user-id]
+  {:success (db/retrieve-by-user user-id)})

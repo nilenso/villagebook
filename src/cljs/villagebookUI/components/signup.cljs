@@ -1,57 +1,51 @@
 (ns villagebookUI.components.signup
   (:require [reagent.core :as r]
-            [reagent.session :as session]
             [accountant.core :as accountant]
 
-            [villagebookUI.api.auth :as auth]
-            [villagebookUI.store :as store]))
+            [villagebookUI.helpers :as helpers :refer [validate-input]]
+            [villagebookUI.components.utils :refer [reqd-input]]
+            [villagebookUI.fetchers :as fetchers]
+            [villagebookUI.api.auth :as auth-api]))
 
-(defn validate!
-  [elementID formdata]
-  (if (.checkValidity (.getElementById js/document elementID))
-    (swap! formdata assoc-in [:validation-classes elementID] "")
-    (swap! formdata assoc-in [:validation-classes elementID] "check-invalid")))
+(defn redirect-dashboard []
+  (fetchers/fetch-user!)
+  (accountant/navigate! "/dashboard"))
 
-(defn input [formdata k placeholder type & required]
-  [:input.form-control.mt-3.mt-3 {:placeholder placeholder
-                                  :name        k
-                                  :id          k
-                                  :on-change   #(swap! formdata assoc-in [:user k] (-> % .-target .-value))
-                                  :on-blur     #(validate! (name k) formdata)
-                                  :type        type
-                                  :required    required
-                                  :class       (str
-                                                (get-in @formdata [:validation-classes (name k)]) " "
-                                                (get-in @formdata [:validation-classes "signup-form"]))}])
+(defn submit-signup
+  [user show-validness show-error]
+  (helpers/submit-auth-form :signup-form auth-api/signup user redirect-dashboard show-validness show-error))
 
 (defn signup []
-  (let [formdata (r/atom {})
-        error    (r/atom {})]
+  (let [user      (r/atom {})
+        validness (r/atom {})
+        error     (r/atom {})
+        fields    [{:id :name :type :text :placeholder "Name"}
+                   {:id :email :type :email :placeholder "Email"}
+                   {:id :password :type :password :placeholder "Password"}
+                   {:id :nickname :type :text :placeholder "Choose a nickname"}]]
     (fn []
-      (if @store/user
-        (do
-          (accountant/navigate! "/dashboard")
-          [:div])
-        [:div.l-page-center.formbox
-         [:a.brand {:href "/"} "villagebook"]
-         [:form#signup-form.mt-5.form-group
-          [input formdata :name "Name" "text" :required]
-          [input formdata :email "Email" "email" :required]
-          [input formdata :password "Password" "password" :required]
-          [input formdata :nickname "Nickname" "text" :required]
-          [:div.auth-error (:message @error)]
-          [:button.btn.btn-outline-primary.login-btn.mt-2
-           {:type     "submit"
-            :on-click #(do
-                         (.preventDefault %)
-                         (validate! "signup-form" formdata)
-                         (auth/signup
-                          (:user @formdata)
-                          (fn [res]
-                            (swap! error assoc :message "")
-                            (accountant/navigate! "/dashboard"))
-                          (fn [res]
-                            (swap! error assoc :message (:response res)))))}
-           "Signup"]]
-         [:span.small "Already have an account? "]
-         [:a {:href "/"} "Login"]]))))
+      [:div.l-page-center.formbox
+       [:a.brand {:href "/"} "villagebook"]
+       [:form#signup-form.mt-5.form-group
+        (doall
+         (for [field fields
+               :let  [id (:id field)]]
+           [reqd-input {:id          id
+                        :key         id
+                        :type        (:type field)
+                        :placeholder (:placeholder field)
+                        :class       [:form-control :mt-3 (get @validness id)(:form @validness)]
+                        :on-change   #(swap! user assoc id %)
+                        :on-blur     #(validate-input id
+                                                      (fn [v] (swap! validness assoc id v)))}]))
+        [:div.auth-error (:message @error)]
+        [:button.btn.btn-outline-primary.login-btn.mt-2
+         {:type     "submit"
+          :on-click (fn [e]
+                      (.preventDefault e)
+                      (submit-signup @user
+                                     #(swap! validness assoc :form %)
+                                     #(swap! error assoc :message %)))}
+         "Signup"]]
+       [:span.small "Already have an account? "]
+       [:a {:href "/"} "Login"]])))

@@ -92,11 +92,11 @@ a:hover {
   margin-bottom: 0px;
 }
 
-.formbox .form-control.check-invalid:invalid {
+.formbox .form-control.invalid {
   border: 1px solid #ce8383;
 }
 
-.formbox .form-control:valid {
+.formbox .form-control.valid {
   border: 1px solid #7dc37d;
 }
 
@@ -140,6 +140,12 @@ a:hover {
   background: #2e3344;
   transition: left 0.1s;
   color: white;
+  overflow-y: scroll;
+  overflow: -moz-scrollbars-none;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 0 !important
 }
 
 .sidebar-logo-box {
@@ -160,15 +166,10 @@ a:hover {
   margin-bottom: 4px;
 }
 
-.sidebar-section {
-  padding-left: 10px;
-}
-
 .sidebar-section-head {
   color: white;
   font-weight: bolder;
-  margin-bottom: 5px;
-  margin-top: 25px;
+  margin: 25px 0px 5px 8px;
 }
 
 .sidebar-section-list {
@@ -179,9 +180,19 @@ a:hover {
 .sidebar-section-list > .item {
   display: block;
   line-height: 35px;
-  padding: 0 15px 0 15px;
+  padding: 0 15px 0 20px;
   width: 100%;
   text-decoration: none;
+  border: 2px solid transparent;
+}
+
+.sidebar-section-list .item:hover {
+  background: #363c4e;
+}
+
+.sidebar .item.active {
+  border-left: 2px solid aliceblue;
+  background: #404040;
 }
 
 .sidebar-section-list .item-label {
@@ -205,6 +216,7 @@ a:hover {
 .sidebar-link {
   color: #d5e2f1 !important;
   cursor: pointer;
+  display: block;
 }
 
 .sidebar-link:hover {
@@ -256,6 +268,7 @@ a:hover {
   margin-bottom: 0;
   background-color: #fff;
   box-shadow: 0px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+  padding: 10px 10px 0 10px;
 }
 
 /* End Dashboard*/

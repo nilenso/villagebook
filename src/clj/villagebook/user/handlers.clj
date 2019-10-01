@@ -41,8 +41,8 @@
     (res/bad-request "Invalid request.")))
 
 (defn retrieve
-  [{identity :identity :as request}]
-  (if-let [user-id (:id identity)]
+  [request]
+  (if-let [user-id (get-in request [:identity :id])]
     (if-let [userdata (models/retrieve user-id)]
       (res/response userdata)
       (-> (res/response "Something went wrong.")

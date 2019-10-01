@@ -2,7 +2,7 @@
   (:require [reagent.core :as r]
             [villagebookUI.components.utils :as utils]
             [villagebookUI.components.create-org :refer [org-creation-form]]
-            [villagebookUI.api.organisation :as org]))
+            [villagebookUI.store.organisations :as org-store]))
 
 (defn sidebar []
   (let [creating-org (r/atom false)]
@@ -13,12 +13,17 @@
          [:p.sidebar-logo "villagebook"]
          [:div.divider]]
         [:div.sidebar-section
-         [:p.sidebar-section-head "Organisations"]
+         [:p.sidebar-section-head "Your organisations"]
          [:ul.sidebar-section-list
-          [:li.item
-           [:a.sidebar-link [utils/patch "#5fcc5f"] "Org 1"]]
-          [:li.item
-           [:a.sidebar-link [utils/patch "#ff8383"] "Org 2"]]
+          (doall
+           (for [org  (org-store/get-all)
+                 :let [id (:id org)]]
+             [:li.item {:key   id
+                        :class (if (= id (:id (org-store/get-selected)))
+                                 [:active])}
+              [:a.sidebar-link {:href (str "/orgs/" id)}
+               [utils/patch (:color org)]
+               (:name org)]]))
           [:li.item
            (if @creating-org
              [org-creation-form #(reset! creating-org false)]

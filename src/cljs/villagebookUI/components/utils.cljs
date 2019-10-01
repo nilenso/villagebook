@@ -17,6 +17,10 @@
   [attributes]
   [:input (assoc-target-value attributes :on-change)])
 
+(defn reqd-input
+  [attributes]
+  [input (merge attributes {:required :required})])
+
 (defn patch
   [color]
   [:div.item-label {:style {"backgroundColor" color}}])

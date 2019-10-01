@@ -1,14 +1,23 @@
 (ns villagebookUI.components.create-org
   (:require [reagent.core :as r]
             [villagebookUI.helpers :refer [random-color handle-esc]]
+            [villagebookUI.fetchers :as fetchers]
             [villagebookUI.components.utils :as utils]
-            [villagebookUI.api.organisation :as org]))
+            [villagebookUI.api.organisation :as org-api]))
 
 (defn- create-org [form success-handler error-handler]
   (when (:name form)
-    (org/create-org form
+    (org-api/create form
                     success-handler
                     error-handler)))
+
+(defn submit-create-org!
+  [org success-handler error-handler]
+  (create-org org
+              (fn [res]
+                (success-handler)
+                (fetchers/fetch-orgs! last))
+              error-handler))
 
 (defn org-creation-form [on-close-handler]
   (let [color (random-color)
@@ -18,9 +27,9 @@
     (fn []
       [:form.inline-block {:on-submit (fn [e]
                                         (.preventDefault e)
-                                        (create-org @form
-                                                    on-close-handler
-                                                    #(reset! error true)))}
+                                        (submit-create-org! @form
+                                                            on-close-handler
+                                                            #(reset! error true)))}
        [:div.inline-block
         [utils/color-picker-patch
          {:init-color color
