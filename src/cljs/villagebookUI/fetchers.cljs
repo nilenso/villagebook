@@ -7,10 +7,8 @@
 
 (defn fetch-user! []
   (user-api/get-data
-   (fn [res]
-     (user-store/add! res))
-   (fn [res]
-     (user-store/add! nil))
+   user-store/add!
+   #(user-store/add! nil)
    #(user-store/fetched!)))
 
 (defn fetch-orgs!
