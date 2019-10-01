@@ -14,7 +14,8 @@
                     :post         (with-auth org/create!)
                     ["/" :org-id] {:get          (with-auth org/retrieve)
                                    :delete       (with-auth org/delete!)
-                                   "/categories" {:post (with-auth category/create!)}}}
+                                   "/categories" {:get  (with-auth category/retrieve-by-org)
+                                                  :post (with-auth category/create!)}}}
    "user"          {:get (with-auth user/retrieve)}})
 
 

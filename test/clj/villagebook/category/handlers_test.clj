@@ -3,10 +3,10 @@
             [villagebook.category.db :as db]
             [villagebook.organisation.models :as org-models]
             [villagebook.category.handlers :as handlers]
-            [villagebook.factory :as factory]
-            [clojure.test :refer :all]
             [villagebook.user.handlers :as user]
-            [villagebook.user.db :as user-db]))
+            [villagebook.user.db :as user-db]
+            [villagebook.factory :as factory]
+            [clojure.test :refer :all]))
 
 (use-fixtures :once setup-once)
 (use-fixtures :each wrap-transaction)
@@ -22,3 +22,17 @@
           response       (handlers/create! request)]
       (is (= 201 (:status response)))
       (is (= factory/category1 (get-in response [:body :name]))))))
+
+
+(deftest retrieve-by-org-tests
+  (testing "Should retrieve an organisation's categories"
+    (let [{user-id :id}  (user-db/create! factory/user1)
+          {org :success} (org-models/create! factory/organisation user-id)
+          category       (db/create! factory/category1 (:id org))
+          request        {:params   {:org-id (str (:id org))}
+                          :identity {:id user-id}}
+          response       (handlers/retrieve-by-org request)]
+      (is (= 200 (:status response)))
+      (is (= factory/category1 (-> (:body response)
+                                   first
+                                   :name))))))

@@ -14,3 +14,10 @@
          (field-models/create-fields! trn (:id category) fields)
          {:success category})
       {:error "Permission denied"})))
+
+(defn retrieve-by-org
+  [org-id user-id]
+  (if (org-models/is-owner-or-member? org-id user-id)
+    (let [categories (db/retrieve-by-org org-id)]
+      {:success categories})
+    {:error "Permission denied"}))

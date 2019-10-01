@@ -3,7 +3,9 @@
             [clojure.edn :as edn]
             [villagebook.utils :as utils]
             [villagebook.category.models :as models]
-            [villagebook.category.spec :as category-spec]))
+            [villagebook.category.spec :as category-spec]
+            [villagebook.organisation.spec :as org-spec]
+            [clojure.spec.alpha :as s]))
 
 (defn create!
   [request]
@@ -15,4 +17,13 @@
     (if (category-spec/valid-category? name fields org-id)
       (utils/model-to-http (models/create! name fields org-id user-id)
                            {:success 201 :error 403})
+      (res/bad-request "Invalid request."))))
+
+(defn retrieve-by-org
+  [request]
+  (let [org-id  (edn/read-string (get-in request [:params :org-id]))
+        user-id (get-in request [:identity :id])]
+    (if (s/valid? ::org-spec/id org-id)
+      (utils/model-to-http (models/retrieve-by-org org-id user-id)
+                           {:success 200 :error 403})
       (res/bad-request "Invalid request."))))
