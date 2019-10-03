@@ -13,8 +13,8 @@
   (testing "Should create new fields belonging to a category"
     (let [{org-id :id}      (org-db/create! factory/organisation)
           {category-id :id} (category-db/create! factory/category1 org-id)
-          fields            [factory/field1 factory/field2]
-          reqd-fields       (db/create-fields! category-id fields)]
+          fields            (map #(assoc % :category_id category-id) [factory/field1 factory/field2])
+          reqd-fields       (db/create-fields! fields)]
       (is (= (set (map :name fields)) (set (map :name reqd-fields)))))))
 
 (deftest invalid-create-fields-test
@@ -22,5 +22,5 @@
     (let [{org-id :id}      (org-db/create! factory/organisation)
           {category-id :id} (category-db/create! factory/category1 org-id)
           fields            []
-          reqd-fields       (db/create-fields! category-id fields)]
+          reqd-fields       (db/create-fields! fields)]
       (is (= nil reqd-fields)))))
