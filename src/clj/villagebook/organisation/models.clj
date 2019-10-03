@@ -35,5 +35,6 @@
   (jdbc/with-db-transaction [trn (config/db-spec)]
     (if (is-owner? trn id user-id)
       (if-not (empty? (db/delete! trn id))
-        {:success "Organisation deleted"})
-      {:error "Invalid permission"})))
+        {:success "Organisation deleted"}
+        {:error "Error in deleting organisation"})
+      {:permission-error "Invalid permission"})))

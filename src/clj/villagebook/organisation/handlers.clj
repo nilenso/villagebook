@@ -41,12 +41,16 @@
 
 (defn- delete-send-response
   [user-id org-id]
-  (let [message (models/delete! user-id org-id)
-        success (:success message)]
-    (if success
-      (res/response success)
-      (-> (res/response (:error message))
-          (res/status 403)))))
+  (let [message          (models/delete! user-id org-id)
+        success          (:success message)
+        error            (:error message)
+        permission-error (:permission-error message)]
+    (cond
+      success          (res/response success)
+      error            (-> (res/response error)
+                           (res/status 500))
+      permission-error (-> (res/response permission-error)
+                           (res/status 403)))))
 
 (defn delete!
   [request]
