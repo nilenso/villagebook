@@ -2,7 +2,8 @@
   (:require [reagent.core :as r]
             [villagebookUI.components.utils :as utils]
             [villagebookUI.components.create-org :refer [org-creation-form]]
-            [villagebookUI.store.organisations :as org-store]))
+            [villagebookUI.store.organisations :as org-store]
+            [villagebookUI.fetchers :as fetchers]))
 
 (defn sidebar []
   (let [creating-org (r/atom false)]
@@ -21,7 +22,8 @@
              [:li.item {:key   id
                         :class (if (= id (:id (org-store/get-selected)))
                                  [:active])}
-              [:a.sidebar-link {:href (str "/orgs/" id)}
+              [:a.sidebar-link {:href     (str "/orgs/" id)
+                                :on-click #(fetchers/fetch-categories! (:id org) first)}
                [utils/patch (:color org)]
                (:name org)]]))
           [:li.item

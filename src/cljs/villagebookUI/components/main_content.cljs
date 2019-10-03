@@ -3,18 +3,21 @@
             [villagebookUI.api.organisation :as org-api]
             [villagebookUI.fetchers :as fetchers]
             [villagebookUI.components.utils :as utils]
-            [villagebookUI.components.create-category :refer [create-category-form]]
             [villagebookUI.store.ui :as ui-store]
+            [villagebookUI.store.categories :as category-store]
+            [villagebookUI.components.content-box :refer [content-box]]
             [villagebookUI.helpers :as helpers]))
 
-(declare navbar content-box delete-org-btn delete-org)
+(declare navbar delete-org-btn delete-org)
 
 (defn main-content []
   (let [org (org-store/get-selected)]
     [:div.main-content
      [navbar org]
      (if org
-       [content-box]
+       [content-box org
+        (category-store/get-by-org (:id org))
+        #(fetchers/fetch-categories! (:id org) first)]
        [:h5 "Oops, page not found"])
      [utils/alert-bottom (ui-store/get-el-state :alert-bottom)]]))
 
@@ -23,15 +26,6 @@
   [:div.navbar
    [:h5 (:name org)]
    [delete-org-btn org]])
-
-(defn content-box []
-  [:div.content-box
-   [:div.category-tabs
-    [:a.category-tab {:href "#"} "Category 1"]
-    [:a.category-tab {:href "#"} "Category 2"]
-    [:a.category-tab.active {:href "#"} "+ Add new"]]
-   [:div.simple-card
-    [create-category-form]]])
 
 (defn delete-org-btn
   [org]

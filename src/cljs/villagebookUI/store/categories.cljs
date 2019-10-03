@@ -6,6 +6,9 @@
 (def categories
   (r/cursor state [:categories]))
 
+(def selected-category
+  (r/cursor state [:selected-category]))
+
 (defn add-all! [org-id category-list]
   (swap! categories assoc org-id (map #(keywordize-keys %) category-list)))
 
@@ -14,6 +17,12 @@
 
 (defn get-by-org [org-id]
   (get @categories org-id))
+
+(defn set-selected! [category]
+  (reset! selected-category (keywordize-keys category)))
+
+(defn get-selected []
+  @selected-category)
 
 (defn init! []
   (reset! categories {}))
