@@ -42,7 +42,7 @@
      (fn [res]
        (show-error (:response res))))))
 
-(defn show-alert-bottom
+(defn show-alert-bottom!
   [status message & [time]]
   (let [time (if (number? time) (* time 1000) 4000)]
     (ui-store/set! :alert-bottom {:status  status
