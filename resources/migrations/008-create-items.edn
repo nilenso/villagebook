@@ -1,0 +1,12 @@
+;; resources/migrations/008-create-items.edn
+{:up   ["CREATE TABLE items (
+          id SERIAL PRIMARY KEY,
+          category_id INTEGER REFERENCES categories ON DELETE CASCADE NOT NULL);
+         CREATE TABLE field_values (
+           id          SERIAL PRIMARY KEY,
+           item_id     INTEGER REFERENCES items ON DELETE CASCADE NOT NULL,
+           field_id    INTEGER REFERENCES fields ON DELETE CASCADE NOT NULL,
+           category_id INTEGER REFERENCES categories ON DELETE CASCADE NOT NULL,
+           value       TEXT NOT NULL);"]
+ :down ["DROP TABLE items;
+         DROP TABLE field_values;"]}
