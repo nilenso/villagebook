@@ -9,6 +9,7 @@
 (defseq :orgcolor [n] (str "color" n))
 (defseq :category-name [n] (str "Category " n))
 (defseq :field-name [n] (str "Field " n))
+(defseq :field-value [n] (str "Field value " n))
 
 (deffactory :user
   {:email    (fseq :email)
@@ -31,3 +32,6 @@
 
 (def field1 (factory :field))
 (def field2 (factory :field))
+
+(defn field-value []
+  (fseq :field-value))
