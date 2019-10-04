@@ -357,4 +357,17 @@ a:hover {
   border-bottom: 1px solid transparent;
   background-size: 100% 2px, 100% 1px;
 }
+
+.grouped-input {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.remove-input {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  cursor: pointer;
+  color: #a21b1b;
+}
 /* End Dashboard*/

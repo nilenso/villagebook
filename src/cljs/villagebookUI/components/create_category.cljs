@@ -42,13 +42,16 @@
           [:span.input-group-text "Properties"]]
          (doall
           (for [[k field] @fields]
-            [utils/input {:key         k
-                          :type        "text"
-                          :class       [:form-control]
-                          :style       {:width "150px" :flex :none}
-                          :placeholder "Column name"
-                          :value       (:name field)
-                          :on-change   #(swap! fields assoc k {:name %})}]))
+            [:span
+             {:key   k
+              :style {:position :relative}}
+             [utils/input {:class       [:form-control :grouped-input]
+                           :style       {:width "150px" :flex :none}
+                           :placeholder "Column name"
+                           :value       (:name field)
+                           :on-change   #(swap! fields assoc k {:name %})}]
+             (if (> k 1)
+               [:span.remove-input {:on-click #(swap! fields dissoc k)} "x"])]))
          [:div.input-group-append
           [:a.btn.btn-outline-secondary
            {:on-click #(swap! fields assoc (new-field-key @fields) new-field)}
