@@ -1,0 +1,5 @@
+;; resources/migrations/007-add-categories-index.edn
+{:up   ["CREATE INDEX idx_category_org
+         ON categories(org_id);"]
+ :down ["ALTER TABLE categories
+         DROP INDEX idx_category_org;"]}
