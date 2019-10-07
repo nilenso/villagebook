@@ -9,9 +9,9 @@
   [name fields org-id user-id]
   (jdbc/with-db-transaction [trn (config/db-spec)]
     (if (helpers/is-org-owner-or-member? trn org-id user-id)
-      (let [category (db/create! trn name org-id)]
-         (field-models/create-fields! trn (:id category) fields)
-         {:success category})
+      (let [category       (db/create! trn name org-id)
+            created-fields (field-models/create-fields! trn (:id category) fields)]
+        {:success (assoc category :fields created-fields)})
       {:error "Permission denied"})))
 
 (defn retrieve-by-org

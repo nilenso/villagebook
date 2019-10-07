@@ -10,6 +10,7 @@
   (jdbc/with-db-transaction [trn (config/db-spec)]
     (if (helpers/is-category-owner-or-member? category-id user-id)
       ;;TODO: Add check if fields belong to category
+      ;;Create empty field if value not supplied for a category(?)
       (let [{item-id :id} (item-db/create! trn category-id)]
         (value-db/add-values! trn (->> values
                                        (map #(assoc % :category_id category-id
