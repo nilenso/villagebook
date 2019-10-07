@@ -1,26 +1,28 @@
-(ns villagebook.item.models-test
+(ns villagebook.item.handlers-test
   (:require [villagebook.fixtures :refer [setup-once wrap-transaction]]
-            [villagebook.field.db :as field-db]
             [villagebook.user.db :as user-db]
-            [villagebook.organisation.models :as org-models]
             [villagebook.category.db :as category-db]
-            [villagebook.item.models :as models]
+            [villagebook.field.db :as field-db]
+            [villagebook.organisation.models :as org-models]
+            [villagebook.item.handlers :as handlers]
             [villagebook.factory :as factory]
             [clojure.test :refer :all]))
 
 (use-fixtures :once setup-once)
 (use-fixtures :each wrap-transaction)
 
-(deftest create-tests
-  (testing "Should create an item with given fields"
+(deftest create-test
+  (testing "Should create an item in a category with given values"
     (let [user-id     (:id (user-db/create! factory/user1))
           org         (:success (org-models/create! factory/organisation user-id))
           category-id (:id (category-db/create! factory/category1
                                                 (:id org)))
           fields      (field-db/create-fields! (map #(assoc % :category_id category-id) [factory/field1 factory/field2]))
-          values      (for [f fields]
+          item        (for [f fields]
                         {:field_id (:id f)
                          :value    (factory/field-value)})
-          reqd-values (get-in (models/create! category-id values user-id) [:success :fields])]
-      (is (= (set (map :category-id reqd-values)) (set [category-id])))
-      (is (= (set (map :value reqd-values)) (set (map :value values)))))))
+          request     {:params   {:category-id (str category-id)
+                                  :item        item}
+                       :identity {:id user-id}}
+          response    (handlers/create! request)]
+      (is (= 201 (:status response))))))
