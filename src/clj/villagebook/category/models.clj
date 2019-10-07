@@ -1,15 +1,14 @@
 (ns villagebook.category.models
   (:require [villagebook.category.db :as db]
             [villagebook.field.models :as field-models]
-            [villagebook.organisation.models :as org-models]
+            [villagebook.model-helpers :as helpers]
             [clojure.java.jdbc :as jdbc]
-            [villagebook.category.spec :as spec]
             [villagebook.config :as config]))
 
 (defn create!
   [name fields org-id user-id]
   (jdbc/with-db-transaction [trn (config/db-spec)]
-    (if (org-models/is-owner-or-member? trn org-id user-id)
+    (if (helpers/is-org-owner-or-member? trn org-id user-id)
       (let [category (db/create! trn name org-id)]
          (field-models/create-fields! trn (:id category) fields)
          {:success category})
@@ -17,15 +16,7 @@
 
 (defn retrieve-by-org
   [org-id user-id]
-  (if (org-models/is-owner-or-member? org-id user-id)
+  (if (helpers/is-org-owner-or-member? org-id user-id)
     (let [categories (db/retrieve-by-org org-id)]
       {:success categories})
     {:error "Permission denied"}))
-
-(defn is-owner-or-member?
-  ([category-id user-id]
-   (is-owner-or-member? (config/db-spec) category-id user-id))
-  ([conn category-id user-id]
-   (org-models/is-owner-or-member? conn
-                                   (:org-id (db/retrieve conn category-id))
-                                   user-id)))

@@ -1,14 +1,14 @@
 (ns villagebook.item.models
-  (:require [villagebook.item.db :as item-db]
-            [villagebook.field-value.db :as value-db]
-            [clojure.java.jdbc :as jdbc]
+  (:require [clojure.java.jdbc :as jdbc]
             [villagebook.config :as config]
-            [villagebook.category.models :as category-models]))
+            [villagebook.model-helpers :as helpers]
+            [villagebook.field-value.db :as value-db]
+            [villagebook.item.db :as item-db]))
 
 (defn create!
   [category-id values user-id]
   (jdbc/with-db-transaction [trn (config/db-spec)]
-    (if (category-models/is-owner-or-member? category-id user-id)
+    (if (helpers/is-category-owner-or-member? category-id user-id)
       ;;TODO: Add check if fields belong to category
       (let [{item-id :id} (item-db/create! trn category-id)]
         (value-db/add-values! trn (->> values
@@ -19,7 +19,7 @@
 
 (defn retrieve
   [category-id id user-id]
-  (if (category-models/is-owner-or-member? category-id user-id)
+  (if (helpers/is-category-owner-or-member? category-id user-id)
     (if-let [values (value-db/retrieve-by-item id)]
       {:success {:id     id
                  :values values}})
