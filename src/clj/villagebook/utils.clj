@@ -1,5 +1,6 @@
 (ns villagebook.utils
-  (:require [ring.util.response :as res]))
+  (:require [ring.util.response :as res]
+            [clojure.edn :as edn]))
 
 (def email-pattern #"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
 
@@ -17,3 +18,7 @@
         result (get message status)]
     (-> (res/response result)
         (res/status (get response-codes status)))))
+
+(defn route-param->int
+  [param]
+  (edn/read-string param))

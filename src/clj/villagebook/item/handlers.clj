@@ -1,6 +1,5 @@
 (ns villagebook.item.handlers
-  (:require [clojure.edn :as edn]
-            [clojure.spec.alpha :as s]
+  (:require [clojure.spec.alpha :as s]
             [ring.util.response :as res]
             [villagebook.utils :as utils]
             [villagebook.item.models :as item-models]
@@ -9,7 +8,7 @@
 (defn create!
   [request]
   (let [params      (:params request)
-        category-id (edn/read-string (:category-id params))
+        category-id (utils/route-param->int (:category-id params))
         values      (:item params)
         user-id     (get-in request [:identity :id])]
     (if (and (s/valid? ::spec/id category-id)
