@@ -21,3 +21,11 @@
     (let [categories (db/retrieve-by-org org-id)]
       {:success categories})
     {:error "Permission denied"}))
+
+(defn is-owner-or-member?
+  ([category-id user-id]
+   (is-owner-or-member? (config/db-spec) category-id user-id))
+  ([conn category-id user-id]
+   (org-models/is-owner-or-member? conn
+                                   (:org-id (db/retrieve conn category-id))
+                                   user-id)))
