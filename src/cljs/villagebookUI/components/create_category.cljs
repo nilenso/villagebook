@@ -6,7 +6,7 @@
             [villagebookUI.api.category :as api]
             [villagebookUI.store.organisations :as org-store]))
 
-(defn submit-create-category
+(defn create-category
   [name fields]
   (let [org-id (:id (org-store/get-selected))]
     (api/create {:name   name
@@ -32,7 +32,7 @@
        [:form.form-group
         {:on-submit #(do
                        (.preventDefault %)
-                       (submit-create-category @name @fields))}
+                       (create-category @name @fields))}
         [utils/input {:type        "text"
                       :class       [:create-category-name]
                       :placeholder "Category name"
