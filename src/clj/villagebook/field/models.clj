@@ -7,5 +7,5 @@
    (create-fields! (config/db-spec) category-id fields))
   ([trn category-id fields]
    (let [field-rows (map #(assoc % :category_id category-id) fields)
-         categories (db/create-fields! trn field-rows)]
-     {:success categories})))
+         fields     (db/create-fields! trn field-rows)]
+     {:success fields})))
