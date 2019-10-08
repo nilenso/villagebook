@@ -6,16 +6,15 @@
             [villagebookUI.api.category :as api]
             [villagebookUI.store.organisations :as org-store]))
 
-(defn create-category
+(defn create-category!
   [name fields]
   (let [org-id (:id (org-store/get-selected))]
-    (api/create {:name   name
-                 :fields (map #(second %) fields)}
-                org-id
-                #(do
-                   (fetchers/fetch-categories! org-id last)
-                   (helpers/show-alert-bottom! :success (str "Category " name " created")))
-                #(helpers/show-alert-bottom! :error (:response %)))))
+    (api/create {:category      {:name   name
+                                 :fields (map #(second %) fields)}
+                 :org-id        org-id
+                 :handler       #(do (fetchers/fetch-categories! org-id last)
+                                     (helpers/show-alert-bottom! :success (str "Category " name " created")))
+                 :error-handler #(helpers/show-alert-bottom! :error (:response %))})))
 
 (defn new-field-key
   [fields]
@@ -32,7 +31,7 @@
        [:form.form-group
         {:on-submit #(do
                        (.preventDefault %)
-                       (create-category @name @fields))}
+                       (create-category! @name @fields))}
         [utils/input {:type        "text"
                       :class       [:create-category-name]
                       :placeholder "Category name"

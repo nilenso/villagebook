@@ -38,9 +38,9 @@
 (defn delete-org
   [org]
   (if (js/confirm (str "Are you sure you want to delete " (:name org) "?"))
-    (org-api/delete (:id org)
-                    (fn [res]
-                      (helpers/show-alert-bottom! :success res)
-                      (fetchers/fetch-orgs! first))
-                    (fn [res]
-                      (helpers/show-alert-bottom! :error res)))))
+    (org-api/delete {:id            (:id org)
+                     :handler       (fn [res]
+                                      (helpers/show-alert-bottom! :success res)
+                                      (fetchers/fetch-orgs! first))
+                     :error-handler (fn [res]
+                                      (helpers/show-alert-bottom! :error res))})))
