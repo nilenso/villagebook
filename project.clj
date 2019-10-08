@@ -15,13 +15,15 @@
                  [ring/ring-jetty-adapter "1.7.1"]
                  [ring/ring-devel "1.7.1"]
                  [ring/ring-json "0.4.0"]
+                 [ring-middleware-case-format "0.2.1"]
 
                  [bidi "2.1.6"]
                  [buddy/buddy-auth "2.2.0"]
                  [buddy/buddy-hashers "1.4.0"]
 
                  [aero "1.1.3"]
-                 [clj-factory "0.2.1"]]
+                 [clj-factory "0.2.1"]
+                 [cheshire "5.9.0"]]
 
   :ring {:handler villagebook.web/dev-handler
          :init    villagebook.config/init}

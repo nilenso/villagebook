@@ -13,5 +13,5 @@
           email (:email user)
           user-details (dissoc user1 :password)
           created-user (db/retrieve-by-email email)
-          created-user-details (apply dissoc created-user [:password :created_at :id])]
+          created-user-details (apply dissoc created-user [:password :created-at :id])]
       (is (= user-details created-user-details)))))
