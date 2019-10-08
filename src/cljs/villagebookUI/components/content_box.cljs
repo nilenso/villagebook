@@ -5,7 +5,7 @@
             [villagebookUI.fetchers :as fetchers]
             [villagebookUI.store.categories :as category-store]))
 
-(defn- category-active?
+(defn- category-selected?
   [category categories]
   (or (= (category-store/get-selected) category)
       (empty? categories)))
@@ -15,21 +15,24 @@
   [:a.category-tab {:href     "#"
                     :key      (:id category)
                     :on-click #(category-store/set-selected! category)
-                    :class    [(if (category-active? category categories)
+                    :class    [(if (category-selected? category categories)
                                  :active)]}
    name])
+
+(defn category-tabs [categories]
+  [:div.category-tabs
+   (doall
+    (for [category categories]
+      [category-tab categories category (:name category)]))
+   [category-tab categories :new "+ Add new"]])
 
 (defn content-box
   [org categories on-mount-cb]
   (on-mount-cb)
   (fn [org categories]
     [:div.content-box
-     [:div.category-tabs
-      (doall
-       (for [category categories]
-         [category-tab categories category (:name category)]))
-      [category-tab categories :new "+ Add new"]]
+     [category-tabs categories]
      [:div.simple-card
-      (if (category-active? :new categories)
+      (if (category-selected? :new categories)
         [create-category-form]
         [category-table (category-store/get-selected)])]]))
