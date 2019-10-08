@@ -15,8 +15,9 @@
         org-id  (edn/read-string (:org-id params))
         user-id (get-in request [:identity :id])]
     (if (category-spec/valid-category? name fields org-id)
-      (utils/model-to-http (models/create! name fields org-id user-id)
-                           {:success 201 :error 403})
+      (utils/model-to-http {:message        (models/create! name fields org-id user-id)
+                            :response-codes {:success 201
+                                             :error   403}})
       (res/bad-request "Invalid request."))))
 
 (defn retrieve-by-org
@@ -24,6 +25,7 @@
   (let [org-id  (edn/read-string (get-in request [:params :org-id]))
         user-id (get-in request [:identity :id])]
     (if (s/valid? ::org-spec/id org-id)
-      (utils/model-to-http (models/retrieve-by-org org-id user-id)
-                           {:success 200 :error 403})
+      (utils/model-to-http {:message        (models/retrieve-by-org org-id user-id)
+                            :response-codes {:success 200
+                                             :error   403}})
       (res/bad-request "Invalid request."))))
