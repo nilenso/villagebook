@@ -3,6 +3,7 @@
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.json :refer [wrap-json-response wrap-json-params]]
             [ring.middleware.cookies :refer [wrap-cookies]]
+            [ring.middleware.case-format :refer [wrap->kebab->snake]]
 
             [ring.util.response :as res]
             [ring.util.request :as req]
@@ -33,6 +34,7 @@
       (wrap-authorization (auth-backend))
       wrap-cookies
       ignore-trailing-slash
+      wrap->kebab->snake
       wrap-keyword-params
       wrap-params
       wrap-json-params

@@ -14,7 +14,7 @@
     (let [{user-id :id}      (user-db/create! factory/user1)
           {orgdata :success} (models/create! factory/organisation user-id)
           test-org           (-> factory/organisation
-                                 (assoc :user_id user-id)
+                                 (assoc :user-id user-id)
                                  (assoc :permission "owner"))
           required-keys      (keys test-org)
           new-org            (-> (db/retrieve-by-user user-id)
@@ -26,7 +26,7 @@
   (testing "Should retrieve an organisation given it's id"
     (let [{org-id :id}       (db/create! factory/organisation)
           {orgdata :success} (models/retrieve org-id)]
-      (is (= factory/organisation (dissoc orgdata :created_at :id))))))
+      (is (= factory/organisation (dissoc orgdata :created-at :id))))))
 
 (deftest invalid-retrieve-tests
   (testing "Should return an error map if organisation does not exist"

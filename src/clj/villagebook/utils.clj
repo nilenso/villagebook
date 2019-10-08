@@ -12,7 +12,7 @@
 
 (defn model-to-http
   "Translates a model's response to an http response with given status code."
-  [message response-codes]
+  [{:keys [message response-codes]}]
   (let [status (-> message keys first)
         result (get message status)]
     (-> (res/response result)

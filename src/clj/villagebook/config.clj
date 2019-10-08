@@ -14,9 +14,13 @@
   ([profile]
    (reset! config (read-config (io/resource "config.edn") {:profile profile}))))
 
+(defn- hyphenate [s]
+  (.replace s \_ \-))
+
 (defn db-spec
   []
-  (:db-spec @config))
+  {:connection-uri (:db-spec @config)
+   :identifiers    hyphenate})
 
 (defn jwt-secret
   []

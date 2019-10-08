@@ -12,7 +12,7 @@
   (testing "Should create an organisation"
     (let [{:keys [id]} (db/create! factory/organisation)]
       (is (= factory/organisation (-> (db/retrieve id)
-                                      (dissoc :id :created_at)))))))
+                                      (dissoc :id :created-at)))))))
 
 (deftest add-user-as-owner-tests
   (testing "Should make the user owner of the organisation"

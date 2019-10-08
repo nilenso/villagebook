@@ -15,3 +15,12 @@
           reqd-category (-> (db/create! factory/category1 org-id)
                             :name)]
       (is (= factory/category1 reqd-category)))))
+
+(deftest retrieve-tests
+  (testing "Should retrieve an organisation's categories"
+    (let [{org-id :id}  (org-db/create! factory/organisation)
+          reqd-category (-> (db/create! factory/category1 org-id)
+                            :name)]
+      (is (= factory/category1 (-> (db/retrieve-by-org org-id)
+                                   first
+                                   :name))))))
