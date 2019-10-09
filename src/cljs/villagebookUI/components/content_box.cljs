@@ -32,7 +32,7 @@
   (fn [org categories]
     [:div.content-box
      [category-tabs categories]
-     [:div.simple-card
+     [:div.card
       (if (category-selected? :new categories)
         [create-category-form]
         [category-table (category-store/get-selected)])]]))

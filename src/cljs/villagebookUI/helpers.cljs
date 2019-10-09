@@ -12,6 +12,13 @@
   (if (= (.-key el) "Escape")
     (handler)))
 
+(defn handle-enter-esc
+  [el enter-handler esc-handler]
+  (case (.-key el)
+    "Escape" (esc-handler)
+    "Enter"  (enter-handler)
+    :default))
+
 (defn org-id-from-url []
   (-> (session/route-params)
       :org-id

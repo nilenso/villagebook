@@ -299,7 +299,7 @@ a:hover {
   padding: 15px;
 }
 
-.simple-card {
+.card {
   background-color: #fff;
   border: 1px solid #e2e8ea;
   padding: 10px;
@@ -370,4 +370,72 @@ a:hover {
   cursor: pointer;
   color: #a21b1b;
 }
+
+/*Category table*/
+.table {
+  font-size: 14.5px;
+}
+
+.table th {
+  position: sticky;
+  top: 0;
+  background: white;
+}
+
+.table td {
+  max-width: 20vw;
+}
+
+.hover-disabled:hover {
+  background: #f2f2f2 !important;
+}
+
+.new-item-tr {
+  background-color: #f2f2f2;
+  border-bottom: none;
+}
+
+.new-item-tr td {
+  border-bottom: none;
+  padding-bottom: 3px;
+}
+
+.new-item-input {
+  padding: 2px;
+  max-width: 280px;
+}
+
+.add-item-tr {
+  text-align: right;
+  background: white !important;
+}
+
+.add-item-tr:hover {
+  background: transparent !important;
+}
+
+.add-item-td {
+  padding: 0 !important;
+}
+
+.add-item-box {
+  background: #f2f2f2;
+  margin-top: -1px;
+  display: inline-block;
+  padding: 5px 8px 5px 8px;
+  box-shadow: -2px 5px 5px -3px rgba(214,214,214,1);
+  border: 1px solid #dee2e6;
+  border-top: none;
+  border-right: none;
+}
+
+.tr-help-text {
+  text-align: right;
+  font-size: 12.5px;
+  padding: 0px 8px 5px 3px !important;
+  border-top: none !important;
+  background: #f2f2f2;
+}
+/*End category table*/
+
 /* End Dashboard*/
