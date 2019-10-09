@@ -390,12 +390,12 @@ a:hover {
   background: #f2f2f2 !important;
 }
 
-.new-item-tr {
+.new-item-row {
   background-color: #f2f2f2;
   border-bottom: none;
 }
 
-.new-item-tr td {
+.new-item-row td {
   border-bottom: none;
   padding-bottom: 3px;
 }
@@ -405,16 +405,16 @@ a:hover {
   max-width: 280px;
 }
 
-.add-item-tr {
+.add-item-row {
   text-align: right;
   background: white !important;
 }
 
-.add-item-tr:hover {
+.add-item-row:hover {
   background: transparent !important;
 }
 
-.add-item-td {
+.add-item-row td {
   padding: 0 !important;
 }
 

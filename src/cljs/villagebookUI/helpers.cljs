@@ -55,3 +55,7 @@
     (ui-store/set! :alert-bottom {:status  status
                                   :message message})
     (js/setTimeout #(ui-store/set! :alert-bottom nil) time)))
+
+(defn jsonify
+  [coll]
+  (.stringify js/JSON (clj->js coll)))
