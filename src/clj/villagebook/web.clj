@@ -3,7 +3,6 @@
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.json :refer [wrap-json-response wrap-json-params]]
             [ring.middleware.cookies :refer [wrap-cookies]]
-            [ring.middleware.case-format :refer [wrap->kebab->snake]]
 
             [ring.util.response :as res]
             [ring.util.request :as req]
@@ -12,7 +11,7 @@
             [bidi.ring :refer [make-handler]]
             [bidi.bidi :as bidi]
 
-            [villagebook.middleware :refer [ignore-trailing-slash]]
+            [villagebook.middleware :refer [ignore-trailing-slash wrap-response-snake]]
             [villagebook.routes :refer [routes]]
             [villagebook.config :as config]
             [villagebook.auth.core :as auth]))
@@ -34,7 +33,7 @@
       (wrap-authorization (auth-backend))
       wrap-cookies
       ignore-trailing-slash
-      wrap->kebab->snake
+      wrap-response-snake
       wrap-keyword-params
       wrap-params
       wrap-json-params

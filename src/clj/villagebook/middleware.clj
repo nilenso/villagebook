@@ -1,5 +1,6 @@
 (ns villagebook.middleware
-  (:require [buddy.auth :refer [authenticated? throw-unauthorized]]))
+  (:require [buddy.auth :refer [authenticated? throw-unauthorized]]
+            [ring.middleware.case-format :refer [->snake]]))
 
 (defn ignore-trailing-slash
   "Modifies the request uri before calling the handler.
@@ -18,3 +19,10 @@
     (if (authenticated? request)
       (handler request)
       (throw-unauthorized))))
+
+(defn wrap-response-snake
+  "Converts's response body into snake_case"
+  [handler]
+  (fn [request]
+    (let [response (handler request)]
+      (update response :body ->snake))))
