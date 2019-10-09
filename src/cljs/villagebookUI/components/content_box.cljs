@@ -23,7 +23,7 @@
   [:div.category-tabs
    (doall
     (for [category categories]
-      [category-tab categories category (:name category)]))
+      ^{:key (:id category)}[category-tab categories category (:name category)]))
    [category-tab categories :new "+ Add new"]])
 
 (defn content-box
