@@ -1,6 +1,7 @@
 (ns villagebook.organisation.handlers
   (:require [ring.util.response :as res]
             [clojure.edn :as edn]
+            [villagebook.utils :as utils]
             [villagebook.organisation.db :as db]
             [villagebook.organisation.models :as models]
             [villagebook.organisation.spec :as organisation-spec]
@@ -18,20 +19,12 @@
             (res/status 201)))
       (res/bad-request "Invalid request."))))
 
-(defn- retrieve-from-model
-  [id]
-  (let [message (models/retrieve id)
-        org     (:success message)
-        error   (:error message)]
-    (if org
-      (res/response org)
-      (res/not-found error))))
-
 (defn retrieve
   [request]
-  (let [id (edn/read-string (get-in request [:params :id]))]
+  (let [id (edn/read-string (get-in request [:params :org-id]))]
     (if (s/valid? ::organisation-spec/id id)
-      (retrieve-from-model id)
+      (utils/model-to-http (models/retrieve id)
+                           {:success 200 :error 404})
       (res/bad-request "Invalid request."))))
 
 (defn retrieve-by-user
@@ -39,23 +32,11 @@
   (let [user-id (get-in request [:identity :id])]
     (res/response (:success (models/retrieve-by-user user-id)))))
 
-(defn- delete-send-response
-  [user-id org-id]
-  (let [message          (models/delete! user-id org-id)
-        success          (:success message)
-        error            (:error message)
-        permission-error (:permission-error message)]
-    (cond
-      success          (res/response success)
-      error            (-> (res/response error)
-                           (res/status 500))
-      permission-error (-> (res/response permission-error)
-                           (res/status 403)))))
-
 (defn delete!
   [request]
   (let [user-id (get-in request [:identity :id])
-        id      (edn/read-string (get-in request [:params :id]))]
+        id      (edn/read-string (get-in request [:params :org-id]))]
     (if (s/valid? ::organisation-spec/id id)
-      (delete-send-response user-id id)
+      (utils/model-to-http (models/delete! user-id id)
+                           {:success 200 :error 500 :permission-error 403})
       (res/bad-request "Invalid request."))))

@@ -1,7 +1,7 @@
 (ns villagebook.web
   (:require [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
-            [ring.middleware.json :refer [wrap-json-response]]
+            [ring.middleware.json :refer [wrap-json-response wrap-json-params]]
             [ring.middleware.cookies :refer [wrap-cookies]]
 
             [ring.util.response :as res]
@@ -35,6 +35,7 @@
       ignore-trailing-slash
       wrap-keyword-params
       wrap-params
+      wrap-json-params
       wrap-json-response))
 
 (def dev-handler (app-handler))
