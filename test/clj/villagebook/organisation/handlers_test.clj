@@ -45,3 +45,18 @@
           response (handlers/retrieve-by-user request)]
       (is (= 200 (:status response)))
       (is (empty? (:body response))))))
+
+(deftest delete-tests
+  (testing "Should delete an organisation"
+    (let [{user-id :id}      (user-db/create! factory/user1)
+          {orgdata :success} (models/create! factory/organisation user-id)
+          id                 (:id orgdata)
+          request            {:identity {:id user-id} :params {:id (str id)}}
+          response           (handlers/delete! request)]
+      (is (= 200 (:status response))))))
+
+(deftest invalid-delete-tests
+  (testing "Should return 403 if invalid permission or organisation does not exist"
+    (let [request  {:identity {:id 0} :params {:id (str 1)}}
+          response (handlers/delete! request)]
+      (is (= 403 (:status response))))))

@@ -48,3 +48,20 @@
                                             [:= :organisations.id :organisation_permissions.org_id])
                                     (h/where [:= :user-id user-id])
                                     (sql/format)))))
+
+(defn get-permission
+  "Returns the permission a user has on an organisation"
+  ([user-id org-id]
+   (get-permission (config/db-spec) user-id org-id))
+  ([conn user-id org-id]
+   (-> (jdbc/find-by-keys conn :organisation_permissions {:user_id user-id
+                                                          :org_id  org-id})
+       first
+       :permission)))
+
+(defn delete!
+  "Deletes an organisation by id."
+  ([id]
+   (delete! (config/db-spec) id))
+  ([conn id]
+   (jdbc/delete! conn :organisations ["id = ?" id])))

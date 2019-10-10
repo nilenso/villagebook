@@ -1,6 +1,6 @@
 (ns villagebookUI.helpers
-  (:require [villagebookUI.store.session :as session]))
-
+  (:require [villagebookUI.store.session :as session]
+            [villagebookUI.store.ui :as ui-store]))
 
 (defn random-color []
   (str "hsl(" (->> (.random js/Math)
@@ -41,3 +41,10 @@
        (on-success))
      (fn [res]
        (show-error (:response res))))))
+
+(defn show-alert-bottom!
+  [status message & [time]]
+  (let [time (if (number? time) (* time 1000) 4000)]
+    (ui-store/set! :alert-bottom {:status  status
+                                  :message message})
+    (js/setTimeout #(ui-store/set! :alert-bottom nil) time)))

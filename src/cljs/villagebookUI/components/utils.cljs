@@ -39,3 +39,10 @@
                              (reset! color %))}]
        [:label.item-label.new-item-label  {:for   "new-item-label"
                                            :style {"backgroundColor" @color}}]])))
+
+(defn alert-bottom
+  [alert]
+  [:div.alert-bottom
+   {:style {:display (if alert :block :none)}
+    :class (:status alert)}
+   (:message alert)])
