@@ -3,6 +3,7 @@
             [villagebook.config :as config]
             [villagebook.model-helpers :as helpers]
             [villagebook.field-value.db :as value-db]
+            [villagebook.field.db :as field-db]
             [villagebook.item.db :as item-db]))
 
 (defn create!
@@ -25,3 +26,22 @@
       {:success {:id     id
                  :values values}})
     {:error "Permission denied"}))
+
+(defn- group-by-item
+  [values]
+  (->> values
+       (group-by :item-id)
+       (map (fn [[k v]]
+              {:id     k
+               :values (map #(dissoc % :item-id) v)}))))
+
+(defn retrieve-by-category
+  [category-id user-id]
+  "Retrieves all items in a category alongwith the category schema"
+  (jdbc/with-db-transaction [trn (config/db-spec)]
+    (if (helpers/is-category-owner-or-member? category-id user-id)
+      {:success {:fields (field-db/retrieve-by-category category-id)
+                 :items  (-> category-id
+                             value-db/retrieve-by-category
+                             group-by-item)}}
+      {:error "Permission denied"})))

@@ -19,3 +19,7 @@
                                            [:= :categories.id :fields.category_id])
                                    (h/where [:= :org_id org-id])
                                    (sql/format))))
+
+(defn retrieve-by-category
+  [category-id]
+  (jdbc/find-by-keys (config/db-spec) :fields {:category_id category-id}))
