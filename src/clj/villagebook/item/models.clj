@@ -17,5 +17,4 @@
                                                        (map #(-> %
                                                                  (assoc :category_id category-id)
                                                                  (assoc :item_id item-id)))))}})
-
       {:error "Permission denied"})))
