@@ -21,6 +21,7 @@
           values      (for [f fields]
                         {:field_id (:id f)
                          :value    (factory/field-value)})
-          reqd-values (get-in (models/create! category-id values user-id) [:success :fields])]
-      ;TODO: Check by retrieve
-      (is (= (count reqd-values) (count values))))))
+          item-id     (get-in (models/create! category-id values user-id) [:success :id])
+          reqd-values (get-in (models/retrieve category-id item-id user-id) [:success :values])]
+      (is (= (set (map :category-id reqd-values)) (set [category-id])))
+      (is (= (set (map :values reqd-values)) (set (map :values values)))))))

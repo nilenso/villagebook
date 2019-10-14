@@ -1,8 +1,8 @@
 {:secrets    #include #join [#env HOME "/.villagebook-secrets.edn"]
 
- :db-spec    #profile {:default    "jdbc:postgresql://localhost:5432/villagebook"
-                       :test       "jdbc:postgresql://localhost:5432/villagebook_test"
-                       :production "jdbc:postgresql://localhost:5432/villagebook_prod?user=postgres"}
+ :db-spec    #profile {:default    "jdbc:postgresql://localhost:5432/villagebook?reWritebatchedinserts=true"
+                       :test       "jdbc:postgresql://localhost:5432/villagebook_test?reWritebatchedinserts=true"
+                       :production "jdbc:postgresql://localhost:5432/villagebook_prod?user=postgres&reWritebatchedinserts=true"}
  :jwt-secret #profile {:default    "secret"
                        :test       "secret"
                        :production #ref [:secrets :jwt-secret]}}

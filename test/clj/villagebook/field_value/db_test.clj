@@ -23,6 +23,7 @@
                              :field_id    (:id f)
                              :item_id     item-id
                              :value       (factory/field-value)})
-          reqd-value-rows (db/add-values! value-rows)]
-      ;TODO: Check by retrieve
-      (is (= (count reqd-value-rows) (count value-rows))))))
+          add-values      (db/add-values! value-rows)
+          reqd-value-rows (db/retrieve-by-item item-id)]
+      (is (= (set (map :category-id reqd-value-rows)) (set [category-id])))
+      (is (= (set (map :values reqd-value-rows)) (set (map :values value-rows)))))))

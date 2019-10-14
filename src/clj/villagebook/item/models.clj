@@ -11,10 +11,16 @@
     (if (category-models/is-owner-or-member? category-id user-id)
       ;;TODO: Add check if fields belong to category
       (let [{item-id :id} (item-db/create! trn category-id)]
-        {:success {:item-id item-id
-                   :fields  (value-db/add-values! trn
-                                                  (->> values
-                                                       (map #(-> %
-                                                                 (assoc :category_id category-id)
-                                                                 (assoc :item_id item-id)))))}})
+        (value-db/add-values! trn (->> values
+                                       (map #(assoc % :category_id category-id
+                                                      :item_id item-id))))
+        {:success {:id item-id}})
       {:error "Permission denied"})))
+
+(defn retrieve
+  [category-id id user-id]
+  (if (category-models/is-owner-or-member? category-id user-id)
+    (if-let [values (value-db/retrieve-by-item id)]
+      {:success {:id     id
+                 :values values}})
+    {:error "Permission denied"}))

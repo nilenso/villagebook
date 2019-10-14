@@ -14,3 +14,7 @@
      (jdbc/insert-multi! conn :field_values
                          columns
                          (map #(vals-by-keys % columns) value-rows)))))
+
+(defn retrieve-by-item
+  [item-id]
+  (jdbc/find-by-keys (config/db-spec) :field_values {:item_id item-id}))
