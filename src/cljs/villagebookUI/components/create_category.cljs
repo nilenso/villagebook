@@ -21,7 +21,7 @@
   (-> fields last first inc))
 
 (def new-field
-  {:name "New column"})
+  {:name ""})
 
 (defn create-category-form []
   (let [name   (r/atom "")

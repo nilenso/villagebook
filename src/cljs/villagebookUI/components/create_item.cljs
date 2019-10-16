@@ -5,20 +5,21 @@
             [villagebookUI.store.organisations :as org-store]
             [villagebookUI.api.item :as item-api]))
 
-(defn- create-item
-  [category-id item]
-  (item-api/create {:org-id        (:id (org-store/get-selected))
-                    :category-id   category-id
-                    :item          {:item (map (fn [[k v]] {:field_id k
-                                                            :value    v}) item)}
-                    :handler       #(helpers/show-alert-bottom! :success "Item added")
-                    :error-handler #(helpers/show-alert-bottom! :error (:response %))}))
+(defn- create-item!
+  [category-id item close-cb]
+  (let [org-id (:id (org-store/get-selected))]
+    (item-api/create {:org-id        org-id
+                      :category-id   category-id
+                      :item          {:item (map (fn [[k v]] {:field_id k
+                                                              :value    v}) item)}
+                      :handler       #(helpers/show-alert-bottom! :success "Item added")
+                      :error-handler #(helpers/show-alert-bottom! :error (:response %))})))
 
 (defn new-item-row
-  [category-id fields cancel-cb]
+  [category-id fields row-number close-cb]
   (r/with-let [item (r/atom (reduce #(assoc %1 (:id %2) "") {} fields))]
     [:tr.new-item-row.hover-disabled
-     [:td "1"]
+     [:td row-number]
      (for [field fields]
        [:td {:key (:id field)}
         [utils/input
@@ -26,8 +27,10 @@
           :on-change   #(swap! item assoc (:id field) %)
           :on-key-down (fn [e]
                          (helpers/handle-enter-esc e
-                                                   #(create-item category-id @item)
-                                                   cancel-cb))
+                                           #(create-item! category-id
+                                                         @item
+                                                         close-cb)
+                                           close-cb))
           :autoFocus   (if (= field (first fields)) true)}]])]))
 
 (defn item-help-text

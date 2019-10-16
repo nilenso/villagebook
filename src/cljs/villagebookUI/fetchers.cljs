@@ -5,8 +5,9 @@
             [villagebookUI.store.organisations :as org-store]
             [villagebookUI.api.organisation :as org-api]
             [villagebookUI.store.categories :as category-store]
-            [villagebookUI.api.category :as category-api]))
-
+            [villagebookUI.api.category :as category-api]
+            [villagebookUI.api.item :as item-api]
+            [villagebookUI.store.items :as item-store]))
 
 (defn fetch-user! []
   (user-api/get-data
@@ -38,3 +39,12 @@
                             selector-fn
                             category-store/set-selected!)))
     :error-handler #(category-store/add-all! org-id nil)}))
+
+(defn fetch-items!
+  [org-id category-id]
+  (item-api/get-all
+   {:org-id        org-id
+    :category-id   category-id
+    :handler       (fn [res]
+                     (item-store/add-all-to-category! category-id res))
+    :error-handler identity}))

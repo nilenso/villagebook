@@ -374,12 +374,18 @@ a:hover {
 /*Category table*/
 .table {
   font-size: 14.5px;
+  table-layout: fixed;
+  min-width: 800px;
 }
 
 .table th {
   position: sticky;
   top: 0;
   background: white;
+}
+
+.table th:first-child {
+  width: 60px;
 }
 
 .table td {

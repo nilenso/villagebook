@@ -1,8 +1,11 @@
 (ns villagebookUI.api.item
-  (:require [ajax.core :refer [POST]]
+  (:require [ajax.core :refer [GET POST]]
             [villagebookUI.helpers :as helpers]))
 
 (defn ^:private create-item-api [org-id category-id]
+  (str "/api/organisations/" org-id "/categories/" category-id))
+
+(defn ^:private get-all-items-api [org-id category-id]
   (str "/api/organisations/" org-id "/categories/" category-id))
 
 (defn create [{:keys [org-id category-id item handler error-handler]}]
@@ -11,3 +14,9 @@
          :headers       {:content-type "application/json"}
          :handler       handler
          :error-handler error-handler}))
+
+(defn get-all [{:keys [org-id category-id handler error-handler]}]
+  (GET (get-all-items-api org-id category-id)
+       {:handler         handler
+        :response-format :json
+        :error-handler   error-handler}))

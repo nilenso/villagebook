@@ -3,6 +3,7 @@
             [villagebookUI.components.create-category :refer [create-category-form]]
             [villagebookUI.components.category-table :refer [category-table]]
             [villagebookUI.fetchers :as fetchers]
+            [villagebookUI.store.organisations :as org-store]
             [villagebookUI.store.categories :as category-store]))
 
 (defn- category-selected?
@@ -14,7 +15,10 @@
   [categories category name]
   [:a.category-tab {:href     "#"
                     :key      (:id category)
-                    :on-click #(category-store/set-selected! category)
+                    :on-click #(do
+                                 (category-store/set-selected! category)
+                                 (fetchers/fetch-items! (:id (org-store/get-selected))
+                                                        (:id category)))
                     :class    [(if (category-selected? category categories)
                                  :active)]}
    name])
@@ -35,4 +39,6 @@
      [:div.card
       (if (category-selected? :new categories)
         [create-category-form]
-        [category-table (category-store/get-selected)])]]))
+        (let [selected-category (category-store/get-selected)]
+          [category-table selected-category #(fetchers/fetch-items! (:id org)
+                                                                    (:id selected-category))]))]]))
