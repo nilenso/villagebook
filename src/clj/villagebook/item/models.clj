@@ -45,3 +45,13 @@
                              value-db/retrieve-by-category
                              group-by-item)}}
       {:error "Permission denied"})))
+
+(defn update!
+  [item-id values]
+  (jdbc/with-db-transaction [trn (config/db-spec)]
+    ;; TODO: Check if user can update item
+    (doseq [value values]
+      (value-db/update! item-id
+                        (:field_id value)
+                        (:value value)))
+    {:success {:values (value-db/retrieve-by-item trn item-id)}}))

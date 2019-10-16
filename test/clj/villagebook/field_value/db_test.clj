@@ -27,3 +27,20 @@
           reqd-value-rows (db/retrieve-by-item item-id)]
       (is (= (set (map :category-id reqd-value-rows)) (set [category-id])))
       (is (= (set (map :values reqd-value-rows)) (set (map :values value-rows)))))))
+
+(deftest update-tests
+  (testing "Should udpate a field-value"
+    (let [org-id        (:id (org-db/create! factory/organisation))
+          category-id   (:id (category-db/create! factory/category1 org-id))
+          fields        (field-db/create-fields! (map #(assoc % :category_id category-id) [factory/field1 factory/field2]))
+          item-id       (:id (item-db/create! category-id))
+          add-values    (db/add-values! (for [f fields]
+                                          {:category_id (:category-id f)
+                                           :field_id    (:id f)
+                                           :item_id     item-id
+                                           :value       (factory/field-value)}))
+          value         (first (db/retrieve-by-item item-id))
+          update-value  (db/update! item-id  (:field-id value) "new-value")
+          updated-value (db/retrieve (:id value))]
+      (is (= '(1) update-value))
+      (is (= updated-value (assoc value :value "new-value"))))))

@@ -4,6 +4,7 @@
             [villagebook.user.db :as user-db]
             [villagebook.organisation.models :as org-models]
             [villagebook.category.db :as category-db]
+            [villagebook.field-value.db :as value-db]
             [villagebook.item.models :as models]
             [villagebook.factory :as factory]
             [clojure.test :refer :all]))
@@ -42,3 +43,22 @@
                          (get-in [:success :items])
                          first)]
       (is (= (:id item)(:id reqd-item))))))
+
+(deftest update-tests
+  (testing "Should update an item's values"
+    (let [user-id       (:id (user-db/create! factory/user1))
+          org           (:success (org-models/create! factory/organisation user-id))
+          category-id   (:id (category-db/create! factory/category1
+                                                  (:id org)))
+          fields        (field-db/create-fields! (map #(assoc % :category_id category-id) [factory/field1 factory/field2]))
+          values        (for [f fields]
+                          {:field_id (:id f)
+                           :value    (factory/field-value)})
+          item-id       (get-in (models/create! category-id values user-id) [:success :id])
+          updated-value (-> (models/update! item-id
+                                            [{:field_id (:id (first fields))
+                                              :value    "New value"}])
+                            (get-in [:success :values])
+                            first)]
+      (is (= "New value" (:value updated-value)))
+      (is (= (:field_id (first values))(:field-id updated-value))))))

@@ -17,9 +17,16 @@
                          columns
                          (map #(vals-by-keys % columns) value-rows)))))
 
+(defn retrieve
+  [id]
+  (-> (jdbc/find-by-keys (config/db-spec) :field_values {:id id})
+      first))
+
 (defn retrieve-by-item
-  [item-id]
-  (jdbc/find-by-keys (config/db-spec) :field_values {:item_id item-id}))
+  ([item-id]
+   (retrieve-by-item (config/db-spec) item-id))
+  ([conn item-id]
+   (jdbc/find-by-keys conn :field_values {:item_id item-id})))
 
 (defn retrieve-by-category
   [category-id]
@@ -27,3 +34,12 @@
                                    (h/from :field_values)
                                    (h/where [:= :category_id category-id])
                                    (sql/format))))
+
+(defn update!
+  ([item-id field-id value]
+   (update! (config/db-spec) item-id field-id value))
+  ([conn item-id field-id value]
+   (jdbc/execute! conn (-> (h/update :field-values)
+                           (h/sset {:value value})
+                           (h/where [:= :item-id item-id][:= :field-id field-id])
+                           (sql/format)))))

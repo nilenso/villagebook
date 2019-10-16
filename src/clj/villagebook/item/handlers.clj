@@ -27,3 +27,13 @@
       (utils/model-to-http {:message        (item-models/retrieve-by-category category-id user-id)
                             :response-codes {:success 200
                                              :error   403}}))))
+(defn update!
+  [request]
+  (let [params  (:params request)
+        item-id (:item-id params)
+        values  (:values params)]
+    (if (and (s/valid? ::spec/id item-id)
+             (spec/valid-item? values))
+      (utils/model-to-http {:message        (item-models/update! item-id values)
+                            :response-codes {:success 200}})
+      (res/bad-request "Invalid request"))))

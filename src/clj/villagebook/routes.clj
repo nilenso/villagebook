@@ -18,7 +18,8 @@
                                    "/categories" {:get               (with-auth category/retrieve-by-org)
                                                   :post              (with-auth category/create!)
                                                   ["/" :category-id] {:get  (with-auth item/retrieve-by-category)
-                                                                      :post (with-auth item/create!)}}}}
+                                                                      :post (with-auth item/create!)
+                                                                      :put  (with-auth item/update!)}}}}
    "user"          {:get (with-auth user/retrieve)}})
 
 
