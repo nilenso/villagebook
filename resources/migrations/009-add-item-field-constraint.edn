@@ -1,0 +1,6 @@
+;; resources/migrations/009-add-item-field-constraint.edn
+{:up   ["ALTER TABLE field_values
+         ADD CONSTRAINT item_field_unique
+         UNIQUE (item_id, field_id);"]
+ :down ["ALTER TABLE field_values
+         DROP CONSTRAINT item_field_unique;"]}

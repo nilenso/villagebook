@@ -6,6 +6,7 @@
             [villagebook.user.handlers :as user]
             [villagebook.organisation.handlers :as org]
             [villagebook.category.handlers :as category]
+            [villagebook.item.handlers :as item]
             [villagebook.handlers :refer [api-handler frontend-handler]]
             [villagebook.config :as config]))
 
@@ -15,7 +16,8 @@
                     ["/" :org-id] {:get          (with-auth org/retrieve)
                                    :delete       (with-auth org/delete!)
                                    "/categories" {:get  (with-auth category/retrieve-by-org)
-                                                  :post (with-auth category/create!)}}}
+                                                  :post (with-auth category/create!)
+                                                  ["/" :category-id] {:post (with-auth item/create!)}}}}
    "user"          {:get (with-auth user/retrieve)}})
 
 

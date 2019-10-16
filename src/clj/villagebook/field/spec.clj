@@ -1,6 +1,5 @@
 (ns villagebook.field.spec
-  (:require [clojure.spec.alpha :as s]
-            [clojure.spec.gen.alpha :as gen]))
+  (:require [clojure.spec.alpha :as s]))
 
 (s/def ::name (s/and string? (complement clojure.string/blank?)))
 (s/def ::type #{"text"})
