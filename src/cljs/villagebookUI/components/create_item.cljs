@@ -2,6 +2,7 @@
   (:require [reagent.core :as r]
             [villagebookUI.helpers :as helpers]
             [villagebookUI.components.utils :as utils]
+            [villagebookUI.fetchers :as fetchers]
             [villagebookUI.store.organisations :as org-store]
             [villagebookUI.api.item :as item-api]))
 
@@ -12,7 +13,9 @@
                       :category-id   category-id
                       :item          {:item (map (fn [[k v]] {:field_id k
                                                               :value    v}) item)}
-                      :handler       #(helpers/show-alert-bottom! :success "Item added")
+                      :handler       #(do (close-cb)
+                                          (fetchers/fetch-items! org-id category-id)
+                                          (helpers/show-alert-bottom! :success "Item added"))
                       :error-handler #(helpers/show-alert-bottom! :error (:response %))})))
 
 (defn new-item-row
