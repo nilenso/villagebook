@@ -11,6 +11,9 @@
         src: "villagebook.service"
         dest: /etc/systemd/system
 
+    - name: Compile frontend app
+      local_action: shell shadow-cljs release villagebookUI
+
     - name: Generate Uberjar on local machine
       local_action: shell lein uberjar
 
