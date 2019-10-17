@@ -2,6 +2,8 @@
 - hosts: all
   remote_user: deploy
   gather_facts: false
+  environment:
+    CONFIG_PROFILE: "production"
   tasks:
     - name: Copy service file
       become: true
@@ -20,7 +22,8 @@
         mode: '0644'
 
     - name: Run villagebook migrations
-      become_user: deploy
+      become: true
+      become_user: postgres
       shell: cd /home/deploy/ && java -jar villagebook-0.1.0-SNAPSHOT-standalone.jar migrate
 
     - name: Start villagebook service
