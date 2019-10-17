@@ -18,7 +18,11 @@
        [content-box org
         (category-store/get-by-org (:id org))
         #(fetchers/fetch-categories! (:id org) first)]
-       [:h5 "Oops, page not found"])
+       [:div.content-box
+        [:div.card
+         (if (empty? (org-store/get-all))
+           [:h5 "Create a new organisation to get started."]
+           [:h5 "Oops, page not found"])]])
      [utils/alert-bottom (ui-store/get-el-state :alert-bottom)]]))
 
 (defn- navbar

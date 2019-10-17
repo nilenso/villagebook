@@ -9,6 +9,8 @@
             [villagebookUI.api.item :as item-api]
             [villagebookUI.store.items :as item-store]))
 
+(declare fetch-categories!)
+
 (defn fetch-user! []
   (user-api/get-data
    {:handler       user-store/add!
@@ -21,11 +23,10 @@
    {:handler       (fn [res]
                      (org-store/add-all! res)
                      (when selector-fn
-                       (accountant/navigate!
-                        (->> (org-store/get-all)
-                             selector-fn
-                             :id
-                             (str "/orgs/")))))
+                       (when-let [org (selector-fn (org-store/get-all))]
+                         (accountant/navigate!
+                          (str "/orgs/" (:id org)))
+                         (fetch-categories! (:id org) first))))
     :error-handler identity}))
 
 (defn fetch-categories!
