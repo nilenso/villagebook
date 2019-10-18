@@ -1,7 +1,9 @@
 (ns villagebook.user.spec
-  (:require [villagebook.utils :refer [email-pattern required]]
+  (:require [villagebook.utils :refer [required]]
             [villagebook.user.db :as db]
             [clojure.spec.alpha :as s]))
+
+(def email-pattern #"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
 
 (defn email?
   [value]
