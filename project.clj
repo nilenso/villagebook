@@ -27,7 +27,8 @@
 
   :ring {:handler villagebook.web/dev-handler
          :init    villagebook.config/init}
-  :plugins [[lein-ring "0.12.5"]]
+  :plugins [[lein-ring "0.12.5"]
+            [lein-cloverage "1.1.2"]]
   :main villagebook.core
   :aot [villagebook.core]
   :repl-options {:init-ns villagebook.core}
