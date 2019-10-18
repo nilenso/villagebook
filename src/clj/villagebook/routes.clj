@@ -1,13 +1,12 @@
 (ns villagebook.routes
   (:require [bidi.ring :refer [make-handler resources]]
             [buddy.auth.middleware :refer [wrap-authorization]]
-
             [villagebook.middleware :refer [with-auth]]
             [villagebook.user.handlers :as user]
             [villagebook.organisation.handlers :as org]
             [villagebook.category.handlers :as category]
             [villagebook.item.handlers :as item]
-            [villagebook.handlers :refer [api-handler frontend-handler]]
+            [villagebook.handlers :refer [frontend-handler]]
             [villagebook.config :as config]))
 
 (def api-routes
