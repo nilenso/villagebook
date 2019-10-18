@@ -8,7 +8,7 @@
 (defn create!
   [request]
   (let [params      (:params request)
-        category-id (utils/route-param->int (:category-id params))
+        category-id (utils/string->int (:category-id params))
         values      (:item params)
         user-id     (get-in request [:identity :id])]
     (if (and (s/valid? ::spec/id category-id)
@@ -21,7 +21,7 @@
 (defn retrieve-by-category
   [request]
   (let [params      (:params request)
-        category-id (utils/route-param->int (:category-id params))
+        category-id (utils/string->int (:category-id params))
         user-id     (get-in request [:identity :id])]
     (if (s/valid? ::spec/id category-id)
       (utils/model-to-http {:message        (item-models/retrieve-by-category category-id user-id)

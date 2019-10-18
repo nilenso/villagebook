@@ -19,6 +19,6 @@
     (-> (res/response result)
         (res/status (get response-codes status)))))
 
-(defn route-param->int
+(defn string->int
   [param]
   (edn/read-string param))
