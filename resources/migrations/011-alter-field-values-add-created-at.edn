@@ -1,0 +1,5 @@
+;; resources/migrations/011-alter-field-values-add-created-at.edn
+{:up   ["ALTER TABLE field_values
+         ADD created_at TIMESTAMP DEFAULT now();"]
+ :down ["ALTER TABLE field_values
+         DROP created_at;"]}
