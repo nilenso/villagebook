@@ -1,0 +1,5 @@
+;; resources/migrations/010-alter-items-add-created-at.edn
+{:up   ["ALTER TABLE items
+         ADD created_at TIMESTAMP DEFAULT now();"]
+ :down ["ALTER TABLE items
+         DROP created_at;"]}
