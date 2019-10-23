@@ -33,6 +33,7 @@
   (jdbc/query (config/db-spec) (-> (h/select :id :item_id :field_id :value)
                                    (h/from :field_values)
                                    (h/where [:= :category_id category-id])
+                                   (h/order-by [:created_at])
                                    (sql/format))))
 
 (defn update!
