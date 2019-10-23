@@ -212,6 +212,10 @@ a:hover {
   background: #363c4e;
 }
 
+.sidebar .hover-disabled:hover {
+  background: none;
+}
+
 .sidebar .item.active {
   border-left: 2px solid aliceblue;
   background: #404040;
@@ -390,10 +394,42 @@ a:hover {
 
 .table td {
   max-width: 20vw;
+  padding: 8px;
 }
 
-.hover-disabled:hover {
+.table .hover-disabled:hover {
   background: #f2f2f2 !important;
+}
+
+.item-text {
+  line-height: 1.75rem;
+}
+
+.item-row .editable {
+  display: block;
+  border: 1px solid transparent;
+  padding: 2px;
+  padding-left: 4px;
+  line-height: 1.5;
+  transition: 0.1s;
+  background: transparent;
+  max-width: 300px;
+}
+
+.item-row:hover .editable {
+  color: #495057;
+  background-color: #fafafa;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  cursor: text;
+}
+
+.item-row:focus-within .editable {
+  color: #495057;
+  background-color: #fafafa;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  cursor: text;
 }
 
 .new-item-row {
@@ -408,7 +444,7 @@ a:hover {
 
 .new-item-input {
   padding: 2px;
-  max-width: 280px;
+  max-width: 300px;
 }
 
 .add-item-row {
@@ -438,7 +474,7 @@ a:hover {
 .tr-help-text {
   text-align: right;
   font-size: 12.5px;
-  padding: 0px 8px 5px 3px !important;
+  padding: 4px 8px 5px 3px !important;
   border-top: none !important;
   background: #f2f2f2;
 }

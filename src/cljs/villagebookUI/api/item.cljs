@@ -1,5 +1,5 @@
 (ns villagebookUI.api.item
-  (:require [ajax.core :refer [GET POST]]
+  (:require [ajax.core :refer [GET POST PUT]]
             [villagebookUI.helpers :as helpers]))
 
 (defn ^:private create-item-api [org-id category-id]
@@ -20,3 +20,10 @@
        {:handler         handler
         :response-format :json
         :error-handler   error-handler}))
+
+(defn update-item [{:keys [org-id category-id item handler error-handler]}]
+  (PUT (create-item-api org-id category-id)
+       {:body          (helpers/jsonify item)
+        :headers       {:content-type "application/json"}
+        :handler       handler
+        :error-handler error-handler}))

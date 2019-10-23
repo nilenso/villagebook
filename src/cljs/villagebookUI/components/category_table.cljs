@@ -24,9 +24,9 @@
            (if (and (empty? items)(not @adding-item))
              [table-empty-msg fields #(reset! adding-item true)])
            (map-indexed
-            (fn [idx item]
-              ^{:key (:id item)}
-              [item-row (+ idx 1) item fields]) items)
+            (fn [idx [id item]]
+              ^{:key id}
+              [item-row (+ idx 1) id (:id category) fields]) items)
            (if @adding-item
              ^{:key (:id category)}
              [new-item-row (:id category) fields (+ 1 (count items)) #(reset! adding-item false)])

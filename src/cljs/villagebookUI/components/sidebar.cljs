@@ -27,6 +27,7 @@
                [utils/patch (:color org)]
                (:name org)]]))
           [:li.item
+           {:class [(when @creating-org :hover-disabled)]}
            (if @creating-org
              [org-creation-form #(reset! creating-org false)]
              [:a.sidebar-link {:on-click #(reset! creating-org true)} "+ Create new"])]]]]])))

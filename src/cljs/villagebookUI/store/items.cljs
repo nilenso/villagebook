@@ -6,11 +6,24 @@
 (def items
   (r/cursor state [:items]))
 
-(defn add-all-to-category! [category-id table-data]
-  (let [item-list (for [item (:items (keywordize-keys table-data))]
-                    {:id     (:id item)
-                     :values (reduce #(assoc %1 (:field_id %2) %2) {} (:values item))})] ;; reorg response JSON
-    (swap! items assoc category-id item-list)))
+(defn- index-by
+  [f coll]
+  (reduce #(assoc %1 (f %2) %2) {} coll))
 
-(defn get-by-category [category-id]
+(defn add-all-to-category!
+  [category-id table-data]
+  (->> (:items (keywordize-keys table-data))
+       (reduce
+        (fn [item-list item]
+          (assoc item-list (:id item) {:id     (:id item)
+                                       :values (index-by :field_id (:values item))}))
+        {}) ;; reorg response JSON
+       (swap! items assoc category-id)))
+
+(defn get-by-category
+  [category-id]
   (get @items category-id))
+
+(defn update-value!
+  [item-id category-id field-id value]
+  (swap! items assoc-in [category-id item-id :values field-id :value] value))
