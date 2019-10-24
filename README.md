@@ -21,6 +21,11 @@ npm install
 shadow-cljs watch app
 ```
 
+### Dockerize
+```bash
+docker-compose up
+```
+
 To add:
 
 - Add CIDER/REPL setup

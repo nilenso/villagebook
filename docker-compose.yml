@@ -1,0 +1,33 @@
+version: '3.7'
+services:
+  villagebook-backend:
+    build:
+      context: .
+      dockerfile: DockerfileBackend
+    image: villagebook-backend:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - DEBUG
+    depends_on:
+      - villagebook-postgres
+  villagebook-frontend:
+    build:
+      context: .
+      dockerfile: DockerfileFrontend
+    image: villagebook-frontend:latest
+    env_file:
+      - development.env
+    ports:
+      - "9630:9630"
+      - "8081:8081"
+    depends_on:
+      - villagebook-backend
+  villagebook-postgres:
+    image: postgres
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    env_file:
+      - development.env
+    ports:
+      - "5432:5432"

@@ -1,0 +1,17 @@
+node_modules
+npm-debug.log
+Dockerfile*
+docker-compose*
+postgres-data
+deployment
+.git*
+.hgignore
+test
+doc
+*.jar
+*.class
+/lib/
+/classes/
+/target/
+/checkouts/
+resources/public/assets/build/

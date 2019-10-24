@@ -1,6 +1,6 @@
 {:secrets    #include #join [#env HOME "/.villagebook-secrets.edn"]
 
- :db-spec    #profile {:default    "jdbc:postgresql://localhost:5432/villagebook"
+ :db-spec    #profile {:default    "jdbc:postgresql://localhost:5432/villagebook?user=postgres"
                        :test       "jdbc:postgresql://localhost:5432/villagebook_test"
                        :production "jdbc:postgresql://localhost:5432/villagebook_prod?user=postgres"}
  :jwt-secret #profile {:default    "secret"
