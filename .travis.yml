@@ -1,0 +1,40 @@
+language: clojure
+dist: bionic
+cache:
+  npm: true
+  directories:
+    - "$HOME/.m2"
+jdk:
+- openjdk10
+addons:
+  postgresql: '10'
+  ssh_known_hosts:
+  - villagebook.nilenso.com
+notifications:
+  email:
+    on_failure: never
+    on_success: never
+before_install:
+- openssl aes-256-cbc -K $encrypted_89b0e1bc981c_key -iv $encrypted_89b0e1bc981c_iv
+  -in deploy_key.enc -out ./deploy_key -d
+- eval `ssh-agent -s`
+- chmod 600 deploy_key
+- ssh-add ./deploy_key
+install:
+- lein deps
+- npm install && npm install -g shadow-cljs
+- pip install ansible --user
+services:
+- postgresql
+env:
+- CONFIG_PROFILE=test
+before_script:
+- psql -c 'create database villagebook_test;' -U postgres
+script:
+- lein test
+deploy:
+  provider: script
+  script: cd $TRAVIS_BUILD_DIR/deployment && ansible-playbook deploy.yml
+  skip_cleanup: true
+  on:
+    branch: master
