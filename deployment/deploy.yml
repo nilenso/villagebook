@@ -15,7 +15,12 @@
       local_action: shell shadow-cljs release villagebookUI
 
     - name: Generate Uberjar on local machine
-      local_action: shell lein uberjar
+      local_action: shell lein do clean, uberjar
+
+    - name: Delete old uberjar
+      file:
+        path: /home/deploy/villagebook-0.1.0-SNAPSHOT-standalone.jar
+        state: absent
 
     - name: Copy uberjar to server
       copy:
@@ -23,6 +28,14 @@
         dest: /home/deploy/
         owner: deploy
         mode: '0644'
+
+    - name: Stop villagebook service
+      become: true
+      systemd:
+        daemon_reload: yes
+        state: stopped
+        name: villagebook
+        enabled: yes
 
     - name: Run villagebook migrations
       become: true
