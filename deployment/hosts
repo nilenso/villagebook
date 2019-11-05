@@ -1,5 +1,5 @@
 [deployment]
-server1 ansible_host=206.189.139.112
+server1 ansible_host=villagebook.nilenso.com
 
 [deployment:vars]
 ansible_python_interpreter=/usr/bin/python3
