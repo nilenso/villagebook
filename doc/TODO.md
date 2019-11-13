@@ -1,0 +1,8 @@
+- Invite people to org
+- Issue items to people
+- CSV import
+- Store issue history of item
+- Have types on fields (text, longtext, dropdowns)
+- Add/remove/update fields
+- Search
+- Row highlight color
