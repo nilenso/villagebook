@@ -21,4 +21,4 @@ resources/public/assets/build/
 node_modules/
 package-lock.json
 .shadow-cljs
-postgres-data
+postgres
