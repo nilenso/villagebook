@@ -33,7 +33,9 @@ docker-compose up --build
 ```
 
 Add host entry (/etc/hosts) to connect postgres db (running via docker)
-```127.0.0.1   villagebook-postgres```
+```bash
+127.0.0.1   villagebook-postgres
+```
 
 
 ```bash
