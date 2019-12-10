@@ -1,0 +1,11 @@
+FROM openjdk:11-slim-buster as frontend
+VOLUME ["/code"]
+ENV APP_HOME /code
+WORKDIR $APP_HOME
+COPY . $APP_NAME
+RUN apt-get update
+RUN apt-get -y install curl gnupg
+RUN curl -sL https://deb.nodesource.com/setup_12.x  | bash -
+RUN apt-get -y install nodejs
+RUN npm install
+CMD ["./run-frontend.sh"]

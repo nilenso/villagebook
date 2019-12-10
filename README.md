@@ -21,6 +21,27 @@ npm install
 shadow-cljs watch app
 ```
 
+### Run application through Docker
+```bash
+docker-compose up --build
+```
+
+### Run tests
+By running docker-compose up, postgres will be running with test db.
+```bash
+docker-compose up --build
+```
+
+Add host entry (/etc/hosts) to connect postgres db (running via docker)
+```bash
+127.0.0.1   villagebook-postgres
+```
+
+
+```bash
+lein test
+```
+
 To add:
 
 - Add CIDER/REPL setup
