@@ -90,7 +90,7 @@
       become: true
       become_user: postgres
       postgresql_db:
-        name: village_book_db
+        name: villagebook_prod
 
     - name: Install nginx
       apt:

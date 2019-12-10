@@ -2,6 +2,8 @@
 - hosts: all
   remote_user: deploy
   gather_facts: false
+  environment:
+    CONFIG_PROFILE: "production"
   tasks:
     - name: Copy service file
       become: true
@@ -9,8 +11,16 @@
         src: "villagebook.service"
         dest: /etc/systemd/system
 
+    - name: Compile frontend app
+      local_action: shell shadow-cljs release villagebookUI
+
     - name: Generate Uberjar on local machine
-      local_action: shell lein uberjar
+      local_action: shell lein do clean, uberjar
+
+    - name: Delete old uberjar
+      file:
+        path: /home/deploy/villagebook-0.1.0-SNAPSHOT-standalone.jar
+        state: absent
 
     - name: Copy uberjar to server
       copy:
@@ -19,8 +29,17 @@
         owner: deploy
         mode: '0644'
 
+    - name: Stop villagebook service
+      become: true
+      systemd:
+        daemon_reload: yes
+        state: stopped
+        name: villagebook
+        enabled: yes
+
     - name: Run villagebook migrations
-      become_user: deploy
+      become: true
+      become_user: postgres
       shell: cd /home/deploy/ && java -jar villagebook-0.1.0-SNAPSHOT-standalone.jar migrate
 
     - name: Start villagebook service
