@@ -1,6 +1,5 @@
 (ns villagebook.organisation.models
   (:require [villagebook.organisation.db :as db]
-            [villagebook.factory :as factory]
             [clojure.java.jdbc :as jdbc]
             [villagebook.config :as config]))
 

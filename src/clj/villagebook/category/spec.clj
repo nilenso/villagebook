@@ -1,7 +1,6 @@
 (ns villagebook.category.spec
   (:require [clojure.spec.alpha :as s]
-            [villagebook.field.spec :as field-spec]
-            [villagebook.factory :as factory]))
+            [villagebook.field.spec :as field-spec]))
 
 (s/def ::org-id (s/and int? #(> % 0)))
 (s/def ::name (s/and string? (complement clojure.string/blank?)))
